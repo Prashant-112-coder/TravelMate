@@ -1,0 +1,47 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  color: #172033;
+  background: #f6f8fc;
+  line-height: 1.5;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+.shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+}
+.hero {
+  width: min(960px, 100%);
+  padding: clamp(28px, 7vw, 72px);
+  border-radius: 28px;
+  background: rgba(255,255,255,.9);
+  border: 1px solid #e3e8f0;
+  box-shadow: 0 24px 70px rgba(31, 41, 55, .08);
+}
+.eyebrow { margin: 0 0 14px; font-weight: 800; letter-spacing: .16em; font-size: .8rem; }
+h1 { margin: 0; font-size: clamp(2.25rem, 6vw, 4.7rem); line-height: 1.02; letter-spacing: -.04em; }
+.lead { max-width: 700px; margin: 24px 0 0; color: #5d687c; font-size: 1.05rem; }
+.architecture {
+  margin-top: 34px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.architecture span {
+  min-height: 84px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #f2f5fa;
+  border: 1px solid #e5eaf2;
+  font-weight: 650;
+  font-size: .9rem;
+}
+@media (max-width: 720px) {
+  .shell { padding: 16px; }
+  .architecture { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 460px) {
+  .architecture { grid-template-columns: 1fr; }
+}

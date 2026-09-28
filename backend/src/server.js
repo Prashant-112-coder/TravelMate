@@ -4,6 +4,7 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { env } from "./config/env.js";
 import authRouter from "./routes/auth.js";
+import profileRouter from "./routes/profile.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/profile", profileRouter);
 app.use((_req, res) => res.status(404).json({ error: "Route not found" }));
 
 app.listen(env.PORT, () => console.log(`Travel Mate API listening on port ${env.PORT}`));

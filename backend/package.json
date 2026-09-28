@@ -1,0 +1,21 @@
+{
+  "name": "travel-mate-backend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.2.0",
+    "helmet": "^8.1.0",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "eslint": "^9.35.0"
+  }
+}

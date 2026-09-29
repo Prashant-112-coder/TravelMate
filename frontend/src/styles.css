@@ -335,3 +335,43 @@ url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fi
 .demo-banner{display:flex;gap:10px;align-items:center;padding:12px 15px;margin-top:18px;border:1px dashed #d7c6ba;background:#fffaf6;border-radius:11px;font-size:.68rem;color:#81766f}.demo-banner strong{color:#a05c45}.demo-image.demo-0{background:linear-gradient(135deg,#e8c8a8,#9a6b4f)}.demo-image.demo-1{background:linear-gradient(135deg,#c6d7df,#536f7b)}.demo-image.demo-2{background:linear-gradient(135deg,#b8d4bd,#55775e)}
 
 .trip-card-actions{display:flex;justify-content:space-between;gap:14px;margin-top:16px}.demo-notification{display:flex;align-items:center;width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:14px;padding:16px;margin-bottom:10px}.demo-notification>b{margin-left:auto;color:#b9684d}.setting-wide{min-height:190px}.demo-toggle{margin-top:18px;display:flex;align-items:center;gap:10px;font-size:.7rem;font-weight:800}.demo-toggle input{width:18px;height:18px;accent-color:#b9684d}.demo-chat{min-height:580px}.demo-chat .conversation b{margin-left:auto;font-size:.58rem;background:#f1ebe5;border-radius:99px;padding:4px 7px;color:#9b5943}
+
+
+/* Profile image controls */
+.profile-cover-card .cover-image{
+  position:relative;
+  background-size:cover;
+  background-position:center;
+}
+.profile-cover-card .cover-gradient{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,rgba(20,25,32,.08),rgba(20,25,32,.28));
+  pointer-events:none;
+}
+.cover-edit-button{
+  position:absolute;
+  top:16px;
+  right:16px;
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.65);
+  border-radius:11px;
+  background:rgba(255,255,255,.9);
+  color:#2f3742;
+  box-shadow:0 8px 22px rgba(20,25,32,.16);
+  font-size:1rem;
+  z-index:2;
+  backdrop-filter:blur(10px);
+}
+.cover-edit-button:hover,.camera-button:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 24px rgba(20,25,32,.18);
+}
+.camera-button{
+  display:grid;
+  place-items:center;
+  font-size:.95rem;
+}

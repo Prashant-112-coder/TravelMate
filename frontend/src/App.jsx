@@ -33,27 +33,27 @@ function Home() {
   </div>;
 }
 
+function ShellPage({ children }) {
+  return <ProtectedRoute><AppShell>{children}</AppShell></ProtectedRoute>;
+}
+
 export default function App() {
   return <Routes>
     <Route path="/" element={<Home/>}/>
     <Route path="/login" element={<Login/>}/>
     <Route path="/register" element={<Register/>}/>
-    <Route element={<ProtectedRoute/>}>
-      <Route element={<AppShell/>}>
-        <Route path="/dashboard" element={<Dashboard/>}/>
-        <Route path="/explore" element={<ExploreTrips/>}/>
-        <Route path="/discover" element={<Discover/>}/>
-        <Route path="/my-trips" element={<MyTrips/>}/>
-        <Route path="/my-trips/new" element={<CreateTrip/>}/>
-        <Route path="/matches" element={<Matches/>}/>
-        <Route path="/requests" element={<Requests/>}/>
-        <Route path="/messages" element={<Messages/>}/>
-        <Route path="/notifications" element={<Notifications/>}/>
-        <Route path="/traveller/:id" element={<TravellerProfile/>}/>
-        <Route path="/profile" element={<Profile/>}/>
-        <Route path="/settings" element={<Settings/>}/>
-      </Route>
-    </Route>
+    <Route path="/dashboard" element={<ShellPage><Dashboard/></ShellPage>}/>
+    <Route path="/explore" element={<ShellPage><ExploreTrips/></ShellPage>}/>
+    <Route path="/discover" element={<ShellPage><Discover/></ShellPage>}/>
+    <Route path="/my-trips" element={<ShellPage><MyTrips/></ShellPage>}/>
+    <Route path="/my-trips/new" element={<ShellPage><CreateTrip/></ShellPage>}/>
+    <Route path="/matches" element={<ShellPage><Matches/></ShellPage>}/>
+    <Route path="/requests" element={<ShellPage><Requests/></ShellPage>}/>
+    <Route path="/messages" element={<ShellPage><Messages/></ShellPage>}/>
+    <Route path="/notifications" element={<ShellPage><Notifications/></ShellPage>}/>
+    <Route path="/traveller/:id" element={<ShellPage><TravellerProfile/></ShellPage>}/>
+    <Route path="/profile" element={<ShellPage><Profile/></ShellPage>}/>
+    <Route path="/settings" element={<ShellPage><Settings/></ShellPage>}/>
     <Route path="*" element={<Navigate to="/" replace/>}/>
   </Routes>;
 }

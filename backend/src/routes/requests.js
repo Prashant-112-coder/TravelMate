@@ -24,7 +24,7 @@ router.post("/",async(req,res)=>{
  if(trip.user_id===req.user.id)return res.status(400).json({error:"You cannot request your own trip."});
  const {data,error}=await db.from("match_requests").insert({trip_id:trip.id,sender_id:req.user.id,receiver_id:trip.user_id,message:parsed.data.message||null}).select("*").single();
  if(error)return res.status(400).json({error:error.code==="23505"?"You already sent a request for this trip.":error.message});
- await db.from("notifications").insert({user_id:trip.user_id,type:"match_request",title:"New travel request",body:"Someone wants to travel with you.",data:{request_id:data.id}});
+
  res.status(201).json({request:data});
 });
 
@@ -42,7 +42,7 @@ router.patch("/:id",async(req,res)=>{
  if(status.data==="accepted"){
    const {data:conv,error:ce}=await db.from("conversations").insert({request_id:r.id}).select("*").single();
    if(ce && ce.code!=="23505")return res.status(400).json({error:ce.message});
-   await db.from("notifications").insert({user_id:r.sender_id,type:"match_accepted",title:"Request accepted",body:"Your travel request was accepted. You can now message your travel mate.",data:{request_id:r.id,conversation_id:conv?.id}});
+
    return res.json({request:updated,conversation:conv||null});
  }
  res.json({request:updated});

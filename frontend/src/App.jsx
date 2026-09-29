@@ -7,7 +7,7 @@ import Discover from "./pages/Discover";
 import MyTrips from "./pages/MyTrips";\nimport CreateTrip from "./pages/CreateTrip";
 import Matches from "./pages/Matches";
 import Requests from "./pages/Requests";
-import Messages from "./pages/Messages";
+import Messages from "./pages/Messages";\nimport TravellerProfile from "./pages/TravellerProfile";
 import Notifications from "./pages/Notifications";
 import Settings from "./pages/Settings";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -97,7 +97,7 @@ export default function App() {
         <Route element={<AppShell />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/discover" element={<Discover />} />
-          <Route path="/my-trips" element={<MyTrips />} />\n          <Route path="/my-trips/new" element={<CreateTrip />} />
+          <Route path="/my-trips" element={<MyTrips />} />\n          <Route path="/my-trips/new" element={<CreateTrip />} />\n          <Route path="/traveller/:id" element={<TravellerProfile />} />
           <Route path="/matches" element={<Matches />} />
           <Route path="/requests" element={<Requests />} />
           <Route path="/messages" element={<Messages />} />

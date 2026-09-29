@@ -27,7 +27,7 @@ function scoreTrip(a,b){
   return Math.min(100,destination+dates+budget+style+interests+activities);
 }
 
-router.get("/",async(req,res)=>{
+router.get("/",async(req,res)=>{\n  if(!req.query.tripId) return res.status(400).json({error:"tripId is required to calculate compatibility."});
   const db=createUserClient(req.accessToken);
   const {data:trips,error}=await db.from("trips").select("*").eq("status","open").neq("user_id",req.user.id).order("created_at",{ascending:false});
   if(error)return res.status(400).json({error:error.message});
@@ -35,7 +35,7 @@ router.get("/",async(req,res)=>{
   let profiles=[];
   if(ids.length){const r=await db.from("profiles").select("id,display_name,avatar_url,bio,home_city,travel_style,interests,activities,is_discoverable").in("id",ids); if(r.error)return res.status(400).json({error:r.error.message}); profiles=r.data||[];}
   const map=new Map(profiles.map(p=>[p.id,p]));
-  const items=(trips||[]).map(trip=>({trip,profile:map.get(trip.user_id)||null,compatibility:scoreTrip(req.query.tripId?null:trip,trip)})).filter(x=>x.profile?.is_discoverable!==false);
+  const items=(trips||[]).map(trip=>({trip,profile:map.get(trip.user_id)||null,compatibility:0})).filter(x=>x.profile?.is_discoverable!==false);
   if(req.query.tripId){
     const own=(await db.from("trips").select("*").eq("id",req.query.tripId).eq("user_id",req.user.id).single()).data;
     if(!own)return res.status(404).json({error:"Your trip was not found."});

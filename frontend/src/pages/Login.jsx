@@ -36,5 +36,5 @@ export default function Login() {
 }
 
 function AuthShell({ title, subtitle, children }) {
-  return <main className="auth-page"><section className="auth-card"><p className="eyebrow">TRAVEL MATE</p><h1>{title}</h1><p className="lead">{subtitle}</p>{children}</section></main>;
+  return <main className="auth-page"><section className="auth-card"><div className="auth-brand"><span className="auth-brand-mark">⌖</span><span className="auth-brand-name">Travel <b>Mate</b></span></div><p className="eyebrow">TRAVEL MATE</p><h1>{title}</h1><p className="lead">{subtitle}</p>{children}</section></main>;
 }

@@ -14,7 +14,7 @@ const mainNav = [
 export default function AppShell() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const initial = (user?.email || "T").slice(0,1).toUpperCase();
+  const initial = (user?.user_metadata?.display_name || user?.email || "T").slice(0,1).toUpperCase();
 
   async function logout() {
     await signOut();
@@ -33,7 +33,7 @@ export default function AppShell() {
         <div className="workspace-label">ACCOUNT</div>
         <nav className="side-nav">
           <NavLink to="/profile" className={({isActive}) => isActive ? "active" : ""}><i>◉</i><span>Profile</span></NavLink>
-          <NavLink to="/settings" className={({isActive}) => isActive ? "active" : ""}><i>⚙</i><span>Settings</span></NavLink>
+          <NavLink to="/notifications" className={({isActive}) => isActive ? "active" : ""}><i>♧</i><span>Notifications</span></NavLink>\n          <NavLink to="/settings" className={({isActive}) => isActive ? "active" : ""}><i>⚙</i><span>Settings</span></NavLink>
         </nav>
         <div className="sidebar-bottom">
           <div className="sidebar-journey"><span>✦</span><strong>Your next journey starts here.</strong><small>Complete your profile to improve future matching.</small></div>

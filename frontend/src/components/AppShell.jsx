@@ -22,35 +22,35 @@ export default function AppShell() {
   }
 
   return (
-    <div className="app-shell">
-      <aside className="sidebar">
-        <Link className="sidebar-brand" to="/dashboard"><span className="brand-mark">✦</span> Travel Mate</Link>
-        <div className="workspace-label">WORKSPACE</div>
-        <nav className="side-nav">
-          {mainNav.map(([path, icon, label]) => <NavLink key={path} to={"/" + path} className={({isActive}) => isActive ? "active" : ""}><i>{icon}</i><span>{label}</span></NavLink>)}
-        </nav>
-        <div className="sidebar-divider"></div>
-        <div className="workspace-label">ACCOUNT</div>
-        <nav className="side-nav">
-          <NavLink to="/profile" className={({isActive}) => isActive ? "active" : ""}><i>◉</i><span>Profile</span></NavLink>
-          <NavLink to="/notifications" className={({isActive}) => isActive ? "active" : ""}><i>♧</i><span>Notifications</span></NavLink>\n          <NavLink to="/settings" className={({isActive}) => isActive ? "active" : ""}><i>⚙</i><span>Settings</span></NavLink>
-        </nav>
-        <div className="sidebar-bottom">
-          <div className="sidebar-journey"><span>✦</span><strong>Your next journey starts here.</strong><small>Complete your profile to improve future matching.</small></div>
-          <button className="signout" onClick={logout}><i>↪</i> Sign out</button>
-        </div>
-      </aside>
-      <main className="app-main">
-        <header className="app-topbar">
-          <div className="mobile-brand"><span className="brand-mark">✦</span> Travel Mate</div>
-          <div className="topbar-spacer"></div>
-          <div className="topbar-actions">
-            <Link className="topbar-icon" to="/notifications" aria-label="Notifications">♧</Link>
-            <Link className="topbar-profile" to="/profile"><span>{user?.email?.split("@")[0] || "Traveller"}</span><div className="mini-avatar">{initial}</div></Link>
-          </div>
-        </header>
-        <Outlet />
-      </main>
-    </div>
+    Ndiv className="app-shell">
+      Naside className="sidebar">
+        NLink className="sidebar-brand" to="/dashboard">Nspan className="brand-mark">✦N/span> Travel MateN/Link>
+        Ndiv className="workspace-label">WORKSPACEN/div>
+        Nnav className="side-nav">
+          {mainNav.map(([path, icon, label]) => NNavLink key={path} to={"/" + path} className={({isActive}) => isActive ? "active" : ""}>Ni>{icon}N/i>Nspan>{label}N/span>N/NavLink>)}
+        N/nav>
+        Ndiv className="sidebar-divider">N/div>
+        Ndiv className="workspace-label">ACCOUNTN/div>
+        Nnav className="side-nav">
+          NNavLink to="/profile" className={({isActive}) => isActive ? "active" : ""}>Ni>◉N/i>Nspan>ProfileN/span>N/NavLink>
+          NNavLink to="/notifications" className={({isActive}) => isActive ? "active" : ""}>Ni>♧N/i>Nspan>NotificationsN/span>N/NavLink>\n          NNavLink to="/settings" className={({isActive}) => isActive ? "active" : ""}>Ni>⚙N/i>Nspan>SettingsN/span>N/NavLink>
+        N/nav>
+        Ndiv className="sidebar-bottom">
+          Ndiv className="sidebar-journey">Nspan>✦N/span>Nstrong>Your next journey starts here.N/strong>Nsmall>Complete your profile to improve future matching.N/small>N/div>
+          Nbutton className="signout" onClick={logout}>Ni>↪N/i> Sign outN/button>
+        N/div>
+      N/aside>
+      Nmain className="app-main">
+        Nheader className="app-topbar">
+          Ndiv className="mobile-brand">Nspan className="brand-mark">✦N/span> Travel MateN/div>
+          Ndiv className="topbar-spacer">N/div>
+          Ndiv className="topbar-actions">
+            NLink className="topbar-icon" to="/notifications" aria-label="Notifications">♧N/Link>
+            NLink className="topbar-profile" to="/profile">Nspan>{user?.email?.split("@")[0] || "Traveller"}N/span>Ndiv className="mini-avatar">{initial}N/div>N/Link>
+          N/div>
+        N/header>
+        NOutlet />
+      N/main>
+    N/div>
   );
 }

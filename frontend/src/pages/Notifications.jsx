@@ -1,3 +1,49 @@
 import { Link } from "react-router-dom";
-const notes=[["New match request","Arjun Rao wants to join your Goa trip.","2 min ago"],["Request accepted","Priya Nair accepted your Manali connection request.","18 min ago"],["Profile tip","Add two travel memories to help travellers understand your style.","1 hr ago"]];
-export default function Notifications(){return <div className="content-wrap"><div className="page-heading"><div><p className="eyebrow">UPDATES</p><h1>Notifications</h1><p>Stay updated on requests, matches and your travel activity.</p></div><Link className="button button-light" to="/settings">Notification settings</Link></div><div className="demo-banner"><strong>Interface preview</strong><span>Sample notifications are hard-coded for the current interface stage.</span></div><div className="notification-list">{notes.map((n,i)=><article className="notification demo-notification" key={n[0]}><span>{i===0?"♡":i===1?"✓":"✦"}</span><div><strong>{n[0]}</strong><p>{n[1]}</p><small>{n[2]}</small></div><b>•</b></article>)}</div></div>
+
+const notes = [
+  ["New match request", "Arjun Rao wants to join your Goa trip.", "2 min ago"],
+  ["Request accepted", "Priya Nair accepted your Manali connection request.", "18 min ago"],
+  ["Profile tip", "Add two travel memories to help travellers understand your style.", "1 hr ago"],
+];
+
+export default function Notifications() {
+  return (
+    <div className="content-wrap">
+      <div className="page-heading">
+        <div>
+          <p className="eyebrow">UPDATES</p>
+          <h1>Notifications</h1>
+          <p>Stay updated on requests, matches and your travel activity.</p>
+        </div>
+
+        <Link className="button button-light" to="/settings">
+          Notification settings
+        </Link>
+      </div>
+
+      <div className="demo-banner">
+        <strong>Interface preview</strong>
+        <span>
+          Sample notifications are hard-coded for the current interface stage.
+        </span>
+      </div>
+
+      <div className="notification-list">
+        {notes.map((n, i) => (
+          <article
+            className="notification demo-notification"
+            key={n[0]}
+          >
+            <span>{i === 0 ? "♡" : i === 1 ? "✓" : "✦"}</span>
+            <div>
+              <strong>{n[0]}</strong>
+              <p>{n[1]}</p>
+              <small>{n[2]}</small>
+            </div>
+            <b>•</b>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}

@@ -4,7 +4,13 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { env } from "./config/env.js";
 import authRouter from "./routes/auth.js";
-import profileRouter from "./routes/profile.js";\nimport tripsRouter from "./routes/trips.js";\nimport discoverRouter from "./routes/discover.js";\nimport requestsRouter from "./routes/requests.js";\nimport messagesRouter from "./routes/messages.js";\nimport notificationsRouter from "./routes/notifications.js";\nimport exploreRouter from "./routes/explore.js";
+import profileRouter from "./routes/profile.js";
+import tripsRouter from "./routes/trips.js";
+import discoverRouter from "./routes/discover.js";
+import requestsRouter from "./routes/requests.js";
+import messagesRouter from "./routes/messages.js";
+import notificationsRouter from "./routes/notifications.js";
+import exploreRouter from "./routes/explore.js";
 
 const app = express();
 
@@ -19,7 +25,13 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api/auth", authRouter);
-app.use("/api/profile", profileRouter);\napp.use("/api/trips", tripsRouter);\napp.use("/api/discover", discoverRouter);\napp.use("/api/requests", requestsRouter);\napp.use("/api/messages", messagesRouter);\napp.use("/api/notifications", notificationsRouter);\napp.use("/api/explore", exploreRouter);
+app.use("/api/profile", profileRouter);
+app.use("/api/trips", tripsRouter);
+app.use("/api/discover", discoverRouter);
+app.use("/api/requests", requestsRouter);
+app.use("/api/messages", messagesRouter);
+app.use("/api/notifications", notificationsRouter);
+app.use("/api/explore", exploreRouter);
 app.use((_req, res) => res.status(404).json({ error: "Route not found" }));
 
 app.listen(env.PORT, () => console.log(`Travel Mate API listening on port ${env.PORT}`));

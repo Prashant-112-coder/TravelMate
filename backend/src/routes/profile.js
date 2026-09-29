@@ -54,7 +54,15 @@ function validateProfile(input) {
   return output;
 }
 
-router.get("/public/:id", requireAuth, async (req, res) => {\n  const client = createUserClient(req.accessToken);\n  const { data, error } = await client.from("profiles").select("id,display_name,avatar_url,bio,home_city,travel_style,interests,activities,preferred_destinations,is_discoverable").eq("id", req.params.id).eq("is_discoverable", true).maybeSingle();\n  if (error) return res.status(400).json({ error: error.message });\n  if (!data) return res.status(404).json({ error: "Traveller profile not found or is private." });\n  return res.json({ profile: data });\n});\n\n
+router.get("/public/:id", requireAuth, async (req, res) => {
+  const client = createUserClient(req.accessToken);
+  const { data, error } = await client.from("profiles").select("id,display_name,avatar_url,bio,home_city,travel_style,interests,activities,preferred_destinations,is_discoverable").eq("id", req.params.id).eq("is_discoverable", true).maybeSingle();
+  if (error) return res.status(400).json({ error: error.message });
+  if (!data) return res.status(404).json({ error: "Traveller profile not found or is private." });
+  return res.json({ profile: data });
+});
+
+
 router.get("/posts", requireAuth, async (req, res) => {
   const client = createUserClient(req.accessToken);
   const { data, error } = await client.from("travel_posts").select("*").eq("user_id", req.user.id).order("created_at", { ascending: false });

@@ -4,7 +4,8 @@ import { useAuth } from "../context/AuthContext";
 
 const mainNav = [
   ["dashboard","⌂","Dashboard"],
-  ["discover","⌕","Discover"],
+  ["explore","⌖","Explore Trips"],
+  ["discover","⌕","Find Travel Mates"],
   ["my-trips","▣","My Trips"],
   ["matches","♡","Matches"],
   ["requests","◌","Requests"],

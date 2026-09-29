@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
+import ExploreTrips from "./pages/ExploreTrips";
 import MyTrips from "./pages/MyTrips";\nimport CreateTrip from "./pages/CreateTrip";
 import Matches from "./pages/Matches";
 import Requests from "./pages/Requests";
@@ -97,6 +98,7 @@ export default function App() {
         <Route element={<AppShell />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/discover" element={<Discover />} />
+          <Route path="/explore" element={<ExploreTrips />} />
           <Route path="/my-trips" element={<MyTrips />} />\n          <Route path="/my-trips/new" element={<CreateTrip />} />\n          <Route path="/traveller/:id" element={<TravellerProfile />} />
           <Route path="/matches" element={<Matches />} />
           <Route path="/requests" element={<Requests />} />

@@ -27,7 +27,8 @@ function scoreTrip(a,b){
   return Math.min(100,destination+dates+budget+style+interests+activities);
 }
 
-router.get("/",async(req,res)=>{\n  if(!req.query.tripId) return res.status(400).json({error:"tripId is required to calculate compatibility."});
+router.get("/",async(req,res)=>{
+  if(!req.query.tripId) return res.status(400).json({error:"tripId is required to calculate compatibility."});
   const db=createUserClient(req.accessToken);
   const {data:trips,error}=await db.from("trips").select("*").eq("status","open").neq("user_id",req.user.id).order("created_at",{ascending:false});
   if(error)return res.status(400).json({error:error.message});

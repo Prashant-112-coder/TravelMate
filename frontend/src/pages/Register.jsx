@@ -37,6 +37,7 @@ export default function Register() {
   return (
     <main className="auth-page">
       <section className="auth-card">
+        <div className="auth-brand"><span className="auth-brand-mark">⌖</span><span className="auth-brand-name">Travel <b>Mate</b></span></div>
         <p className="eyebrow">TRAVEL MATE</p>
         <h1>Create your account</h1>
         <p className="lead">Start building your solo-travel profile securely.</p>

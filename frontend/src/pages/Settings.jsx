@@ -1,2 +1,95 @@
-import { useState } from "react"; import { Link } from "react-router-dom";
-export default function Settings(){const [discoverable,setDiscoverable]=useState(true),[notifications,setNotifications]=useState(true);return <div className="content-wrap"><div className="page-heading"><div><p className="eyebrow">ACCOUNT</p><h1>Settings</h1><p>Manage privacy, notifications and account preferences.</p></div><Link className="button button-light" to="/profile">Edit profile →</Link></div><div className="demo-banner"><strong>Interface preview</strong><span>These controls are interactive UI only for now. Supabase persistence will be connected in the next step.</span></div><div className="settings-grid"><section className="setting-card setting-wide"><span>01</span><h3>Privacy & discoverability</h3><p>Choose whether other travellers can find your profile and trips.</p><label className="demo-toggle"><input type="checkbox" checked={discoverable} onChange={e=>setDiscoverable(e.target.checked)}/><span>{discoverable?"Profile discoverable":"Profile hidden"}</span></label></section><section className="setting-card setting-wide"><span>02</span><h3>Notifications</h3><p>Receive updates about requests, matches and messages.</p><label className="demo-toggle"><input type="checkbox" checked={notifications} onChange={e=>setNotifications(e.target.checked)}/><span>{notifications?"Notifications enabled":"Notifications muted"}</span></label></section><section className="setting-card"><span>03</span><h3>Safety</h3><p>Block, report and privacy controls for safer connections.</p><Link className="text-link" to="/discover">Review traveller safety →</Link></section><section className="setting-card"><span>04</span><h3>Account</h3><p>Authentication and sign-in are handled by Supabase Auth.</p><Link className="text-link" to="/profile">View account profile →</Link></section></div></div>
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
+export default function Settings() {
+  const [discoverable, setDiscoverable] = useState(true);
+  const [notifications, setNotifications] = useState(true);
+
+  return (
+    <div className="content-wrap">
+      <div className="page-heading">
+        <div>
+          <p className="eyebrow">ACCOUNT</p>
+          <h1>Settings</h1>
+          <p>Manage privacy, notifications and account preferences.</p>
+        </div>
+
+        <Link className="button button-light" to="/profile">
+          Edit profile →
+        </Link>
+      </div>
+
+      <div className="demo-banner">
+        <strong>Interface preview</strong>
+        <span>
+          These controls are interactive UI only for now. Supabase persistence
+          will be connected in the next step.
+        </span>
+      </div>
+
+      <div className="settings-grid">
+        <section className="setting-card setting-wide">
+          <span>01</span>
+          <h3>Privacy &amp; discoverability</h3>
+          <p>
+            Choose whether other travellers can find your profile and trips.
+          </p>
+
+          <label className="demo-toggle">
+            <input
+              type="checkbox"
+              checked={discoverable}
+              onChange={(event) => setDiscoverable(event.target.checked)}
+            />
+            <span>
+              {discoverable ? "Profile discoverable" : "Profile hidden"}
+            </span>
+          </label>
+        </section>
+
+        <section className="setting-card setting-wide">
+          <span>02</span>
+          <h3>Notifications</h3>
+          <p>
+            Receive updates about requests, matches and messages.
+          </p>
+
+          <label className="demo-toggle">
+            <input
+              type="checkbox"
+              checked={notifications}
+              onChange={(event) => setNotifications(event.target.checked)}
+            />
+            <span>
+              {notifications
+                ? "Notifications enabled"
+                : "Notifications muted"}
+            </span>
+          </label>
+        </section>
+
+        <section className="setting-card">
+          <span>03</span>
+          <h3>Safety</h3>
+          <p>
+            Block, report and privacy controls for safer connections.
+          </p>
+          <Link className="text-link" to="/discover">
+            Review traveller safety →
+          </Link>
+        </section>
+
+        <section className="setting-card">
+          <span>04</span>
+          <h3>Account</h3>
+          <p>
+            Authentication and sign-in are handled by Supabase Auth.
+          </p>
+          <Link className="text-link" to="/profile">
+            View account profile →
+          </Link>
+        </section>
+      </div>
+    </div>
+  );
+}

@@ -382,3 +382,102 @@ url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fi
 .travel-mate-logo{width:31px;height:31px;flex:0 0 31px;display:grid;place-items:center}
 .travel-mate-logo svg{width:31px;height:31px;display:block}
 @media(max-width:480px){.travel-mate-cover-brand{top:12px;left:12px;padding:6px 9px 6px 6px;font-size:.78rem}.travel-mate-logo,.travel-mate-logo svg{width:27px;height:27px}}
+
+/* Authentication — match the warm Travel Mate dashboard */
+.auth-page{
+  min-height:100vh;
+  position:relative;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  padding:34px;
+  background:
+    radial-gradient(circle at 12% 18%,rgba(190,118,91,.24),transparent 28%),
+    radial-gradient(circle at 88% 82%,rgba(44,137,119,.20),transparent 30%),
+    linear-gradient(135deg,#f5ede7 0%,#f8f5f1 48%,#e7f0ed 100%);
+}
+.auth-page::before,
+.auth-page::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  filter:blur(2px);
+  pointer-events:none;
+}
+.auth-page::before{
+  width:420px;
+  height:420px;
+  left:-150px;
+  bottom:-170px;
+  background:radial-gradient(circle,rgba(184,104,77,.22),transparent 68%);
+}
+.auth-page::after{
+  width:480px;
+  height:480px;
+  right:-170px;
+  top:-190px;
+  background:radial-gradient(circle,rgba(38,133,113,.18),transparent 68%);
+}
+.auth-card{
+  position:relative;
+  z-index:1;
+  width:min(480px,100%);
+  padding:42px;
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(255,255,255,.78);
+  border-radius:24px;
+  box-shadow:0 28px 80px rgba(79,60,49,.14);
+  backdrop-filter:blur(22px);
+}
+.auth-brand{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  margin-bottom:24px;
+  color:#26394b;
+  font-weight:900;
+  letter-spacing:-.035em;
+}
+.auth-brand-mark{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  background:linear-gradient(145deg,#b9684d,#159b91);
+  color:#fff;
+  box-shadow:0 8px 18px rgba(185,104,77,.2);
+}
+.auth-brand-name b{color:#159b91}
+.auth-card .eyebrow{color:#a56a56}
+.auth-card h1{color:#29333b}
+.auth-card .lead{color:#777d81}
+.auth-form{margin-top:26px}
+.auth-form input{
+  background:rgba(255,255,255,.72);
+  border-color:#e4ddd7;
+}
+.auth-form input:focus{
+  border-color:#c78770;
+  box-shadow:0 0 0 4px rgba(185,104,77,.10);
+}
+.auth-form button{
+  min-height:48px;
+  border:0;
+  border-radius:12px;
+  background:linear-gradient(135deg,#b9684d,#159b91);
+  color:#fff;
+  font-weight:850;
+  box-shadow:0 12px 26px rgba(185,104,77,.18);
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.auth-form button:hover:not(:disabled){
+  transform:translateY(-1px);
+  box-shadow:0 15px 30px rgba(185,104,77,.23);
+}
+.auth-switch a{color:#a45c46;font-weight:800}
+.auth-switch a:hover{color:#167f74}
+@media(max-width:560px){
+  .auth-page{padding:18px}
+  .auth-card{padding:30px 22px;border-radius:20px}
+}

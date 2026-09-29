@@ -4,7 +4,7 @@ import { createUserClient } from "../config/supabase.js";
 
 const router = Router();
 const allowedFields = [
-  "display_name", "avatar_url", "bio", "home_city", "travel_style",
+  "display_name", "avatar_url", "background_url", "bio", "home_city", "travel_style",
   "budget_min", "budget_max", "currency", "interests", "activities",
   "preferred_destinations", "is_discoverable",
 ];
@@ -25,6 +25,7 @@ function validateProfile(input) {
   const output = {};
   if ("display_name" in input) output.display_name = cleanString(input.display_name, 80);
   if ("avatar_url" in input) output.avatar_url = cleanString(input.avatar_url, 1000) || null;
+  if ("background_url" in input) output.background_url = cleanString(input.background_url, 1000) || null;
   if ("bio" in input) output.bio = cleanString(input.bio, 500);
   if ("home_city" in input) output.home_city = cleanString(input.home_city, 100);
   if ("travel_style" in input) output.travel_style = cleanString(input.travel_style, 60);
@@ -56,7 +57,7 @@ function validateProfile(input) {
 
 router.get("/public/:id", requireAuth, async (req, res) => {
   const client = createUserClient(req.accessToken);
-  const { data, error } = await client.from("profiles").select("id,display_name,avatar_url,bio,home_city,travel_style,interests,activities,preferred_destinations,is_discoverable").eq("id", req.params.id).eq("is_discoverable", true).maybeSingle();
+  const { data, error } = await client.from("profiles").select("id,display_name,avatar_url,background_url,bio,home_city,travel_style,interests,activities,preferred_destinations,is_discoverable").eq("id", req.params.id).eq("is_discoverable", true).maybeSingle();
   if (error) return res.status(400).json({ error: error.message });
   if (!data) return res.status(404).json({ error: "Traveller profile not found or is private." });
   return res.json({ profile: data });

@@ -838,3 +838,18 @@ url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fi
   .sidebar{width:100%;flex-basis:auto}
   .travel-brand-copy small{display:none}
 }
+
+/* Use the same Travel Mate logo mark as the Profile cover */
+.sidebar .dashboard-travel-logo{
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  display:grid;
+  place-items:center;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  transform:none;
+  margin:0;
+}
+.sidebar .dashboard-travel-logo svg{width:42px;height:42px;display:block}

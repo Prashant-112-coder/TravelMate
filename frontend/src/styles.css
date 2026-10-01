@@ -481,3 +481,77 @@ url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fi
   .auth-page{padding:18px}
   .auth-card{padding:30px 22px;border-radius:20px}
 }
+
+
+/* My Trips — premium gradient journey cards */
+.my-trip-list{display:grid;gap:18px;margin-top:22px}
+.my-trip-card{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(280px,.72fr) minmax(0,1.55fr);
+  min-height:360px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.82);
+  border-radius:24px;
+  background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(247,243,237,.96) 58%,rgba(232,244,239,.96));
+  box-shadow:0 20px 55px rgba(47,55,65,.08);
+}
+.my-trip-card::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 92% 10%,rgba(21,155,145,.13),transparent 24%),
+    radial-gradient(circle at 38% 92%,rgba(185,104,77,.10),transparent 28%);
+}
+.my-trip-visual{
+  position:relative;min-height:360px;overflow:hidden;
+  padding:22px;
+  background:
+    radial-gradient(circle at 72% 18%,rgba(255,255,255,.42),transparent 18%),
+    linear-gradient(145deg,#d9eee7 0%,#b9d9d0 38%,#d8b9a9 100%);
+}
+.my-trip-visual::before{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.20),transparent 38%),
+    linear-gradient(180deg,transparent 50%,rgba(31,48,57,.28));
+}
+.my-trip-location{
+  position:relative;z-index:1;display:inline-flex;align-items:center;gap:7px;
+  padding:9px 13px;border:1px solid rgba(255,255,255,.72);border-radius:999px;
+  background:rgba(255,255,255,.42);color:#24414a;font-size:.72rem;font-weight:850;
+  backdrop-filter:blur(14px);
+}
+.my-trip-route{position:absolute;z-index:1;left:14%;right:12%;top:43%;height:100px;display:flex;align-items:center;justify-content:space-between;color:#fff}
+.my-trip-route::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px dashed rgba(255,255,255,.58);transform:rotate(-8deg)}
+.my-trip-route span{position:relative;display:grid;place-items:center;width:38px;height:38px;border:1px solid rgba(255,255,255,.72);border-radius:50%;background:rgba(23,50,61,.22);backdrop-filter:blur(8px)}
+.my-trip-route i{width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 0 7px rgba(255,255,255,.13);position:relative}
+.my-trip-visual-bottom{position:absolute;z-index:1;left:22px;right:22px;bottom:22px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.my-trip-date,.my-trip-orbit{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.80);color:#34424a;font-size:.62rem;font-weight:800;backdrop-filter:blur(12px)}
+.my-trip-orbit{background:rgba(20,35,40,.28);color:#fff;border-color:rgba(255,255,255,.28)}
+.my-trip-content{position:relative;z-index:1;padding:30px 32px 24px;display:flex;flex-direction:column;min-width:0}
+.my-trip-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+.trip-more{width:36px;height:36px;border:1px solid rgba(22,34,53,.08);border-radius:50%;background:rgba(255,255,255,.62);color:#59616c;font-size:1.2rem;line-height:1;backdrop-filter:blur(10px)}
+.my-trip-content h2{font-size:clamp(1.7rem,2.6vw,2.35rem);line-height:1.05;letter-spacing:-.045em;margin:3px 0 10px}
+.my-trip-description{max-width:720px;color:#717b84;font-size:.78rem;line-height:1.7;margin:0 0 22px}
+.my-trip-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:17px}
+.my-trip-facts>div{padding:14px;border:1px solid rgba(224,218,211,.78);border-radius:15px;background:rgba(255,255,255,.48);min-width:0}
+.fact-icon{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#f8e8e1;color:var(--accent);margin-bottom:9px;font-size:.9rem}
+.my-trip-facts small{display:block;color:#8a9199;font-size:.58rem;margin-bottom:3px}
+.my-trip-facts strong{display:block;color:#25303b;font-size:.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.my-trip-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px}
+.my-trip-tags span{padding:7px 10px;border:1px solid rgba(220,224,220,.9);border-radius:999px;background:rgba(255,255,255,.58);color:#5f6d70;font-size:.6rem;font-weight:750}
+.my-trip-footer{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:auto;padding-top:17px;border-top:1px solid rgba(222,220,216,.8);color:#90969d;font-size:.62rem}
+.my-trip-footer .trip-card-actions{align-items:center;margin:0}
+.my-trip-footer .button{min-height:40px;padding:0 15px;font-size:.64rem}
+@media(max-width:900px){
+  .my-trip-card{grid-template-columns:1fr;min-height:0}
+  .my-trip-visual{min-height:240px}
+  .my-trip-route{top:40%}
+}
+@media(max-width:600px){
+  .my-trip-content{padding:24px 20px 20px}
+  .my-trip-facts{grid-template-columns:1fr}
+  .my-trip-footer{align-items:flex-start;flex-direction:column}
+  .my-trip-footer .trip-card-actions{width:100%;justify-content:space-between}
+  .my-trip-footer .button{flex:1}
+}

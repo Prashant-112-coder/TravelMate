@@ -47,6 +47,7 @@ export default function App() {
     <Route path="/discover" element={<ShellPage><Discover/></ShellPage>}/>
     <Route path="/my-trips" element={<ShellPage><MyTrips/></ShellPage>}/>
     <Route path="/my-trips/new" element={<ShellPage><CreateTrip/></ShellPage>}/>
+    <Route path="/my-trips/edit/:id" element={<ShellPage><CreateTrip/></ShellPage>}/>
     <Route path="/matches" element={<ShellPage><Matches/></ShellPage>}/>
     <Route path="/requests" element={<ShellPage><Requests/></ShellPage>}/>
     <Route path="/messages" element={<ShellPage><Messages/></ShellPage>}/>

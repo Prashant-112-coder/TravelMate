@@ -1,3 +1,75 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-const matches=[["Ananya Sharma","Bengaluru","Goa","94%"],["Vikram Singh","Delhi","Manali","89%"],["Meera Krishnan","Chennai","Kerala","86%"]];
-export default function Matches(){return <div className="content-wrap"><div className="page-heading"><div><p className="eyebrow">YOUR CONNECTIONS</p><h1>Matches</h1><p>Travellers whose plans and preferences align with yours.</p></div><Link className="button button-light" to="/discover">Find more →</Link></div><div className="demo-banner"><strong>Interface preview</strong><span>Demo matches are hard-coded for this UI stage. Matching logic will be connected after the interface is approved.</span></div><div className="match-grid">{matches.map(m=><article className="match-card" key={m[0]}><div className="mini-avatar large">{m[0][0]}</div><div><p className="eyebrow">{m[3]} COMPATIBILITY</p><h2>{m[0]}</h2><p>{m[1]} · travelling to {m[2]}</p><div className="tag-list"><span>Travel style</span><span>Shared interests</span></div></div><Link className="button" to="/messages">Message →</Link></article>)}</div></div>}
+import { apiFetch } from "../lib/api";
+
+export default function Matches() {
+  const [matches, setMatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    apiFetch("/requests")
+      .then((response) => {
+        const accepted = (response.requests || []).filter((item) => item.status === "accepted");
+        setMatches(accepted);
+      })
+      .catch((e) => setError(e.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  return (
+    <div className="content-wrap">
+      <div className="page-heading">
+        <div>
+          <p className="eyebrow">YOUR CONNECTIONS</p>
+          <h1>Matches</h1>
+          <p>Travellers whose requests were accepted and are ready to connect.</p>
+        </div>
+        <Link className="button button-light" to="/discover">Find more →</Link>
+      </div>
+
+      {error && <p className="form-error">{error}</p>}
+
+      {loading ? (
+        <section className="empty-state-card"><h2>Loading your matches…</h2></section>
+      ) : matches.length === 0 ? (
+        <section className="discover-empty">
+          <div className="discover-illustration">✦</div>
+          <h2>No matches yet</h2>
+          <p>Discover compatible travellers, send a request, and accepted requests will appear here.</p>
+          <Link className="button" to="/discover">Discover travellers</Link>
+        </section>
+      ) : (
+        <div className="match-grid">
+          {matches.map((item) => {
+            const other = item.sender_id === item.receiver_id ? item.sender : (
+              item.sender?.id === item.receiver_id ? item.sender : item.receiver
+            );
+            const profile = item.sender_id === item.receiver_id ? item.sender : other;
+            const candidate = item.sender_id === item.receiver_id ? item.receiver : (
+              item.sender_id ? (item.sender?.id === item.sender_id ? item.sender : item.receiver) : item.receiver
+            );
+            const display = item.sender_id ? (item.sender?.id === item.sender_id ? item.sender : item.receiver) : candidate;
+            return (
+              <article className="match-card" key={item.id}>
+                <div className="mini-avatar large">
+                  {(display?.display_name || "T").slice(0, 1).toUpperCase()}
+                </div>
+                <div>
+                  <p className="eyebrow">CONNECTED TRAVELLER</p>
+                  <h2>{display?.display_name || "Traveller"}</h2>
+                  <p>{display?.home_city || "Location private"} · {item.trip?.destination || "Trip destination"}</p>
+                  <div className="tag-list">
+                    <span>Request accepted</span>
+                    {item.trip?.start_date && <span>{new Date(item.trip.start_date).toLocaleDateString()}</span>}
+                  </div>
+                </div>
+                <Link className="button" to="/messages">Message →</Link>
+              </article>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}

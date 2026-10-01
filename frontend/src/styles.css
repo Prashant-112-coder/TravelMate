@@ -891,3 +891,17 @@ p{color:var(--text-body)}
 .my-trip-tags span{color:#52616a}
 .my-trip-footer{color:#68737e}
 .demo-banner{color:#665e58}
+
+/* Final readability — created dates and trip metadata */
+.my-trip-date{
+  color:#263641 !important;
+  font-weight:850 !important;
+  text-shadow:0 1px 0 rgba(255,255,255,.35);
+}
+.my-trip-footer{
+  color:#56636f !important;
+}
+.my-trip-footer small,
+.my-trip-footer span{
+  color:#56636f !important;
+}

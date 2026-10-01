@@ -555,3 +555,73 @@ url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fi
   .my-trip-footer .trip-card-actions{width:100%;justify-content:space-between}
   .my-trip-footer .button{flex:1}
 }
+
+/* My Trips — compact side-by-side cards */
+.my-trip-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  width:100%;
+  margin-top:22px;
+}
+.my-trip-card{
+  min-width:0;
+  min-height:315px;
+  grid-template-columns:minmax(145px,.68fr) minmax(0,1.32fr);
+  border-radius:20px;
+}
+.my-trip-visual{
+  min-height:315px;
+  padding:17px;
+}
+.my-trip-location{
+  padding:7px 10px;
+  font-size:.62rem;
+  max-width:100%;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.my-trip-route{left:13%;right:10%;top:40%}
+.my-trip-route span{width:32px;height:32px;font-size:.75rem}
+.my-trip-visual-bottom{left:17px;right:17px;bottom:17px;flex-direction:column;align-items:stretch}
+.my-trip-date,.my-trip-orbit{font-size:.55rem;text-align:center;padding:7px 8px}
+.my-trip-content{padding:21px 20px 18px}
+.my-trip-topline{margin-bottom:13px}
+.trip-more{width:31px;height:31px;font-size:1rem}
+.my-trip-content .eyebrow{font-size:.58rem;margin-bottom:6px}
+.my-trip-content h2{font-size:1.45rem;margin-bottom:7px}
+.my-trip-description{
+  font-size:.66rem;
+  line-height:1.5;
+  margin-bottom:13px;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.my-trip-facts{gap:6px;margin-bottom:11px}
+.my-trip-facts>div{padding:9px;border-radius:11px}
+.fact-icon{width:26px;height:26px;border-radius:8px;margin-bottom:5px;font-size:.72rem}
+.my-trip-facts small{font-size:.5rem}
+.my-trip-facts strong{font-size:.58rem}
+.my-trip-tags{gap:5px;margin-bottom:11px}
+.my-trip-tags span{padding:5px 7px;font-size:.52rem}
+.my-trip-footer{padding-top:11px;font-size:.5rem}
+.my-trip-footer .trip-card-actions{gap:8px}
+.my-trip-footer .button{min-height:34px;padding:0 9px;font-size:.54rem}
+.my-trip-footer .text-link{font-size:.6rem}
+@media(max-width:1050px){
+  .my-trip-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .my-trip-card{grid-template-columns:1fr;min-height:0}
+  .my-trip-visual{min-height:190px}
+  .my-trip-route{top:38%}
+  .my-trip-visual-bottom{flex-direction:row;align-items:center}
+}
+@media(max-width:700px){
+  .my-trip-list{grid-template-columns:1fr}
+  .my-trip-card{grid-template-columns:1fr}
+  .my-trip-visual{min-height:210px}
+  .my-trip-content{padding:20px}
+  .my-trip-facts{grid-template-columns:repeat(3,1fr)}
+}

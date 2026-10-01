@@ -853,3 +853,41 @@ url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fi
   margin:0;
 }
 .sidebar .dashboard-travel-logo svg{width:42px;height:42px;display:block}
+
+
+/* Global readability pass — stronger text contrast across the application */
+:root{
+  --text-strong:#1f2937;
+  --text-body:#3f4b59;
+  --text-secondary:#5f6b79;
+  --text-muted:#737f8d;
+}
+body{color:var(--text-body)}
+p{color:var(--text-body)}
+.lead{color:var(--text-secondary)!important}
+.muted{color:var(--text-muted)!important}
+.eyebrow,.section-label{color:#687483!important;font-weight:850}
+.welcome-row p:not(.eyebrow),.page-heading p:not(.eyebrow){color:#5f6b79!important}
+.public-nav nav{color:#596575}
+.public-nav nav a:hover{color:#202b39}
+.home-stats span,.feature-strip p{color:#687483}
+.auth-form label,.form-grid label{color:#354150}
+.auth-switch{color:#687483}
+.topbar-title{color:#5e6b7a}
+.topbar-user{color:#344252}
+.side-nav a{color:#425466}
+.side-nav a:hover,.side-nav a.active{font-weight:750}
+.sidebar-journey small{color:#667585}
+.card-heading h2,.side-card-content h3,.empty-card h3{color:#253342}
+.section-kicker{color:#5172a8}
+.setup-list small{color:#687686}
+.setup-list strong{color:#2d3947}
+.setup-current b{color:#246bf0}
+.profile-title p,.privacy-card p{color:#687686}
+.form-grid small{color:#737f8d}
+.choice{color:#536171}
+.my-trip-description{color:#5f6b74}
+.my-trip-facts small{color:#68747f}
+.my-trip-tags span{color:#52616a}
+.my-trip-footer{color:#68737e}
+.demo-banner{color:#665e58}

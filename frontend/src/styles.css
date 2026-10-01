@@ -905,3 +905,71 @@ p{color:var(--text-body)}
 .my-trip-footer span{
   color:#56636f !important;
 }
+
+
+/* Phase 7 — explainable matching UI */
+.matching-engine-badge{
+  display:inline-flex;
+  align-items:center;
+  min-height:38px;
+  padding:0 13px;
+  border:1px solid #d9e8df;
+  border-radius:999px;
+  background:#f3faf6;
+  color:#2e6f59;
+  font-size:.65rem;
+  font-weight:850;
+}
+.match-breakdown{
+  margin:12px 0 11px;
+  padding:10px 11px;
+  border:1px solid #e4e9e7;
+  border-radius:13px;
+  background:rgba(248,251,249,.8);
+}
+.match-breakdown-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.match-breakdown-head strong{
+  color:#263c38;
+  font-size:.66rem;
+}
+.breakdown-toggle{
+  border:0;
+  background:transparent;
+  color:#2d7d69;
+  font-size:.6rem;
+  font-weight:850;
+  padding:2px 0;
+}
+.match-factor-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:6px;
+  margin-top:9px;
+}
+.match-factor-list>div{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  padding:6px 7px;
+  border-radius:8px;
+  background:#fff;
+}
+.match-factor-list span{
+  color:#5e6c72;
+  font-size:.56rem;
+}
+.match-factor-list strong{
+  color:#1f8069;
+  font-size:.56rem;
+}
+.match-factor-list small{
+  grid-column:1/-1;
+  color:#7a858b;
+  font-size:.53rem;
+  line-height:1.45;
+}

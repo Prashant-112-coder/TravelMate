@@ -83,8 +83,7 @@ export default function MyTrips() {
                     <span>•</span><i></i><span>✈</span>
                   </div>
                   <div className="my-trip-visual-bottom">
-                    <span className="my-trip-date">{formatDateRange(trip.start_date, trip.end_date)}</span>
-                    <span className="my-trip-orbit">Travel Mate</span>
+                    <span className="my-trip-date">◷ {formatDateRange(trip.start_date, trip.end_date)}</span>
                   </div>
                 </div>
 
@@ -127,10 +126,10 @@ export default function MyTrips() {
                   </div>
 
                   <div className="my-trip-tags">
-                    {[...(trip.interests || []), ...(trip.activities || [])].slice(0, 5).map((tag) => (
+                    {[...(trip.interests || []), ...(trip.activities || [])].slice(0, 4).map((tag) => (
                       <span key={tag}>{tag}</span>
                     ))}
-                    {((trip.interests || []).length + (trip.activities || []).length) > 5 && <span>+{(trip.interests || []).length + (trip.activities || []).length - 5}</span>}
+                    {((trip.interests || []).length + (trip.activities || []).length) > 4 && <span>+{(trip.interests || []).length + (trip.activities || []).length - 4}</span>}
                   </div>
 
                   <div className="my-trip-footer">

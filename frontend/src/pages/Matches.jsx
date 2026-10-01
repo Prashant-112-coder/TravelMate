@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../lib/api";
+import { useAuth } from "../context/AuthContext";
 
 export default function Matches() {
+  const { user } = useAuth();
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -10,8 +12,7 @@ export default function Matches() {
   useEffect(() => {
     apiFetch("/requests")
       .then((response) => {
-        const accepted = (response.requests || []).filter((item) => item.status === "accepted");
-        setMatches(accepted);
+        setMatches((response.requests || []).filter((item) => item.status === "accepted"));
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
@@ -42,23 +43,16 @@ export default function Matches() {
       ) : (
         <div className="match-grid">
           {matches.map((item) => {
-            const other = item.sender_id === item.receiver_id ? item.sender : (
-              item.sender?.id === item.receiver_id ? item.sender : item.receiver
-            );
-            const profile = item.sender_id === item.receiver_id ? item.sender : other;
-            const candidate = item.sender_id === item.receiver_id ? item.receiver : (
-              item.sender_id ? (item.sender?.id === item.sender_id ? item.sender : item.receiver) : item.receiver
-            );
-            const display = item.sender_id ? (item.sender?.id === item.sender_id ? item.sender : item.receiver) : candidate;
+            const other = item.sender_id === user?.id ? item.receiver : item.sender;
             return (
               <article className="match-card" key={item.id}>
                 <div className="mini-avatar large">
-                  {(display?.display_name || "T").slice(0, 1).toUpperCase()}
+                  {(other?.display_name || "T").slice(0, 1).toUpperCase()}
                 </div>
                 <div>
                   <p className="eyebrow">CONNECTED TRAVELLER</p>
-                  <h2>{display?.display_name || "Traveller"}</h2>
-                  <p>{display?.home_city || "Location private"} · {item.trip?.destination || "Trip destination"}</p>
+                  <h2>{other?.display_name || "Traveller"}</h2>
+                  <p>{other?.home_city || "Location private"} · {item.trip?.destination || "Trip destination"}</p>
                   <div className="tag-list">
                     <span>Request accepted</span>
                     {item.trip?.start_date && <span>{new Date(item.trip.start_date).toLocaleDateString()}</span>}

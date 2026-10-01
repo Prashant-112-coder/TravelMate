@@ -74,8 +74,7 @@ export default function MyTrips() {
           <Link className="button" to="/my-trips/new">Create your first trip</Link>
         </section>
       ) : (
-        <div className="trip-grid">
-          <div className="my-trip-list">
+        <div className="my-trip-list">
             {trips.map((trip) => (
               <article className="my-trip-card" key={trip.id}>
                 <div className="my-trip-visual">
@@ -148,7 +147,6 @@ export default function MyTrips() {
                 </div>
               </article>
             ))}
-          </div>
         </div>
       )}
     </div>

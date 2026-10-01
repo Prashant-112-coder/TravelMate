@@ -75,28 +75,80 @@ export default function MyTrips() {
         </section>
       ) : (
         <div className="trip-grid">
-          {trips.map((trip) => (
-            <article className="trip-card" key={trip.id}>
-              <div className="trip-card-top">
-                <span className={`status-pill ${trip.status}`}>{trip.status}</span>
-                <button className="icon-danger" type="button" onClick={() => removeTrip(trip.id)} aria-label={`Delete ${trip.title}`} title="Delete trip">×</button>
-              </div>
+          <div className="my-trip-list">
+            {trips.map((trip) => (
+              <article className="my-trip-card" key={trip.id}>
+                <div className="my-trip-visual">
+                  <span className="my-trip-location">⌖ {trip.destination}</span>
+                  <div className="my-trip-route" aria-hidden="true">
+                    <span>•</span><i></i><span>✈</span>
+                  </div>
+                  <div className="my-trip-visual-bottom">
+                    <span className="my-trip-date">{formatDateRange(trip.start_date, trip.end_date)}</span>
+                    <span className="my-trip-orbit">Travel Mate</span>
+                  </div>
+                </div>
 
-              <p className="eyebrow">{trip.destination}</p>
-              <h2>{trip.title}</h2>
-              <p>{formatDateRange(trip.start_date, trip.end_date)}</p>
+                <div className="my-trip-content">
+                  <div className="my-trip-topline">
+                    <span className={`status-pill ${trip.status}`}>
+                      {trip.status === "open" ? "Open for matching" : trip.status}
+                    </span>
+                    <button
+                      className="trip-more"
+                      type="button"
+                      onClick={() => removeTrip(trip.id)}
+                      aria-label={`Delete ${trip.title}`}
+                      title="Delete trip"
+                    >×</button>
+                  </div>
 
-              <div className="trip-meta">
-                <span>{formatBudget(trip)}</span>
-                <span>{trip.travel_style || "Travel style not set"}</span>
-              </div>
+                  <p className="eyebrow">{trip.destination}</p>
+                  <h2>{trip.title}</h2>
+                  <p className="my-trip-description">
+                    {trip.description || "A journey planned on Travel Mate. Add a description to help compatible travellers understand your plans."}
+                  </p>
 
-              <div className="trip-card-actions">
-                <Link className="text-link" to={`/my-trips/edit/${trip.id}`}>Edit trip</Link>
-                <Link className="text-link" to="/discover">Find travel mates →</Link>
-              </div>
-            </article>
-          ))}
+                  <div className="my-trip-facts">
+                    <div>
+                      <span className="fact-icon">◷</span>
+                      <small>Dates</small>
+                      <strong>{formatDateRange(trip.start_date, trip.end_date)}</strong>
+                    </div>
+                    <div>
+                      <span className="fact-icon">♧</span>
+                      <small>Travel style</small>
+                      <strong>{trip.travel_style || "Not set"}</strong>
+                    </div>
+                    <div>
+                      <span className="fact-icon">◉</span>
+                      <small>Budget</small>
+                      <strong>{formatBudget(trip)}</strong>
+                    </div>
+                  </div>
+
+                  <div className="my-trip-tags">
+                    {[...(trip.interests || []), ...(trip.activities || [])].slice(0, 5).map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                    {((trip.interests || []).length + (trip.activities || []).length) > 5 && <span>+{(trip.interests || []).length + (trip.activities || []).length - 5}</span>}
+                  </div>
+
+                  <div className="my-trip-footer">
+                    <span>
+                      {trip.created_at
+                        ? `Created ${new Intl.DateTimeFormat("en-IN", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(trip.created_at))}`
+                        : "Your journey"}
+                    </span>
+                    <div className="trip-card-actions">
+                      <Link className="text-link" to={`/my-trips/edit/${trip.id}`}>Edit trip</Link>
+                      <Link className="button" to="/discover">Find travel mates →</Link>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       )}
     </div>

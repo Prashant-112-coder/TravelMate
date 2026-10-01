@@ -18,7 +18,10 @@ export default function AppShell({ children }){
  async function logout(){await signOut();navigate("/login",{replace:true});}
  return <div className="app-shell">
   <aside className="sidebar">
-   <Link className="sidebar-brand" to="/dashboard"><span className="brand-mark">✦</span> Travel Mate</Link>
+   <Link className="sidebar-brand" to="/dashboard">
+  <span className="brand-mark travel-brand-mark">➤</span>
+  <span className="travel-brand-copy"><strong>Travel Mate</strong><small>Find People. Explore Together.</small></span>
+</Link>
    <div className="workspace-label">WORKSPACE</div>
    <nav className="side-nav">{mainNav.map(([path,icon,label])=><NavLink key={path} to={"/"+path} className={({isActive})=>isActive?"active":""}><i>{icon}</i><span>{label}</span></NavLink>)}</nav>
    <div className="sidebar-divider"/>
@@ -28,7 +31,15 @@ export default function AppShell({ children }){
     <NavLink to="/notifications" className={({isActive})=>isActive?"active":""}><i>♧</i><span>Notifications</span></NavLink>
     <NavLink to="/settings" className={({isActive})=>isActive?"active":""}><i>⚙</i><span>Settings</span></NavLink>
    </nav>
-   <div className="sidebar-bottom"><div className="sidebar-journey"><span>✦</span><strong>Your next journey starts here.</strong><small>Complete your profile to improve matching.</small></div><button className="signout" onClick={logout}>↪ Sign out</button></div>
+   <div className="sidebar-bottom">
+  <div className="sidebar-journey">
+    <span>➤</span>
+    <strong>Your next journey starts here.</strong>
+    <small>Complete your profile to unlock better matches.</small>
+    <Link to="/profile">Complete Profile →</Link>
+  </div>
+  <button className="signout" onClick={logout}>↪ Sign out</button>
+</div>
   </aside>
   <main className="app-main">
    <header className="app-topbar"><div className="mobile-brand"><span className="brand-mark">✦</span> Travel Mate</div><div className="topbar-spacer"/><div className="topbar-actions"><Link className="topbar-icon" to="/notifications">♧</Link><Link className="topbar-profile" to="/profile"><span>{user?.user_metadata?.display_name||user?.email?.split("@")[0]||"Traveller"}</span><div className="mini-avatar">{initial}</div></Link></div></header>

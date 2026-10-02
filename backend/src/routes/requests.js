@@ -18,11 +18,30 @@ async function logMatchingEvent(db, payload) {
   if (error) console.warn("Matching event logging skipped:", error.message);
 }
 
+async function createNotification(db, payload) {
+  const { error } = await db.from("notifications").insert(payload);
+  if (error) console.warn("Notification creation skipped:", error.message);
+}
+
+async function getTripPair(db, request) {
+  const [candidateResult, sourceResult] = await Promise.all([
+    db.from("trips").select("*").eq("id", request.trip_id).maybeSingle(),
+    request.source_trip_id
+      ? db.from("trips").select("*").eq("id", request.source_trip_id).maybeSingle()
+      : Promise.resolve({ data: null, error: null }),
+  ]);
+
+  return {
+    candidateTrip: candidateResult.data || null,
+    sourceTrip: sourceResult.data || null,
+  };
+}
+
 router.get("/", async (req, res) => {
   const db = createUserClient(req.accessToken);
   const { data, error } = await db
     .from("match_requests")
-    .select("*, trip:trips(id,title,destination,start_date,end_date,user_id)")
+    .select("*, trip:trips(id,title,destination,start_date,end_date,user_id), source_trip:trips!match_requests_source_trip_id_fkey(id,title,destination,start_date,end_date,user_id)")
     .or(`sender_id.eq.${req.user.id},receiver_id.eq.${req.user.id}`)
     .order("created_at", { ascending: false });
 
@@ -76,12 +95,18 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "Your selected matching trip was not found." });
     }
     sourceTrip = sourceResult.data;
+
+    const match = compareTrips(sourceTrip, candidateTrip);
+    if (!match.features.destination_similarity || !match.features.date_overlap) {
+      return res.status(400).json({ error: "This trip does not satisfy the matching destination and date requirements." });
+    }
   }
 
   const { data, error } = await db
     .from("match_requests")
     .insert({
       trip_id: candidateTrip.id,
+      source_trip_id: sourceTrip?.id || null,
       sender_id: req.user.id,
       receiver_id: candidateTrip.user_id,
       message: parsed.data.message || null,
@@ -113,6 +138,14 @@ router.post("/", async (req, res) => {
       metadata: { request_id: data.id, engine: "baseline" },
     });
   }
+
+  await createNotification(db, {
+    user_id: candidateTrip.user_id,
+    type: "match_request",
+    title: "New match request",
+    body: "A traveller sent you a request for your trip.",
+    data: { request_id: data.id, trip_id: candidateTrip.id, source_trip_id: sourceTrip?.id || null },
+  });
 
   res.status(201).json({ request: data });
 });
@@ -149,12 +182,22 @@ router.patch("/:id", async (req, res) => {
 
   if (error) return res.status(400).json({ error: error.message });
 
-  const eventType = `request_${status.data}`;
+  const { candidateTrip, sourceTrip } = await getTripPair(db, request);
+  const match = sourceTrip && candidateTrip ? compareTrips(sourceTrip, candidateTrip) : null;
+
   await logMatchingEvent(db, {
     actor_id: req.user.id,
     candidate_id: request.sender_id === req.user.id ? request.receiver_id : request.sender_id,
-    candidate_trip_id: request.trip_id,
-    event_type: eventType,
+    source_trip_id: sourceTrip?.id || null,
+    candidate_trip_id: candidateTrip?.id || request.trip_id,
+    event_type: `request_${status.data}`,
+    destination_similarity: match?.features.destination_similarity ?? null,
+    date_overlap: match?.features.date_overlap ?? null,
+    budget_similarity: match?.features.budget_similarity ?? null,
+    style_similarity: match?.features.style_similarity ?? null,
+    interests_similarity: match?.features.interests_similarity ?? null,
+    activities_similarity: match?.features.activities_similarity ?? null,
+    baseline_score: match?.score ?? null,
     metadata: { request_id: request.id, engine: "baseline" },
   });
 
@@ -169,10 +212,28 @@ router.patch("/:id", async (req, res) => {
       return res.status(400).json({ error: conversationError.message });
     }
 
+    await createNotification(db, {
+      user_id: request.sender_id,
+      type: "match_accepted",
+      title: "Request accepted",
+      body: "Your travel connection request was accepted.",
+      data: { request_id: request.id, conversation_id: conversation?.id || null },
+    });
+
     return res.json({ request: updated, conversation: conversation || null });
   }
 
-  res.json({ request: updated });
+  if (status.data === "declined") {
+    await createNotification(db, {
+      user_id: request.sender_id,
+      type: "match_declined",
+      title: "Request declined",
+      body: "Your travel connection request was declined.",
+      data: { request_id: request.id },
+    });
+  }
+
+  return res.json({ request: updated });
 });
 
 export default router;

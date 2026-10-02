@@ -1,12 +1,36 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-const notes = [
-  ["New match request", "Arjun Rao wants to join your Goa trip.", "2 min ago"],
-  ["Request accepted", "Priya Nair accepted your Manali connection request.", "18 min ago"],
-  ["Profile tip", "Add two travel memories to help travellers understand your style.", "1 hr ago"],
-];
+import { apiFetch } from "../lib/api";
 
 export default function Notifications() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  async function load() {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await apiFetch("/notifications");
+      setItems(response.notifications || []);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => { load(); }, []);
+
+  async function markRead(id) {
+    try {
+      const response = await apiFetch("/notifications/" + id + "/read", { method: "PATCH" });
+      setItems((current) => current.map((item) => item.id === id ? response.notification : item));
+    } catch (e) {
+      setError(e.message);
+    }
+  }
+
   return (
     <div className="content-wrap">
       <div className="page-heading">
@@ -15,35 +39,41 @@ export default function Notifications() {
           <h1>Notifications</h1>
           <p>Stay updated on requests, matches and your travel activity.</p>
         </div>
-
-        <Link className="button button-light" to="/settings">
-          Notification settings
-        </Link>
+        <Link className="button button-light" to="/settings">Notification settings</Link>
       </div>
 
-      <div className="demo-banner">
-        <strong>Interface preview</strong>
-        <span>
-          Sample notifications are hard-coded for the current interface stage.
-        </span>
-      </div>
+      {error && <p className="form-error">{error}</p>}
 
-      <div className="notification-list">
-        {notes.map((n, i) => (
-          <article
-            className="notification demo-notification"
-            key={n[0]}
-          >
-            <span>{i === 0 ? "♡" : i === 1 ? "✓" : "✦"}</span>
-            <div>
-              <strong>{n[0]}</strong>
-              <p>{n[1]}</p>
-              <small>{n[2]}</small>
-            </div>
-            <b>•</b>
-          </article>
-        ))}
-      </div>
+      {loading ? (
+        <section className="empty-state-card"><h2>Loading notifications…</h2></section>
+      ) : items.length === 0 ? (
+        <section className="discover-empty">
+          <div className="discover-illustration">✦</div>
+          <h2>No notifications yet</h2>
+          <p>New connection requests and responses will appear here.</p>
+        </section>
+      ) : (
+        <div className="notification-list">
+          {items.map((item) => (
+            <article
+              className={"notification " + (item.read_at ? "read" : "unread")}
+              key={item.id}
+            >
+              <span>{item.type === "match_accepted" ? "✓" : item.type === "match_declined" ? "×" : "♡"}</span>
+              <div>
+                <strong>{item.title}</strong>
+                <p>{item.body}</p>
+                <small>{new Date(item.created_at).toLocaleString()}</small>
+              </div>
+              {!item.read_at && (
+                <button className="button button-light" onClick={() => markRead(item.id)}>
+                  Mark read
+                </button>
+              )}
+            </article>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

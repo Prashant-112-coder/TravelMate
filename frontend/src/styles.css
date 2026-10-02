@@ -973,3 +973,42 @@ p{color:var(--text-body)}
   font-size:.53rem;
   line-height:1.45;
 }
+
+
+/* Sidebar — keep the logout action visible and obvious */
+.sidebar{
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:thin;
+}
+.signout{
+  width:100%;
+  min-height:42px;
+  padding:11px 13px;
+  border:1px solid #f0d9d2 !important;
+  border-radius:12px;
+  background:#fff7f4 !important;
+  color:#c94f3a !important;
+  font-size:.78rem;
+  font-weight:800;
+  text-align:left;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.signout:hover{
+  background:#ffede8 !important;
+  border-color:#edb9ad !important;
+  color:#b8422e !important;
+  transform:translateY(-1px);
+}
+@media (max-height:760px) and (min-width:821px){
+  .sidebar{padding-top:16px;padding-bottom:12px}
+  .sidebar-brand{padding-bottom:18px}
+  .sidebar-divider{margin-top:9px;margin-bottom:12px}
+  .sidebar-bottom{gap:8px}
+  .sidebar-journey{padding:12px}
+  .sidebar-journey>span{margin-bottom:7px}
+  .sidebar-journey small{display:none}
+  .sidebar-journey a{margin-top:8px;min-height:29px}
+}

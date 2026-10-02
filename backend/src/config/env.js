@@ -1,4 +1,11 @@
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { z } from "zod";
+
+const localEnvPath = fileURLToPath(new URL("../../.env", import.meta.url));
+if (existsSync(localEnvPath) && typeof process.loadEnvFile === "function") {
+  process.loadEnvFile(localEnvPath);
+}
 
 export const env = z.object({
   PORT: z.coerce.number().int().positive().default(5000),

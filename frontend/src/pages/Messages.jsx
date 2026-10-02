@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../lib/api";
+import { useAuth } from "../context/AuthContext";
 
 export default function Messages() {
+  const { user } = useAuth();
   const [conversations, setConversations] = useState([]);
   const [activeId, setActiveId] = useState("");
   const [messages, setMessages] = useState([]);
@@ -136,7 +138,7 @@ export default function Messages() {
                 messages.map((message) => (
                   <div
                     key={message.id}
-                    className={message.sender_id === active?.request?.sender_id ? "message" : "message mine"}
+                    className={message.sender_id === user?.id ? "message mine" : "message"}
                   >
                     <span>{message.body}</span>
                     <small>{new Date(message.created_at).toLocaleString()}</small>

@@ -18,11 +18,6 @@ async function logMatchingEvent(db, payload) {
   if (error) console.warn("Matching event logging skipped:", error.message);
 }
 
-async function createNotification(db, payload) {
-  const { error } = await db.from("notifications").insert(payload);
-  if (error) console.warn("Notification creation skipped:", error.message);
-}
-
 async function getTripPair(db, request) {
   const [candidateResult, sourceResult] = await Promise.all([
     db.from("trips").select("*").eq("id", request.trip_id).maybeSingle(),
@@ -139,14 +134,6 @@ router.post("/", async (req, res) => {
     });
   }
 
-  await createNotification(db, {
-    user_id: candidateTrip.user_id,
-    type: "match_request",
-    title: "New match request",
-    body: "A traveller sent you a request for your trip.",
-    data: { request_id: data.id, trip_id: candidateTrip.id, source_trip_id: sourceTrip?.id || null },
-  });
-
   res.status(201).json({ request: data });
 });
 
@@ -212,25 +199,7 @@ router.patch("/:id", async (req, res) => {
       return res.status(400).json({ error: conversationError.message });
     }
 
-    await createNotification(db, {
-      user_id: request.sender_id,
-      type: "match_accepted",
-      title: "Request accepted",
-      body: "Your travel connection request was accepted.",
-      data: { request_id: request.id, conversation_id: conversation?.id || null },
-    });
-
     return res.json({ request: updated, conversation: conversation || null });
-  }
-
-  if (status.data === "declined") {
-    await createNotification(db, {
-      user_id: request.sender_id,
-      type: "match_declined",
-      title: "Request declined",
-      body: "Your travel connection request was declined.",
-      data: { request_id: request.id },
-    });
   }
 
   return res.json({ request: updated });

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { apiFetch } from "../lib/api";
+import { useAuth } from "../context/AuthContext";
 
 const factorLabels = [
   ["destination", "Destination"],
@@ -15,6 +16,7 @@ export default function TravellerProfile() {
   const { id } = useParams();
   const [params] = useSearchParams();
   const nav = useNavigate();
+  const { user } = useAuth();
   const sourceTripId = params.get("tripId") || "";
   const candidateTripId = params.get("candidateTripId") || "";
 
@@ -42,13 +44,14 @@ export default function TravellerProfile() {
 
         const existing = (requestsResponse.requests || []).find(
           (item) =>
-            candidateTripId &&
-            item.trip_id === candidateTripId &&
-            item.source_trip_id === sourceTripId
+            user?.id &&
+            (item.sender_id === user.id || item.receiver_id === user.id) &&
+            (item.sender_id === id || item.receiver_id === id) &&
+            ["pending", "accepted"].includes(item.status)
         );
 
         if (existing) {
-          setRequestState(existing.status === "accepted" ? "accepted" : existing.status);
+          setRequestState(existing.status);
         }
 
         if (sourceTripId && candidateTripId) {

@@ -1012,3 +1012,95 @@ p{color:var(--text-body)}
   .sidebar-journey small{display:none}
   .sidebar-journey a{margin-top:8px;min-height:29px}
 }
+
+
+/* Traveller profile — trip-specific matching context */
+.profile-cover-label{
+  position:absolute;
+  left:18px;
+  bottom:16px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.88);
+  color:#33434e;
+  font-size:.58rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  backdrop-filter:blur(10px);
+}
+.traveller-profile-cover{position:relative}
+.traveller-profile-head .profile-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:16px;
+}
+.profile-match-card{
+  margin-top:25px;
+  padding:18px;
+  border:1px solid #dbe9e4;
+  border-radius:16px;
+  background:linear-gradient(135deg,#f5fbf8,#ffffff);
+}
+.profile-match-summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+.profile-match-summary h2{
+  margin:4px 0 3px;
+  color:#1f8069;
+  font-size:1.55rem;
+}
+.profile-match-summary p{
+  margin:0;
+  color:#64717b;
+  font-size:.68rem;
+}
+.profile-match-actions{flex:0 0 auto}
+.profile-match-factors{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:7px;
+  margin-top:16px;
+}
+.profile-match-factors>div{
+  padding:9px 7px;
+  border-radius:10px;
+  background:#fff;
+  border:1px solid #e5ece9;
+  text-align:center;
+}
+.profile-match-factors span{
+  display:block;
+  color:#68747e;
+  font-size:.55rem;
+}
+.profile-match-factors strong{
+  display:block;
+  margin-top:4px;
+  color:#1f8069;
+  font-size:.72rem;
+}
+.profile-match-note{
+  display:block;
+  margin-top:10px;
+  color:#717e86;
+  font-size:.58rem;
+}
+.profile-match-unavailable{
+  display:flex;
+  align-items:flex-start;
+  flex-direction:column;
+  gap:7px;
+}
+.profile-match-unavailable strong{color:#33434e;font-size:.8rem}
+.profile-match-unavailable span{color:#68747e;font-size:.65rem}
+@media(max-width:900px){
+  .profile-match-factors{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .profile-match-summary{align-items:flex-start;flex-direction:column}
+  .profile-match-factors{grid-template-columns:repeat(2,minmax(0,1fr))}
+}

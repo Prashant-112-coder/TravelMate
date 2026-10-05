@@ -140,7 +140,7 @@ router.post("/", async (req, res) => {
 
   if (error) {
     return res.status(400).json({
-      error: error.code === "23505" ? "You already sent a request for this trip." : error.message,
+      error: error.code === "23505" ? "You already have a pending request or connection with this traveller." : error.message,
     });
   }
 

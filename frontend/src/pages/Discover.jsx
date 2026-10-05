@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { apiFetch } from "../lib/api";
+import { useAuth } from "../context/AuthContext";
 
 const factorLabels = [
   ["destination", "Destination"],
@@ -12,6 +13,7 @@ const factorLabels = [
 ];
 
 export default function Discover() {
+  const { user } = useAuth();
   const [params] = useSearchParams();
   const [trips, setTrips] = useState([]);
   const [trip, setTrip] = useState(params.get("trip") || "");
@@ -31,15 +33,19 @@ export default function Discover() {
         if (!trip && ownTrips[0]) setTrip(tripResponse.trips[0].id);
         const connections = {};
         (requestResponse.requests || []).forEach((item) => {
-          if (["pending", "accepted"].includes(item.status)) {
-            connections[item.sender_id] = true;
-            connections[item.receiver_id] = true;
+          if (
+            user?.id &&
+            ["pending", "accepted"].includes(item.status) &&
+            (item.sender_id === user.id || item.receiver_id === user.id)
+          ) {
+            const otherId = item.sender_id === user.id ? item.receiver_id : item.sender_id;
+            connections[otherId] = true;
           }
         });
         setActiveConnections(connections);
       })
       .catch((e) => setError(e.message));
-  }, []);
+  }, [user?.id]);
 
   useEffect(() => {
     if (!trip) return;

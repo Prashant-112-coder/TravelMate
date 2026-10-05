@@ -36,7 +36,7 @@ router.get("/", async (req, res) => {
   const db = createUserClient(req.accessToken);
   const { data, error } = await db
     .from("match_requests")
-    .select("*, trip:trips(id,title,destination,start_date,end_date,user_id), source_trip:trips!match_requests_source_trip_id_fkey(id,title,destination,start_date,end_date,user_id)")
+    .select("*, trip:trips!match_requests_trip_id_fkey(id,title,destination,start_date,end_date,user_id), source_trip:trips!match_requests_source_trip_id_fkey(id,title,destination,start_date,end_date,user_id)")
     .or(`sender_id.eq.${req.user.id},receiver_id.eq.${req.user.id}`)
     .order("created_at", { ascending: false });
 

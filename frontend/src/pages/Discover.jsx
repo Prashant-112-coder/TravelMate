@@ -18,19 +18,28 @@ export default function Discover() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState({});
+  const [activeConnections, setActiveConnections] = useState({});
   const [error, setError] = useState("");
   const [engine, setEngine] = useState("baseline");
   const [expanded, setExpanded] = useState({});
 
   useEffect(() => {
-    apiFetch("/trips")
-      .then((response) => {
-        const ownTrips = response.trips || [];
+    Promise.all([apiFetch("/trips"), apiFetch("/requests")])
+      .then(([tripResponse, requestResponse]) => {
+        const ownTrips = tripResponse.trips || [];
         setTrips(ownTrips);
-        if (!trip && ownTrips[0]) setTrip(ownTrips[0].id);
+        if (!trip && ownTrips[0]) setTrip(tripResponse.trips[0].id);
+        const connections = {};
+        (requestResponse.requests || []).forEach((item) => {
+          if (["pending", "accepted"].includes(item.status)) {
+            connections[item.sender_id] = true;
+            connections[item.receiver_id] = true;
+          }
+        });
+        setActiveConnections(connections);
       })
       .catch((e) => setError(e.message));
-  }, [trip]);
+  }, []);
 
   useEffect(() => {
     if (!trip) return;
@@ -118,7 +127,9 @@ export default function Discover() {
         </section>
       ) : (
         <div className="traveller-grid">
-          {results.map(({ trip: candidateTrip, profile, compatibility, breakdown, missing }) => (
+          {results
+            .filter(({ profile }) => !activeConnections[profile?.id])
+            .map(({ trip: candidateTrip, profile, compatibility, breakdown, missing }) => (
             <article className="traveller-card" key={candidateTrip.id}>
               <div
                 className="traveller-cover"

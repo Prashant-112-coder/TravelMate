@@ -6,7 +6,7 @@ import { createUserClient } from "../config/supabase.js";
 const router=Router(); router.use(requireAuth);
 router.get("/conversations",async(req,res)=>{
  const db=createUserClient(req.accessToken);
- const {data,error}=await db.from("conversations").select("id,request_id,created_at,request:match_requests!inner(id,sender_id,receiver_id,status,trip:trips(id,title,destination))").order("created_at",{ascending:false});
+ const {data,error}=await db.from("conversations").select("id,request_id,created_at,request:match_requests!inner(id,sender_id,receiver_id,status,trip:trips!match_requests_trip_id_fkey(id,title,destination))").order("created_at",{ascending:false});
  if(error)return res.status(400).json({error:error.message});
  const rows=(data||[]).filter(c=>c.request?.status==="accepted");
  const ids=[...new Set(rows.flatMap(c=>[c.request.sender_id,c.request.receiver_id]))];

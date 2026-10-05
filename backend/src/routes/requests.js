@@ -77,6 +77,35 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "You cannot request your own trip." });
   }
 
+  const [forwardConnection, reverseConnection] = await Promise.all([
+    db
+      .from("match_requests")
+      .select("id,status")
+      .eq("sender_id", req.user.id)
+      .eq("receiver_id", candidateTrip.user_id)
+      .in("status", ["pending", "accepted"])
+      .maybeSingle(),
+    db
+      .from("match_requests")
+      .select("id,status")
+      .eq("sender_id", candidateTrip.user_id)
+      .eq("receiver_id", req.user.id)
+      .in("status", ["pending", "accepted"])
+      .maybeSingle(),
+  ]);
+
+  if (forwardConnection.error || reverseConnection.error) {
+    return res.status(400).json({ error: "Unable to verify the existing connection. Please try again." });
+  }
+
+  const existingConnection = forwardConnection.data || reverseConnection.data;
+  if (existingConnection?.status === "accepted") {
+    return res.status(409).json({ error: "You are already connected with this traveller." });
+  }
+  if (existingConnection?.status === "pending") {
+    return res.status(409).json({ error: "A request between you and this traveller is already pending." });
+  }
+
   let sourceTrip = null;
   if (parsed.data.source_trip_id) {
     const sourceResult = await db
@@ -158,6 +187,9 @@ router.patch("/:id", async (req, res) => {
   }
   if (status.data === "cancelled" && request.sender_id !== req.user.id) {
     return res.status(403).json({ error: "Only the sender can cancel a request." });
+  }
+  if (status.data === "cancelled" && request.status === "accepted") {
+    return res.status(409).json({ error: "An accepted connection cannot be cancelled as a request." });
   }
 
   const { data: updated, error } = await db

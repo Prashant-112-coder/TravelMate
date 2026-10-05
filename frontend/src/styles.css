@@ -1104,3 +1104,42 @@ p{color:var(--text-body)}
   .profile-match-summary{align-items:flex-start;flex-direction:column}
   .profile-match-factors{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+
+/* Profile page — keep logout directly above Dashboard */
+.profile-heading-actions{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:9px;
+  min-width:150px;
+}
+.profile-heading-actions .button,
+.profile-logout-button{
+  width:100%;
+  min-height:44px;
+}
+.profile-logout-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:0 18px;
+  border:1px solid #efcfc7;
+  border-radius:12px;
+  background:#fff7f4;
+  color:#c84e3a;
+  font-weight:800;
+  box-shadow:none;
+  transition:transform .18s ease,background .18s ease,border-color .18s ease,color .18s ease;
+}
+.profile-logout-button:hover{
+  background:#ffebe6;
+  border-color:#eab4a8;
+  color:#b9422f;
+  transform:translateY(-1px);
+}
+@media(max-width:760px){
+  .profile-heading-actions{width:100%;min-width:0;flex-direction:row;}
+  .profile-heading-actions>*{flex:1;}
+}

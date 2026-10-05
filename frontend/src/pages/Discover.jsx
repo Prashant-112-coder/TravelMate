@@ -173,7 +173,7 @@ export default function Discover() {
                 <div className="traveller-actions">
                   <Link
                     className="button button-light"
-                    to={"/traveller/" + profile.id}
+                    to={"/traveller/" + profile.id + "?tripId=" + encodeURIComponent(trip) + "&candidateTripId=" + encodeURIComponent(candidateTrip.id)}
                     onClick={() => viewProfile(profile.id, candidateTrip.id)}
                   >
                     View profile

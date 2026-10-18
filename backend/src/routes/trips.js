@@ -7,8 +7,8 @@ const router = Router();
 const tripSchema = z.object({
   title: z.string().trim().min(2).max(120),
   destination: z.string().trim().min(2).max(120),
-  start_date: z.string(),
-  end_date: z.string(),
+  start_date: z.string().date("Start date must be a valid YYYY-MM-DD date."),
+  end_date: z.string().date("End date must be a valid YYYY-MM-DD date."),
   budget_min: z.coerce.number().int().min(0).nullable().optional(),
   budget_max: z.coerce.number().int().min(0).nullable().optional(),
   currency: z.string().trim().length(3).default("INR"),

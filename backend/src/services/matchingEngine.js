@@ -26,7 +26,16 @@ function destinationSimilarity(a, b) {
   const left = clean(a);
   const right = clean(b);
   if (!left || !right) return null;
-  if (left === right || left.includes(right) || right.includes(left)) return 1;
+
+  // Match whole words/phrases, not accidental substrings such as "Goa" in "Goal".
+  const paddedLeft = ` ${left} `;
+  const paddedRight = ` ${right} `;
+  if (
+    left === right ||
+    paddedLeft.includes(` ${right} `) ||
+    paddedRight.includes(` ${left} `)
+  ) return 1;
+
   const lt = tokens(a);
   const rt = tokens(b);
   const overlap = [...lt].filter((x) => rt.has(x)).length;
@@ -40,6 +49,10 @@ function dateSimilarity(aStart, aEnd, bStart, bEnd) {
   const bs = new Date(bStart);
   const be = new Date(bEnd);
   if ([as, ae, bs, be].some((d) => Number.isNaN(d.getTime()))) return null;
+
+  // Reversed date ranges are invalid and must never qualify as overlapping trips.
+  if (ae < as || be < bs) return 0;
+
   const overlapStart = Math.max(as.getTime(), bs.getTime());
   const overlapEnd = Math.min(ae.getTime(), be.getTime());
   if (overlapEnd < overlapStart) return 0;

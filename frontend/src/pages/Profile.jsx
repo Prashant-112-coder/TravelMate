@@ -14,7 +14,30 @@ function toggleItem(list,item){return list.includes(item)?list.filter(x=>x!==ite
 export default function Profile(){
  const {user}=useAuth(); const navigate=useNavigate(); const fileRef=useRef(null); const backgroundFileRef=useRef(null); const postFileRef=useRef(null);
  const [profile,setProfile]=useState(null),[form,setForm]=useState({}),[posts,setPosts]=useState([]),[loading,setLoading]=useState(true),[saving,setSaving]=useState(false),[uploading,setUploading]=useState(false),[postUploading,setPostUploading]=useState(false),[postCaption,setPostCaption]=useState(""),[postDestination,setPostDestination]=useState(""),[message,setMessage]=useState(""),[error,setError]=useState("");
- useEffect(()=>{Promise.all([getProfile(),apiFetch("/profile/posts")]).then(([data,p])=>{setProfile(data);setForm(data);setPosts(p.posts||[])}).catch(e=>setError(e.message)).finally(()=>setLoading(false))},[]);
+ useEffect(()=>{
+  let active = true;
+  async function loadProfile(){
+   try {
+    const data = await getProfile();
+    if (!active) return;
+    setProfile(data);
+    setForm(data);
+    try {
+     const p = await apiFetch("/profile/posts");
+     if (active) setPosts(p.posts || []);
+    } catch (postsError) {
+     console.warn("Travel posts could not be loaded:", postsError.message);
+     if (active) setPosts([]);
+    }
+   } catch (profileError) {
+    if (active) setError(profileError.message);
+   } finally {
+    if (active) setLoading(false);
+   }
+  }
+  loadProfile();
+  return () => { active = false; };
+ },[]);
  const setField=(name,value)=>setForm(c=>({...c,[name]:value}));
  async function logout(){await signOut();navigate("/login",{replace:true});}
  async function handlePhoto(e){const file=e.target.files?.[0];if(!file||!user)return;setError("");setMessage("");setUploading(true);try{const url=await uploadProfilePhoto(file,user.id);const updated=await updateProfile({avatar_url:url});setProfile(updated);setForm(updated);setMessage("Profile photo updated.");}catch(err){setError(err.message)}finally{setUploading(false);e.target.value=""}}

@@ -98,7 +98,7 @@ export default function Discover() {
         <div>
           <p className="eyebrow">DISCOVER</p>
           <h1>Find your travel people.</h1>
-          <p>Real trips are compared using an explainable compatibility model. The system records outcomes so it can later learn from real interactions.</p>
+          <p>{engine === "ml" ? "Your eligible trips are ranked by the trained Random Forest compatibility model." : "Real trips are compared using the explainable baseline compatibility model."}</p>
         </div>
         <Link className="button" to="/my-trips/new">Plan another trip</Link>
       </div>
@@ -135,7 +135,7 @@ export default function Discover() {
         <div className="traveller-grid">
           {results
             .filter(({ profile }) => !activeConnections[profile?.id])
-            .map(({ trip: candidateTrip, profile, compatibility, breakdown, missing }) => (
+            .map(({ trip: candidateTrip, profile, compatibility, breakdown, missing, features, score_note, feature_limitations }) => (
             <article className="traveller-card" key={candidateTrip.id}>
               <div
                 className="traveller-cover"
@@ -170,13 +170,27 @@ export default function Discover() {
                   </div>
                   {expanded[candidateTrip.id] && (
                     <div className="match-factor-list">
-                      {factorLabels.map(([key, label]) => (
-                        <div key={key}>
-                          <span>{label}</span>
-                          <strong>+{breakdown?.[key] ?? 0}</strong>
-                        </div>
-                      ))}
-                      {missing?.length > 0 && <small>Neutral score used where {missing.join(", ")} data is missing.</small>}
+                      {engine === "ml" ? (
+                        <>
+                          <div><span>Destination exact match</span><strong>{features?.same_destination ? "Yes" : "No"}</strong></div>
+                          <div><span>Overlapping dates (IoU)</span><strong>{Math.round((features?.date_overlap_iou || 0) * 100)}%</strong></div>
+                          <div><span>Budget similarity</span><strong>{Math.round((features?.budget_ratio || 0) * 100)}%</strong></div>
+                          <div><span>Same travel style</span><strong>{features?.same_travel_style ? "Yes" : "No"}</strong></div>
+                          <div><span>Activity similarity</span><strong>{Math.round((features?.activities_jaccard || 0) * 100)}%</strong></div>
+                          {feature_limitations?.length > 0 && <small>{feature_limitations.join(" ")}</small>}
+                          {score_note && <small>{score_note}</small>}
+                        </>
+                      ) : (
+                        <>
+                          {factorLabels.map(([key, label]) => (
+                            <div key={key}>
+                              <span>{label}</span>
+                              <strong>+{breakdown?.[key] ?? 0}</strong>
+                            </div>
+                          ))}
+                          {missing?.length > 0 && <small>Neutral score used where {missing.join(", ")} data is missing.</small>}
+                        </>
+                      )}
                     </div>
                   )}
                 </div>

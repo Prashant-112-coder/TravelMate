@@ -35,6 +35,16 @@ def norm(value: Any) -> str:
         return ""
     return str(value).strip().casefold()
 
+def normalize_destination(value: Any) -> str:
+    """Normalize destination spelling, case, punctuation and a trailing country name."""
+    import re
+    text = norm(value)
+    text = re.sub(r"[^\\w]+", " ", text, flags=re.UNICODE)
+    text = re.sub(r"\\s+", " ", text).strip()
+    # Treat common country-qualified entries (for example, 'Goa, India') as the city/place.
+    text = re.sub(r"\\s+india$", "", text).strip()
+    return text
+
 def items(value: Any) -> set[str]:
     if isinstance(value, list):
         return {str(x).strip().casefold() for x in value if str(x).strip()}
@@ -76,7 +86,7 @@ def pair_features(a: dict, b: dict) -> dict:
     accommodation_a, accommodation_b = norm(a.get("accommodation")), norm(b.get("accommodation"))
     group_a, group_b = norm(a.get("group_size")), norm(b.get("group_size"))
     return {
-        "same_destination": int(bool(norm(a.get("destination"))) and norm(a.get("destination")) == norm(b.get("destination"))),
+        "same_destination": int(bool(normalize_destination(a.get("destination"))) and normalize_destination(a.get("destination")) == normalize_destination(b.get("destination"))),
         "date_overlap_iou": float(date_iou),
         "start_date_gap_days": float(start_gap),
         "end_date_gap_days": float(end_gap),

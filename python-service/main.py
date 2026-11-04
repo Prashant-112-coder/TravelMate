@@ -39,10 +39,10 @@ def normalize_destination(value: Any) -> str:
     """Normalize destination spelling, case, punctuation and a trailing country name."""
     import re
     text = norm(value)
-    text = re.sub(r"[^\\w]+", " ", text, flags=re.UNICODE)
-    text = re.sub(r"\\s+", " ", text).strip()
+    text = re.sub(r"[^\w]+", " ", text, flags=re.UNICODE)
+    text = re.sub(r"\s+", " ", text).strip()
     # Treat common country-qualified entries (for example, 'Goa, India') as the city/place.
-    text = re.sub(r"\\s+india$", "", text).strip()
+    text = re.sub(r"\s+india$", "", text).strip()
     return text
 
 def items(value: Any) -> set[str]:

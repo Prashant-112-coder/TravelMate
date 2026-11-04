@@ -10,7 +10,7 @@ const WEIGHTS = {
 const clean = (value = "") =>
   String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ");
 
-const normalizeDestination = (value = "") => clean(value).replace(/\\bindia\\b$/i, "").trim();
+const normalizeDestination = (value = "") => clean(value).replace(/\bindia\b$/i, "").trim();
 
 const tokens = (value = "") => new Set(clean(value).split(" ").filter(Boolean));
 

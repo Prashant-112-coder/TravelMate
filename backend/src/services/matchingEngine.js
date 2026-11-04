@@ -10,6 +10,8 @@ const WEIGHTS = {
 const clean = (value = "") =>
   String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ");
 
+const normalizeDestination = (value = "") => clean(value).replace(/\\bindia\\b$/i, "").trim();
+
 const tokens = (value = "") => new Set(clean(value).split(" ").filter(Boolean));
 
 const jaccard = (a = [], b = []) => {
@@ -23,8 +25,8 @@ const jaccard = (a = [], b = []) => {
 
 function destinationSimilarity(a, b) {
   if (!a || !b) return null;
-  const left = clean(a);
-  const right = clean(b);
+  const left = normalizeDestination(a);
+  const right = normalizeDestination(b);
   if (!left || !right) return null;
 
   // Match whole words/phrases, not accidental substrings such as "Goa" in "Goal".

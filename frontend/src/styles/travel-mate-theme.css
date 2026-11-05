@@ -721,3 +721,67 @@ input::placeholder,textarea::placeholder{color:#8996a6!important}
 .sidebar-bottom .signout:hover,.sidebar-bottom .signout:focus-visible{background:#ed6849!important;color:#ffffff!important}
 .sidebar-bottom{display:flex!important;flex-direction:column!important;gap:12px!important}
 @media(max-width:900px){.sidebar-bottom{display:none!important}}
+
+
+/* PREMIUM APRICOT NAVBAR + SOFTER, MORE FLUID INTERACTIONS */
+:root{
+ --tm-nav-apricot:#f4c6a8;
+ --tm-nav-apricot-deep:#e9ad88;
+ --tm-nav-ink:#35465a;
+ --tm-accent:#ed6849;
+}
+.app-topbar{
+ background:linear-gradient(105deg,#f8d8c1 0%,#f5c9ad 48%,#f1c1a0 100%)!important;
+ color:var(--tm-nav-ink)!important;
+ border-bottom:1px solid rgba(173,112,76,.16)!important;
+ box-shadow:0 5px 20px rgba(119,86,66,.09)!important;
+ transition:background .28s ease,box-shadow .28s ease!important;
+}
+.app-topbar .mobile-brand,.app-topbar .mobile-brand a,
+.app-topbar .topbar-actions,.app-topbar .topbar-icon,
+.app-topbar .topbar-profile,.app-topbar .topbar-profile span{color:#35465a!important}
+.app-topbar .topbar-search{
+ background:rgba(255,255,255,.68)!important;
+ border:1px solid rgba(151,111,84,.18)!important;
+ box-shadow:inset 0 1px 2px rgba(80,60,45,.035)!important;
+ backdrop-filter:blur(10px)!important;
+}
+.app-topbar .topbar-search span{color:#d96b4b!important}
+.app-topbar .topbar-search input{color:#35465a!important;background:transparent!important}
+.app-topbar .topbar-search input::placeholder{color:#7c8490!important}
+.app-topbar .topbar-icon{
+ background:rgba(255,255,255,.62)!important;
+ border:1px solid rgba(151,111,84,.2)!important;
+ color:#46566a!important;
+ transition:transform .2s ease,background .2s ease,box-shadow .2s ease!important;
+}
+.app-topbar .topbar-icon:hover{background:#fff!important;color:#d65d40!important;transform:translateY(-1px);box-shadow:0 5px 12px rgba(100,65,45,.1)!important}
+.app-topbar .mini-avatar{background:#e97755!important;color:#fff!important;border:2px solid rgba(255,255,255,.8)!important}
+.app-topbar .topbar-profile{color:#35465a!important}
+
+/* Consistent premium motion without interfering with layout or functionality */
+a,button,[role="button"],.side-nav a,.sidebar-link,.journey-card,.trip-card,
+.traveller-card,.notification-card,.request-card,.panel-card,.stat-card,
+.sidebar-journey a,.sidebar-bottom .signout,.topbar-icon{
+ transition:color .2s ease,background-color .2s ease,border-color .2s ease,
+ box-shadow .24s ease,transform .24s ease,opacity .2s ease!important;
+}
+.journey-card,.trip-card,.traveller-card,.notification-card,.request-card,
+.panel-card,.stat-card,.profile-card,.settings-card{
+ box-shadow:0 8px 24px rgba(35,54,75,.045)!important;
+}
+.journey-card:hover,.trip-card:hover,.traveller-card:hover{
+ transform:translateY(-3px)!important;
+ box-shadow:0 15px 34px rgba(35,54,75,.095)!important;
+}
+button:active,.button:active,[role="button"]:active{transform:translateY(1px)}
+input,textarea,select{
+ transition:border-color .2s ease,box-shadow .2s ease,background-color .2s ease!important;
+}
+input:focus,textarea:focus,select:focus{
+ outline:none!important;border-color:#e8a27f!important;
+ box-shadow:0 0 0 3px rgba(237,104,73,.12)!important;
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}

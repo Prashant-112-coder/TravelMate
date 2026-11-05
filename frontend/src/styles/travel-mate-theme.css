@@ -154,3 +154,80 @@ input,textarea,select{border-color:#d5dfed}
 @media(max-width:1150px){.traveller-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.content-wrap{width:calc(100% - 42px)}}
 @media(max-width:900px){.sidebar{width:82px;flex-basis:82px;padding:20px 9px}.travel-brand-copy,.workspace-label,.side-nav a span,.sidebar-bottom,.sidebar-divider{display:none}.sidebar-brand{justify-content:center;padding:0 0 22px}.side-nav a{justify-content:center;padding:0}.side-nav a i{font-size:1.1rem}.journey-detail-grid{grid-template-columns:1fr}}
 @media(max-width:650px){.app-topbar{height:64px;padding:0 14px}.topbar-search{display:none}.content-wrap{width:calc(100% - 28px);padding-top:24px}.page-heading,.welcome-row{align-items:flex-start;flex-direction:column}.filter-bar{align-items:flex-start;flex-direction:column}.discover-select{align-items:flex-start;flex-direction:column;width:100%}.discover-select select{width:100%}.traveller-grid{grid-template-columns:1fr}.journey-hero,.journey-hero-modern{padding:24px;align-items:flex-start;flex-direction:column}.journey-tabs a{padding:10px 12px}.journey-panel{padding:16px}.journey-hero-meta{display:grid;gap:8px}}
+
+
+/* Page-specific finishing pass — match real JSX selectors, not placeholder names */
+.app-shell{display:flex;align-items:stretch;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#315985 transparent}
+.app-main{flex:1;min-width:0;min-height:100vh}
+.app-topbar{position:sticky;top:0;z-index:30}
+.content-wrap{padding-top:34px!important;padding-bottom:56px!important}
+.page-heading{display:flex;justify-content:space-between;gap:24px;align-items:flex-end;margin:0 0 26px!important}
+.page-heading h1{font-size:clamp(2rem,3vw,2.65rem)!important;line-height:1.12!important;font-weight:800!important}
+.page-heading p:not(.eyebrow){font-size:.92rem!important;line-height:1.55!important;margin-top:6px}
+.eyebrow,.section-kicker,.section-label{color:#48678f!important;font-size:.7rem!important;letter-spacing:.14em!important;font-weight:850!important}
+.content-wrap p,.content-wrap li,.content-wrap label{line-height:1.55}
+.content-wrap h2{line-height:1.25}
+.content-wrap small{font-size:.76rem}
+.filter-bar{min-height:72px;padding:14px 17px!important;gap:12px!important;margin:22px 0 24px!important}
+.filter-bar input,.filter-bar select{min-height:42px;border-radius:10px;padding:0 13px}
+.explore-trip-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.explore-trip-card{overflow:hidden;background:#fff;border:1px solid #dfe7f2;border-radius:17px;box-shadow:0 8px 24px rgba(22,55,99,.07);transition:transform .18s ease,box-shadow .18s ease}
+.explore-trip-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(22,55,99,.12)}
+.explore-trip-image{height:190px!important;position:relative;overflow:hidden;background-color:#c9d9eb!important;background-size:cover!important;background-position:center!important}
+.explore-trip-image:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,30,61,.02),rgba(6,30,61,.24))}
+.explore-trip-image.demo-0{background-image:linear-gradient(135deg,rgba(11,49,93,.1),rgba(10,56,92,.18)),url("https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&q=85")!important}
+.explore-trip-image.demo-1{background-image:linear-gradient(135deg,rgba(11,49,93,.08),rgba(10,56,92,.2)),url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&q=85")!important}
+.explore-trip-image.demo-2{background-image:linear-gradient(135deg,rgba(11,49,93,.08),rgba(10,56,92,.2)),url("https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1200&q=85")!important}
+.explore-trip-image>span{z-index:1;background:#fff!important;color:#164a87!important;font-size:.66rem!important;padding:7px 11px!important}
+.explore-trip-body{padding:20px!important}
+.explore-trip-user{gap:11px;margin-bottom:16px}
+.explore-trip-user strong{font-size:.83rem!important;color:#182944!important}
+.explore-trip-user small{font-size:.72rem!important;color:#6b7c94!important}
+.explore-trip-body .eyebrow{font-size:.68rem!important;margin:12px 0 4px}
+.explore-trip-body h2{font-size:1.18rem!important;color:#172943!important;margin:4px 0 8px!important}
+.explore-trip-body>p:not(.eyebrow){font-size:.78rem!important;color:#64758e!important}
+.trip-meta{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:13px 0;margin-top:13px;border-top:1px solid #e7edf5;color:#62748d;font-size:.73rem}
+.explore-actions{display:flex;gap:9px;margin-top:14px}
+.explore-actions .button{min-height:42px!important;font-size:.74rem!important}
+.journey-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;max-width:1100px}
+.journey-card{overflow:hidden;border-radius:17px;background:#fff!important}
+.journey-card-cover{min-height:190px!important;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;padding:22px 24px!important;background:linear-gradient(120deg,#123d73 0%,#2467a8 58%,#74a9d2 100%)!important;background-image:linear-gradient(120deg,#123d73 0%,#2467a8 58%,#74a9d2 100%)!important;color:#fff!important}
+.journey-card-cover:after{content:"";align-self:flex-end;width:140px;height:75px;margin-top:-62px;border:1px solid rgba(255,255,255,.25);border-radius:100% 0 0 0;box-shadow:0 0 0 18px rgba(255,255,255,.045)}
+.journey-card-cover small,.journey-card-cover h2{color:#fff!important}
+.journey-card-cover small{font-size:.68rem!important;letter-spacing:.12em;font-weight:800;opacity:.82}
+.journey-card-cover h2{font-size:1.85rem!important;line-height:1.1;margin:8px 0 0!important;font-weight:800}
+.journey-card-cover .journey-status{background:rgba(255,255,255,.95)!important;color:#174a83!important;border:0;padding:6px 11px;border-radius:99px;font-size:.68rem;font-weight:850}
+.journey-card-body{padding:20px 22px!important}
+.journey-card-body h3{font-size:1.1rem!important;color:#172943!important;margin:0 0 7px}
+.journey-card-body>p{font-size:.8rem!important;color:#687a92!important}
+.journey-member{background:#edf4ff!important;color:#24568f!important}
+.journey-card-footer{margin-top:14px}
+.journey-card-footer>span{font-size:.75rem!important;color:#64758e!important}
+.journey-empty{max-width:680px;margin:35px auto;padding:42px!important;text-align:center;border-radius:18px}
+.journey-empty h2{color:#172943!important;font-size:1.35rem}
+.journey-empty p{max-width:520px;margin:8px auto 20px;color:#65758d!important;font-size:.86rem}
+.journey-empty-icon{width:58px;height:58px;display:grid;place-items:center;margin:0 auto 14px;border-radius:18px;background:#eaf2ff;color:#1769e8;font-size:1.6rem}
+.journey-hero-modern{background:linear-gradient(112deg,#0a2d5b 0%,#15569b 62%,#2c7ab6 100%)!important;background-image:linear-gradient(112deg,#0a2d5b 0%,#15569b 62%,#2c7ab6 100%)!important}
+.journey-hero-modern h1,.journey-hero-modern p,.journey-hero-modern .eyebrow,.journey-hero-modern .journey-hero-meta,.journey-hero-modern .journey-status{color:#fff!important}
+.journey-panel{background:#fff!important;border:1px solid #dfe7f2!important;border-radius:16px!important;box-shadow:0 8px 24px rgba(22,55,99,.06)!important}
+.journey-panel h2,.journey-panel h3{color:#172943!important}
+.journey-panel p,.journey-panel small{color:#63758e}
+.journey-overview-stats>div{background:#f5f8fd!important;border:1px solid #e4ebf5!important;border-radius:12px}
+.journey-tabs a{color:#526783!important}
+.journey-tabs a.active{background:#1769e8!important;color:#fff!important}
+.itinerary-day-modern{background:#fff!important;border:1px solid #dfe7f2!important}
+.itinerary-day-heading-modern{background:#f3f7fd!important}
+.itinerary-day-title strong{color:#172943!important}
+.itinerary-day-title small{color:#62748d!important}
+.itinerary-activity-modern{background:#fff!important;border:1px solid #e7edf5!important}
+.itinerary-activity-modern strong{color:#203653!important}
+.itinerary-activity-modern p{color:#65758d!important}
+.journey-generate-controls,.journey-add-activity-modern{background:#f7f9fd!important;border:1px solid #e3eaf4!important;border-radius:13px}
+.journey-generate-controls label,.journey-add-activity-modern label{color:#243a59!important}
+.journey-generate-controls small,.journey-add-activity-modern small{color:#65758d!important}
+.journey-coming-soon{background:#edf4ff!important;color:#315f98!important;border-radius:11px}
+.form-alert,.form-error{color:#9b2430!important}
+button:disabled{opacity:.58;cursor:not-allowed}
+@media(max-width:1100px){.explore-trip-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.journey-grid{grid-template-columns:1fr}}
+@media(max-width:680px){.explore-trip-grid{grid-template-columns:1fr}.content-wrap{width:calc(100% - 28px)!important;padding-top:24px!important}.page-heading{align-items:flex-start!important;flex-direction:column}.journey-card-cover{min-height:165px!important}.journey-detail-grid{grid-template-columns:1fr}}

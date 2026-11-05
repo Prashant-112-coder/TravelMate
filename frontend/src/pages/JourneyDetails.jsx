@@ -1,0 +1,36 @@
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { apiFetch } from "../lib/api";
+import { useAuth } from "../context/AuthContext";
+
+const periods=["morning","afternoon","evening"];
+export default function JourneyDetails(){
+ const {id}=useParams(); const {user}=useAuth();
+ const [data,setData]=useState(null),[loading,setLoading]=useState(true),[error,setError]=useState(""),[busy,setBusy]=useState(false);
+ const [title,setTitle]=useState(""),[period,setPeriod]=useState("morning"),[dayId,setDayId]=useState(""),[description,setDescription]=useState("");
+ async function load(){setLoading(true);try{const r=await apiFetch("/journeys/"+id);setData(r); }catch(e){setError(e.message)}finally{setLoading(false)}}
+ useEffect(()=>{load()},[id]);
+ async function createDraft(){setBusy(true);setError("");try{await apiFetch("/journeys/"+id+"/itinerary",{method:"POST",body:JSON.stringify({})});await load()}catch(e){setError(e.message)}finally{setBusy(false)}}
+ async function addActivity(e){e.preventDefault();if(!dayId||!title.trim())return;setBusy(true);setError("");try{await apiFetch("/journeys/"+id+"/activities",{method:"POST",body:JSON.stringify({day_id:dayId,title,period,description})});setTitle("");setDescription("");await load()}catch(e){setError(e.message)}finally{setBusy(false)}}
+ if(loading)return <div className="content-wrap"><section className="journey-empty">Loading journey…</section></div>;
+ if(!data)return <div className="content-wrap"><p className="form-error">{error||"Journey unavailable."}</p><Link to="/journeys">← My Journeys</Link></div>;
+ const {journey,itinerary}=data; const days=[...(itinerary?.days||[])].sort((a,b)=>a.day_number-b.day_number);
+ const members=journey.members||[];
+ return <div className="content-wrap">
+  <div className="journey-back"><Link to="/journeys">← My Journeys</Link><span> / Shared journey</span></div>
+  <section className="journey-hero"><div><span className={"journey-status "+journey.status}>{journey.status}</span><p className="eyebrow">YOUR SHARED JOURNEY</p><h1>{journey.destination}</h1><p>{journey.title}</p><div className="journey-hero-meta"><span>◷ {journey.start_date||"Date flexible"} – {journey.end_date||"Date flexible"}</span><span>♧ {members.length} travellers</span><span>₹{journey.budget_min??"—"} – ₹{journey.budget_max??"—"} / traveller</span></div></div><div className="journey-people">{members.map(m=><div className="journey-person" key={m.user_id}><span>{(m.profile?.display_name||"T").slice(0,1).toUpperCase()}</span><small>{m.profile?.display_name||"Traveller"}{m.user_id===user?.id?" (You)":""}</small></div>)}</div></section>
+  <nav className="journey-tabs"><a className="active" href="#overview">Overview</a><a href="#itinerary">Itinerary</a><a href="#places">Places</a><Link to="/messages">Chat</Link><a href="#expenses">Expenses</a></nav>
+  <div className="journey-detail-grid">
+   <main>
+    <section className="journey-panel" id="overview"><div className="journey-panel-heading"><div><span className="section-kicker">THE PLAN</span><h2>Journey overview</h2></div><span className="journey-draft-chip">Shared with your travel mate</span></div><p className="journey-muted">You and your travel mate are connected. Build your plan together here. Your itinerary can be reviewed and updated by both members.</p><div className="journey-overview-stats"><div><strong>{journey.destination}</strong><small>Destination</small></div><div><strong>{journey.start_date||"Flexible"}</strong><small>Start date</small></div><div><strong>{journey.travel_style||"Flexible"}</strong><small>Travel style</small></div></div></section>
+    <section className="journey-panel" id="itinerary"><div className="journey-panel-heading"><div><span className="section-kicker">DAY BY DAY</span><h2>Shared itinerary</h2></div>{itinerary&&<span className="journey-draft-chip">{itinerary.status||"draft"} · v{itinerary.version||1}</span>}</div>
+    {!itinerary?<div className="itinerary-empty"><div>▤</div><h3>Your itinerary workspace is ready</h3><p>Create a draft with one section for each day. Next, we'll connect your itinerary dataset and Google Places recommendations.</p><button className="button" disabled={busy} onClick={createDraft}>{busy?"Preparing…":"Create itinerary draft"}</button></div>:
+      <div className="itinerary-days">{days.map(day=><article className="itinerary-day" key={day.id}><div className="itinerary-day-heading"><span>DAY {day.day_number}</span><strong>{day.title||"Explore the destination"}</strong><small>{day.day_date||""}</small></div><div className="itinerary-periods">{periods.map(p=><div className="itinerary-period" key={p}><b>{p}</b>{(day.activities||[]).filter(a=>a.period===p).map(a=><div className="itinerary-activity" key={a.id}><strong>{a.title}</strong>{a.description&&<small>{a.description}</small>}</div>)}{!(day.activities||[]).some(a=>a.period===p)&&<small className="journey-muted">Nothing planned yet</small>}</div>)}</div></article>)}</div>}
+    {itinerary&&<form className="journey-add-activity" onSubmit={addActivity}><h3>Add an activity</h3><div className="journey-form-row"><label>Day<select value={dayId} onChange={e=>setDayId(e.target.value)} required><option value="">Select day</option>{days.map(d=><option value={d.id} key={d.id}>Day {d.day_number} · {d.day_date}</option>)}</select></label><label>Time<select value={period} onChange={e=>setPeriod(e.target.value)}>{periods.map(p=><option key={p} value={p}>{p}</option>)}</select></label></div><label>Activity<input value={title} onChange={e=>setTitle(e.target.value)} placeholder="e.g. Visit a local market" required maxLength={120}/></label><label>Notes<textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="Add details for your travel mate" rows="2"/></label><button className="button" disabled={busy||!dayId||!title.trim()}>{busy?"Saving…":"Add to itinerary"}</button></form>}
+    </section>
+   </main>
+   <aside className="journey-side"><section className="journey-panel"><span className="section-kicker">TRAVEL MATES</span><h2>Your group</h2>{members.map(m=><div className="journey-member-detail" key={m.user_id}><span>{(m.profile?.display_name||"T").slice(0,1).toUpperCase()}</span><div><strong>{m.profile?.display_name||"Traveller"}</strong><small>{m.profile?.home_city||"Traveller"}</small></div></div>)}<Link className="button button-light journey-wide-button" to="/messages">Open messages →</Link></section><section className="journey-panel" id="places"><span className="section-kicker">DISCOVER</span><h2>Places & suggestions</h2><p className="journey-muted">Google Places suggestions will appear here in the next integration stage.</p><div className="journey-coming-soon">⌖ Places discovery coming next</div></section><section className="journey-panel" id="expenses"><span className="section-kicker">SHARED BUDGET</span><h2>Expenses</h2><p className="journey-muted">A shared expense tracker can be added after the itinerary workflow is connected.</p></section></aside>
+  </div>
+  {error&&<p className="form-error">{error}</p>}
+ </div>;
+}

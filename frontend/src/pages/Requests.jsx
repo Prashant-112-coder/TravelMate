@@ -33,7 +33,7 @@ export default function Requests() {
         method: "PATCH",
         body: JSON.stringify({ status }),
       });
-      setItems((current) => current.map((item) => item.id === id ? { ...item, ...response.request, status } : item));
+      setItems((current) => current.map((item) => item.id === id ? { ...item, ...response.request, status, journey_id: response.journey_id || item.journey_id } : item));
     } catch (e) {
       setError(e.message);
     } finally {
@@ -122,7 +122,7 @@ export default function Requests() {
                         <p>{item.trip?.destination || "Trip"} · {item.status}</p>
                       </div>
                       <span className={"status-pill " + item.status}>{item.status}</span>
-                      {item.status === "accepted" && <Link className="button" to="/messages">Message →</Link>}
+                      {item.status === "accepted" && <Link className="button" to={item.journey_id ? "/journeys/" + item.journey_id : "/journeys"}>Open journey →</Link>}
                     </article>
                   );
                 })}

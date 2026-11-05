@@ -28,9 +28,9 @@ export default function AppShell({ children }){
       <circle cx="31" cy="28" r="2.8" fill="#fff"/>
       <defs>
         <linearGradient id="tmDashboardLogoGradient" x1="10" y1="8" x2="54" y2="55" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#082b59"/>
-          <stop offset=".55" stopColor="#1769e8"/>
-          <stop offset="1" stopColor="#7257e8"/>
+          <stop stopColor="#183a31"/>
+          <stop offset=".55" stopColor="#d56b45"/>
+          <stop offset="1" stopColor="#e9a27f"/>
         </linearGradient>
       </defs>
     </svg>
@@ -57,7 +57,7 @@ export default function AppShell({ children }){
 </div>
   </aside>
   <main className="app-main">
-   <header className="app-topbar"><div className="mobile-brand"><span className="brand-mark">✦</span> Travel Mate</div><div className="topbar-search"><span aria-hidden="true">⌕</span><input type="search" aria-label="Search trips, destinations or people" placeholder="Where do you want to go?" /></div><div className="topbar-actions"><Link className="topbar-icon" to="/notifications">♧</Link><Link className="topbar-profile" to="/profile"><span>{user?.user_metadata?.display_name||user?.email?.split("@")[0]||"Traveller"}</span><div className="mini-avatar">{initial}</div></Link></div></header>
+   <header className="app-topbar"><div className="mobile-brand"><span className="brand-mark">⌖</span> Travel Mate</div><div className="topbar-search"><span aria-hidden="true">⌕</span><input type="search" aria-label="Search trips, destinations or people" placeholder="Where do you want to go?" /></div><div className="topbar-actions"><Link className="topbar-icon" to="/notifications">♧</Link><Link className="topbar-profile" to="/profile"><span>{user?.user_metadata?.display_name||user?.email?.split("@")[0]||"Traveller"}</span><div className="mini-avatar">{initial}</div></Link></div></header>
    {children}
   </main>
  </div>;

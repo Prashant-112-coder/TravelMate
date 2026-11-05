@@ -19,6 +19,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AppShell from "./components/AppShell";
 import { useAuth } from "./context/AuthContext";
 import "./styles.css";
+import "./styles/travel-mate-theme.css";
 
 function Home() {
   const { user } = useAuth();

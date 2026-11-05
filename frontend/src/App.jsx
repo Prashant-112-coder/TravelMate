@@ -13,10 +13,13 @@ import Messages from "./pages/Messages";
 import TravellerProfile from "./pages/TravellerProfile";
 import Notifications from "./pages/Notifications";
 import Settings from "./pages/Settings";
+import MyJourneys from "./pages/MyJourneys";
+import JourneyDetails from "./pages/JourneyDetails";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AppShell from "./components/AppShell";
 import { useAuth } from "./context/AuthContext";
 import "./styles.css";
+import "./styles/travel-mate-theme.css";
 
 function Home() {
   const { user } = useAuth();
@@ -49,6 +52,8 @@ export default function App() {
     <Route path="/my-trips/new" element={<ShellPage><CreateTrip/></ShellPage>}/>
     <Route path="/my-trips/edit/:id" element={<ShellPage><CreateTrip/></ShellPage>}/>
     <Route path="/matches" element={<ShellPage><Matches/></ShellPage>}/>
+    <Route path="/journeys" element={<ShellPage><MyJourneys/></ShellPage>}/>
+    <Route path="/journeys/:id" element={<ShellPage><JourneyDetails/></ShellPage>}/>
     <Route path="/requests" element={<ShellPage><Requests/></ShellPage>}/>
     <Route path="/messages" element={<ShellPage><Messages/></ShellPage>}/>
     <Route path="/notifications" element={<ShellPage><Notifications/></ShellPage>}/>

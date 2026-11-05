@@ -35,7 +35,7 @@ export default function AppShell({ children }){
       </defs>
     </svg>
   </span>
-  <span className="travel-brand-copy"><strong>Travel Mate</strong><small>Find People. Explore Together.</small></span>
+  <span className="travel-brand-copy"><strong>Travel Mate</strong><small>Find Your People. Go Further.</small></span>
 </Link>
    <div className="workspace-label">WORKSPACE</div>
    <nav className="side-nav">{mainNav.map(([path,icon,label])=><NavLink key={path} to={"/"+path} className={({isActive})=>isActive?"active":""}><i>{icon}</i><span>{label}</span></NavLink>)}</nav>
@@ -49,15 +49,15 @@ export default function AppShell({ children }){
    <div className="sidebar-bottom">
   <div className="sidebar-journey">
     <span>➤</span>
-    <strong>Your next journey starts here.</strong>
-    <small>Complete your profile to unlock better matches.</small>
-    <Link to="/profile">Complete Profile →</Link>
+    <strong>A new place is better together.</strong>
+    <small>Add your travel style to meet your kind of people.</small>
+    <Link to="/profile">Explore your profile →</Link>
   </div>
   <button className="signout" onClick={logout}>↪ Sign out</button>
 </div>
   </aside>
   <main className="app-main">
-   <header className="app-topbar"><div className="mobile-brand"><span className="brand-mark">✦</span> Travel Mate</div><div className="topbar-search"><span aria-hidden="true">⌕</span><input type="search" aria-label="Search trips, destinations or people" placeholder="Search trips, destinations or people..." /></div><div className="topbar-actions"><Link className="topbar-icon" to="/notifications">♧</Link><Link className="topbar-profile" to="/profile"><span>{user?.user_metadata?.display_name||user?.email?.split("@")[0]||"Traveller"}</span><div className="mini-avatar">{initial}</div></Link></div></header>
+   <header className="app-topbar"><div className="mobile-brand"><span className="brand-mark">✦</span> Travel Mate</div><div className="topbar-search"><span aria-hidden="true">⌕</span><input type="search" aria-label="Search trips, destinations or people" placeholder="Where do you want to go?" /></div><div className="topbar-actions"><Link className="topbar-icon" to="/notifications">♧</Link><Link className="topbar-profile" to="/profile"><span>{user?.user_metadata?.display_name||user?.email?.split("@")[0]||"Traveller"}</span><div className="mini-avatar">{initial}</div></Link></div></header>
    {children}
   </main>
  </div>;

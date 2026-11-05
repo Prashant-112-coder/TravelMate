@@ -623,3 +623,49 @@ input:focus,textarea:focus,select:focus{border-color:#c77b5c!important;box-shado
 @media(max-width:1250px){.journey-summary-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.journey-create-button{grid-column:1/-1;justify-self:start}}
 @media(max-width:900px){.journey-toolbar{align-items:flex-start;flex-direction:column}.journey-search-sort{width:100%;min-width:0}.my-journeys-banner{min-height:180px;padding:28px}}
 @media(max-width:650px){.my-journeys-banner{align-items:flex-start;flex-direction:column;min-height:240px;padding:24px;background-position:62% center}.my-journeys-banner:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(246,243,235,.98),rgba(246,243,235,.7))}.journey-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.journey-summary-grid>article{min-height:76px;padding:12px}.journey-summary-grid>article strong{font-size:1.35rem}.journey-create-button{grid-column:1/-1}.journey-search-sort{flex-direction:column}.journey-search-sort select{width:100%;min-height:44px}.journey-filter-pills{width:100%;flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px}.journey-filter-pills button{white-space:nowrap}.journey-card-footer>span{max-width:100%}}
+
+
+/* DARK FOREST MODE — unified canvas, navigation and readable sidebar actions */
+:root{
+ --tm-forest:#173d32;--tm-forest-deep:#123329;--tm-forest-soft:#244d40;
+ --tm-cream:#1d342d;--tm-paper:#29443a;--tm-ink:#f2f3e9;--tm-muted:#c0cec3;
+ --tm-border:rgba(222,235,220,.16);--tm-shadow:0 12px 30px rgba(3,18,13,.2);
+}
+html,body,#root,.app-shell,.app-main{background:#1d342d!important;color:#f2f3e9!important}
+.sidebar{background:linear-gradient(180deg,#173d32 0%,#1a4437 60%,#14372e 100%)!important}
+.app-topbar{background:#173d32!important;border-bottom:1px solid rgba(230,240,226,.12)!important;box-shadow:0 6px 22px rgba(3,18,13,.2)!important}
+.content-wrap{color:#f2f3e9!important}
+.page-heading h1,.content-wrap h1,.content-wrap h2,.content-wrap h3,.content-wrap h4{color:#f2f3e9!important}
+.page-heading p:not(.eyebrow),.content-wrap p,.content-wrap small,.content-wrap label,.content-wrap .muted{color:#c0cec3!important}
+.stat-card,.panel-card,.dashboard-main-card,.dashboard-side-card,.empty-card,.profile-card,.journey-panel,.journey-card,.request-card,.traveller-card,.chat-panel,.conversation-list,.empty-state-card,.discover-empty,.journey-empty,.settings-card,.notification-card,.trip-card,.my-trip-card,.filter-bar,.setting-card,.notification,.request-list,.journey-summary-grid>article{background:#29443a!important;border-color:rgba(222,235,220,.16)!important;box-shadow:0 12px 30px rgba(3,18,13,.2)!important}
+.journey-card-body,.explore-trip-body,.traveller-body{background:#29443a!important}
+.journey-card-body h3,.journey-card-title-row h3,.stat-card strong,.journey-summary-grid>article strong{color:#f2f3e9!important}
+.journey-member{background:#38564a!important;color:#f0f3e9!important}
+.journey-duration{background:#4b5140!important;color:#f4d5c4!important}
+.journey-date-line,.journey-card-footer>span{color:#c0cec3!important}
+.journey-filter-pills button{background:#29443a!important;color:#edf2e9!important;border-color:rgba(222,235,220,.14)!important}
+.journey-filter-pills button.active{background:#d9673e!important;color:#fff!important;border-color:#d9673e!important}
+.journey-search-sort input,.journey-search-sort select,input,textarea,select,.filter-bar input,.filter-bar select{background:#203a31!important;border-color:rgba(222,235,220,.2)!important;color:#f2f3e9!important}
+input::placeholder,textarea::placeholder{color:#aebfb2!important}
+.itinerary-day-modern{background:#29443a!important;border-color:rgba(222,235,220,.16)!important}
+.itinerary-day-heading-modern{background:#355247!important}
+.message:not(.mine) span{background:#355247!important;color:#f2f3e9!important}
+.conversation.active{background:#3a5145!important}
+.my-journeys-banner{background:linear-gradient(90deg,rgba(23,61,50,.97) 0%,rgba(23,61,50,.82) 43%,rgba(23,61,50,.2) 100%),url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1700&q=90') center 48%/cover!important;border:1px solid rgba(222,235,220,.15)}
+.my-journeys-banner h1,.my-journeys-banner p:not(.eyebrow){color:#f2f3e9!important}
+.sidebar-journey{background:rgba(255,255,255,.09)!important;border:1px solid rgba(255,255,255,.24)!important}
+.sidebar-journey strong{color:#fff!important}
+.sidebar-journey small{color:#e0ebe2!important}
+.sidebar-journey a{display:flex!important;align-items:center;justify-content:center;min-height:38px;padding:0 12px!important;border-radius:11px!important;background:#d9673e!important;color:#fff!important;font-size:.76rem!important;font-weight:900!important;text-decoration:none!important}
+.sidebar-journey a:hover{background:#bd512e!important;color:#fff!important}
+.sidebar-bottom .signout{
+ display:flex!important;align-items:center!important;gap:9px!important;width:100%!important;min-height:48px!important;
+ padding:0 16px!important;border:1px solid rgba(255,255,255,.38)!important;border-radius:14px!important;
+ background:#f7eee7!important;color:#873b28!important;font-size:.88rem!important;font-weight:900!important;
+ opacity:1!important;visibility:visible!important;box-shadow:0 5px 14px rgba(3,18,13,.16)!important;
+ cursor:pointer!important;transition:background .18s ease,transform .18s ease!important
+}
+.sidebar-bottom .signout:hover,.sidebar-bottom .signout:focus-visible{background:#d9673e!important;color:#fff!important;transform:translateY(-1px)!important}
+.sidebar-bottom .signout:focus-visible{outline:3px solid #f2b69a!important;outline-offset:3px!important}
+.sidebar-bottom{display:flex!important;flex-direction:column!important;gap:12px!important}
+@media(max-width:900px){.sidebar-bottom{display:none!important}}

@@ -81,11 +81,14 @@ def load_itinerary_dataset() -> pd.DataFrame:
     return _itinerary_frame
 
 def _interest_values(row: pd.Series) -> set[str]:
-    return {
-        norm(row.get(f"input__interests__{index:03d}"))
-        for index in range(1, 6)
-        if norm(row.get(f"input__interests__{index:03d}"))
-    }
+    values: set[str] = set()
+    for index in range(1, 6):
+        value = row.get(f"input__interests__{index:03d}")
+        if pd.notna(value):
+            cleaned = norm(value)
+            if cleaned:
+                values.add(cleaned)
+    return values
 
 def generate_dataset_itinerary(payload: ItineraryRequest) -> dict[str, Any]:
     frame = load_itinerary_dataset()

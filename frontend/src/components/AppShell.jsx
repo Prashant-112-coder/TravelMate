@@ -8,6 +8,7 @@ const mainNav=[
   ["discover","⌕","Find Travel Mates"],
   ["my-trips","▣","My Trips"],
   ["matches","♡","Matches"],
+  ["journeys","✈","My Journeys"],
   ["requests","◌","Requests"],
   ["messages","◍","Messages"]
 ];

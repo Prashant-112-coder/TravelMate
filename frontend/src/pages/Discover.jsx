@@ -98,7 +98,7 @@ export default function Discover() {
         <div>
           <p className="eyebrow">DISCOVER</p>
           <h1>Find your travel people.</h1>
-          <p>"Explore travellers whose plans and preferences align with yours."</p>
+          <p>Explore travellers whose plans and preferences align with yours.</p>
         </div>
         <Link className="button" to="/my-trips/new">Plan another trip</Link>
       </div>
@@ -113,7 +113,7 @@ export default function Discover() {
           </select>
         </label>
         <span className="matching-engine-badge">
-          "Travel compatibility"
+          Travel compatibility
         </span>
       </div>
 
@@ -177,8 +177,7 @@ export default function Discover() {
                           <div><span>Budget similarity</span><strong>{Math.round((features?.budget_ratio || 0) * 100)}%</strong></div>
                           <div><span>Same travel style</span><strong>{features?.same_travel_style ? "Yes" : "No"}</strong></div>
                           <div><span>Activity similarity</span><strong>{Math.round((features?.activities_jaccard || 0) * 100)}%</strong></div>
-                          {feature_limitations?.length > 0 && <small>{feature_limitations.join(" ")}</small>}
-                          {score_note && <small>{score_note}</small>}
+                          
                         </>
                       ) : (
                         <>

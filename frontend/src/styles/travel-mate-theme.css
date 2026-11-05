@@ -955,3 +955,59 @@ html,body,#root,.app-shell,.app-main{background:linear-gradient(135deg,#fff7f0 0
  .dashboard-hero h1{font-size:2.45rem!important}
  .dashboard-hero>div:first-child>p:not(.eyebrow){font-size:.94rem!important}
 }
+
+
+/* FIX: keep the sidebar's bottom promo card and Sign out control fully visible.
+   The sidebar is a vertical flex column and scrolls as one unit on shorter screens. */
+.app-shell{min-height:100vh;min-height:100dvh}
+.sidebar{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  box-sizing:border-box!important;
+  height:100vh!important;
+  height:100dvh!important;
+  min-height:0!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable;
+  padding-bottom:max(18px,env(safe-area-inset-bottom))!important;
+}
+.sidebar-brand,.sidebar>.workspace-label,.sidebar>.side-nav,.sidebar>.sidebar-divider{
+  flex-shrink:0!important;
+}
+.sidebar-bottom{
+  display:flex!important;
+  flex:0 0 auto!important;
+  flex-direction:column!important;
+  gap:12px!important;
+  width:100%!important;
+  margin-top:auto!important;
+  padding-top:18px!important;
+  padding-bottom:2px!important;
+}
+.sidebar-journey,.sidebar-bottom .signout{
+  flex-shrink:0!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+}
+.sidebar-bottom .signout{
+  min-height:48px!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+.sidebar::-webkit-scrollbar{width:6px}
+.sidebar::-webkit-scrollbar-track{background:transparent}
+.sidebar::-webkit-scrollbar-thumb{
+  background:rgba(132,91,70,.28);
+  border-radius:99px;
+}
+@media(max-height:780px) and (min-width:901px){
+  .sidebar{padding-top:16px!important;padding-bottom:14px!important}
+  .sidebar-brand{padding-bottom:16px!important}
+  .side-nav{gap:3px!important}
+  .side-nav a{min-height:40px!important}
+  .sidebar-bottom{padding-top:12px!important;gap:9px!important}
+  .sidebar-journey{padding:12px!important}
+}

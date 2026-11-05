@@ -1313,3 +1313,15 @@ p{color:var(--text-body)}
   .journey-add-submit{align-items:stretch;flex-direction:column}
   .journey-add-submit .button{width:100%}
 }
+
+
+/* Dataset itinerary generation controls */
+.journey-itinerary-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.journey-itinerary-actions .button{min-height:40px;padding:0 15px;background:#287865}
+.journey-generate-controls{display:grid;gap:7px;margin:-5px 0 18px;padding:15px;border:1px solid #e5ebe9;border-radius:12px;background:#fbfdfc}
+.journey-generate-controls label{display:grid;gap:7px;color:#43545c;font-size:.72rem;font-weight:800}
+.journey-generate-controls input{width:100%;min-height:42px;padding:10px 12px;border:1px solid #dfe7e4;border-radius:9px;background:#fff;color:#30414a;font-size:.75rem}
+.journey-generate-controls input:focus{outline:none;border-color:#6ca895;box-shadow:0 0 0 3px rgba(73,143,120,.12)}
+.journey-generate-controls>small{color:#82908d;font-size:.66rem;line-height:1.5}
+.journey-generation-success{margin:0 0 17px;padding:11px 13px;border-radius:10px;background:#edf7f1;color:#28704f;font-size:.72rem;line-height:1.5}
+@media(max-width:600px){.journey-itinerary-actions{width:100%;align-items:flex-start}.journey-itinerary-actions .button{width:100%}}

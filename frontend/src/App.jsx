@@ -20,6 +20,7 @@ import AppShell from "./components/AppShell";
 import { useAuth } from "./context/AuthContext";
 import "./styles.css";
 import "./styles/travel-mate-theme.css";
+import "./styles/travel-mate-editorial.css";
 
 function Home() {
   const { user } = useAuth();

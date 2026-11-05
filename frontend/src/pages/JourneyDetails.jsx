@@ -167,7 +167,7 @@ export default function JourneyDetails() {
               <div className="journey-itinerary-actions">
                 {itinerary && <span className="journey-draft-chip">{days.length} days · {totalActivities} activities</span>}
                 <button className="button" type="button" disabled={busy} onClick={generateItinerary}>
-                  {busy ? "Generating…" : "Generate with dataset"}
+                  {busy ? "Preparing…" : "Generate itinerary"}
                 </button>
               </div>
             </div>
@@ -176,9 +176,9 @@ export default function JourneyDetails() {
                 Travel interests <span className="journey-optional">(up to 5, comma-separated)</span>
                 <input value={interestText} onChange={event => setInterestText(event.target.value)} placeholder="e.g. history, culture, food, nature" />
               </label>
-              <small>Uses the destination and trip dates with the 480-row tourism itinerary dataset. Existing activities are never overwritten.</small>
+              <small>Your shared plan will be created from the destination and travel dates. Existing activities are kept safe.</small>
             </div>
-            {generationInfo && <p className="journey-generation-success">Generated {generationInfo.days} days and {generationInfo.activities} activities for {generationInfo.destination} · Interest match {generationInfo.interest_match_score}%.</p>}
+            {generationInfo && <p className="journey-generation-success">Your itinerary is ready: {generationInfo.days} days and {generationInfo.activities} activities for {generationInfo.destination}.</p>}
 
             {!itinerary ? (
               <div className="itinerary-empty">

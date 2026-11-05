@@ -98,7 +98,7 @@ export default function Discover() {
         <div>
           <p className="eyebrow">DISCOVER</p>
           <h1>Find your travel people.</h1>
-          <p>{engine === "ml" ? "Your eligible trips are ranked by the trained Random Forest compatibility model." : "Real trips are compared using the explainable baseline compatibility model."}</p>
+          <p>"Explore travellers whose plans and preferences align with yours."</p>
         </div>
         <Link className="button" to="/my-trips/new">Plan another trip</Link>
       </div>
@@ -113,7 +113,7 @@ export default function Discover() {
           </select>
         </label>
         <span className="matching-engine-badge">
-          {engine === "baseline" ? "Explainable matching" : "ML matching"}
+          "Travel compatibility"
         </span>
       </div>
 

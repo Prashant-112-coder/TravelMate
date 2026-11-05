@@ -57,7 +57,7 @@ export default function AppShell({ children }){
 </div>
   </aside>
   <main className="app-main">
-   <header className="app-topbar"><div className="mobile-brand"><span className="brand-mark">✦</span> Travel Mate</div><div className="topbar-spacer"/><div className="topbar-actions"><Link className="topbar-icon" to="/notifications">♧</Link><Link className="topbar-profile" to="/profile"><span>{user?.user_metadata?.display_name||user?.email?.split("@")[0]||"Traveller"}</span><div className="mini-avatar">{initial}</div></Link></div></header>
+   <header className="app-topbar"><div className="mobile-brand"><span className="brand-mark">✦</span> Travel Mate</div><div className="topbar-search"><span aria-hidden="true">⌕</span><input type="search" aria-label="Search trips, destinations or people" placeholder="Search trips, destinations or people..." /></div><div className="topbar-actions"><Link className="topbar-icon" to="/notifications">♧</Link><Link className="topbar-profile" to="/profile"><span>{user?.user_metadata?.display_name||user?.email?.split("@")[0]||"Traveller"}</span><div className="mini-avatar">{initial}</div></Link></div></header>
    {children}
   </main>
  </div>;

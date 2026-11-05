@@ -13,6 +13,8 @@ export default function JourneyDetails() {
   const [title, setTitle] = useState("");
   const [dayId, setDayId] = useState("");
   const [description, setDescription] = useState("");
+  const [interestText, setInterestText] = useState("");
+  const [generationInfo, setGenerationInfo] = useState(null);
 
   async function load() {
     setLoading(true);
@@ -39,6 +41,25 @@ export default function JourneyDetails() {
         method: "POST",
         body: JSON.stringify({})
       });
+      await load();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function generateItinerary() {
+    setBusy(true);
+    setError("");
+    setGenerationInfo(null);
+    try {
+      const interests = interestText.split(",").map(value => value.trim()).filter(Boolean).slice(0, 5);
+      const result = await apiFetch("/journeys/" + id + "/generate-itinerary", {
+        method: "POST",
+        body: JSON.stringify({ interests })
+      });
+      setGenerationInfo(result.generation || null);
       await load();
     } catch (err) {
       setError(err.message);
@@ -143,8 +164,21 @@ export default function JourneyDetails() {
           <section className="journey-panel journey-itinerary-panel" id="itinerary">
             <div className="journey-panel-heading">
               <div><span className="section-kicker">YOUR TRAVEL PLAN</span><h2>Day-wise itinerary</h2></div>
-              {itinerary && <span className="journey-draft-chip">{days.length} days · {totalActivities} activities</span>}
+              <div className="journey-itinerary-actions">
+                {itinerary && <span className="journey-draft-chip">{days.length} days · {totalActivities} activities</span>}
+                <button className="button" type="button" disabled={busy} onClick={generateItinerary}>
+                  {busy ? "Generating…" : "Generate with dataset"}
+                </button>
+              </div>
             </div>
+            <div className="journey-generate-controls">
+              <label>
+                Travel interests <span className="journey-optional">(up to 5, comma-separated)</span>
+                <input value={interestText} onChange={event => setInterestText(event.target.value)} placeholder="e.g. history, culture, food, nature" />
+              </label>
+              <small>Uses the destination and trip dates with the 480-row tourism itinerary dataset. Existing activities are never overwritten.</small>
+            </div>
+            {generationInfo && <p className="journey-generation-success">Generated {generationInfo.days} days and {generationInfo.activities} activities for {generationInfo.destination} · Interest match {generationInfo.interest_match_score}%.</p>}
 
             {!itinerary ? (
               <div className="itinerary-empty">

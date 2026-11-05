@@ -28,9 +28,9 @@ export default function AppShell({ children }){
       <circle cx="31" cy="28" r="2.8" fill="#fff"/>
       <defs>
         <linearGradient id="tmDashboardLogoGradient" x1="10" y1="8" x2="54" y2="55" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#1677d2"/>
-          <stop offset=".55" stopColor="#13a78b"/>
-          <stop offset="1" stopColor="#f2a623"/>
+          <stop stopColor="#082b59"/>
+          <stop offset=".55" stopColor="#1769e8"/>
+          <stop offset="1" stopColor="#7257e8"/>
         </linearGradient>
       </defs>
     </svg>

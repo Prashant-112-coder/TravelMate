@@ -172,3 +172,33 @@ label{color:var(--ed-ink-soft)!important;font-weight:700!important}
 .hero-stage{position:relative!important;min-width:0!important}
 .hero-card{position:absolute!important;right:-18px!important;bottom:30px!important;min-width:190px!important;padding:19px!important}
 @media(max-width:820px){.landing-hero{grid-template-columns:1fr!important}.hero-card{right:12px!important;bottom:16px!important}}
+
+
+/* Dashboard welcome banner — match the misty mountain editorial page header */
+.dashboard-hero{
+  min-height:256px!important;
+  padding:38px 48px!important;
+  display:flex!important;
+  align-items:center!important;
+  border:1px solid #dce3eb!important;
+  border-radius:25px!important;
+  background:
+    linear-gradient(90deg,rgba(248,250,252,.97) 0%,rgba(245,248,251,.91) 38%,rgba(238,244,249,.58) 67%,rgba(235,242,248,.18) 100%),
+    url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2000&q=90') center 48%/cover!important;
+  box-shadow:0 12px 34px rgba(45,48,72,.07)!important;
+}
+.dashboard-hero>div:first-child{position:relative!important;z-index:2!important;max-width:760px!important}
+.dashboard-hero .eyebrow{color:#77718f!important;font-size:.68rem!important;letter-spacing:.17em!important;margin-bottom:17px!important}
+.dashboard-hero h1{font-size:clamp(2.55rem,4vw,3.55rem)!important;line-height:1.05!important;color:#201b4b!important;letter-spacing:-.07em!important;margin:0 0 14px!important}
+.dashboard-hero h1 em{color:#201b4b!important}
+.dashboard-hero .hello-spark{color:#f47742!important}
+.dashboard-hero>div:first-child>p:not(.eyebrow){max-width:650px!important;color:#71839d!important;font-size:1.03rem!important;line-height:1.55!important;margin:0!important}
+.dashboard-hero .dashboard-actions{margin-top:22px!important}
+.dashboard-hero .dashboard-actions .button{min-height:47px!important;padding:0 23px!important}
+.dashboard-hero .dashboard-actions .button-light{background:rgba(255,253,250,.92)!important;color:#252047!important;border:1px solid rgba(255,255,255,.95)!important}
+.dashboard-hero-art{display:none!important}
+@media(max-width:820px){
+ .dashboard-hero{min-height:230px!important;padding:30px 25px!important;background-position:center!important}
+ .dashboard-hero h1{font-size:2.45rem!important}
+ .dashboard-hero>div:first-child>p:not(.eyebrow){font-size:.92rem!important}
+}

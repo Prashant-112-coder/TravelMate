@@ -929,3 +929,29 @@ html,body,#root,.app-shell,.app-main{background:linear-gradient(135deg,#fff7f0 0
 .content-wrap .button:not(.dashboard-hero .button){transition:transform .22s ease,box-shadow .22s ease!important}
 @media(max-width:900px){.dashboard-feature-grid,.dashboard-bottom-grid{grid-template-columns:1fr}.dashboard-hero{padding:38px!important}}
 @media(max-width:600px){.dashboard-hero{padding:28px 22px!important;min-height:320px!important}.dashboard-feature-card{align-items:flex-start;flex-wrap:wrap}.dashboard-feature-card>b{margin-left:80px}}
+
+
+/* Dashboard sizing refinement: slightly more compact hero and typography */
+.dashboard-hero{
+ min-height:330px!important;
+ padding:46px 50px!important;
+ border-radius:26px!important;
+}
+.dashboard-hero h1{
+ font-size:clamp(2.55rem,4.5vw,4.1rem)!important;
+}
+.dashboard-hero .eyebrow{font-size:.78rem!important;letter-spacing:.12em!important}
+.dashboard-hero>div:first-child>p:not(.eyebrow){
+ font-size:1rem!important;line-height:1.52!important;max-width:510px!important
+}
+.dashboard-hero-art{max-width:320px!important;max-height:320px!important}
+.dashboard-hero-art span{font-size:.85rem!important}
+.dashboard-hero .button{padding:12px 21px!important;font-size:.9rem!important}
+@media(max-width:900px){
+ .dashboard-hero{min-height:310px!important;padding:34px!important}
+}
+@media(max-width:600px){
+ .dashboard-hero{min-height:290px!important;padding:26px 20px!important}
+ .dashboard-hero h1{font-size:2.45rem!important}
+ .dashboard-hero>div:first-child>p:not(.eyebrow){font-size:.94rem!important}
+}

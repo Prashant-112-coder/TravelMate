@@ -669,3 +669,55 @@ input::placeholder,textarea::placeholder{color:#aebfb2!important}
 .sidebar-bottom .signout:focus-visible{outline:3px solid #f2b69a!important;outline-offset:3px!important}
 .sidebar-bottom{display:flex!important;flex-direction:column!important;gap:12px!important}
 @media(max-width:900px){.sidebar-bottom{display:none!important}}
+
+
+/* RESTORE THE LIGHT TRAVEL MATE LOOK — based on the user's Nov 5 reference screenshots */
+:root{
+ --tm-forest:#173d32;--tm-forest-deep:#123329;--tm-forest-soft:#244d40;
+ --tm-cream:#f5f7fa;--tm-paper:#ffffff;--tm-ink:#344255;--tm-muted:#748397;
+ --tm-border:#e3e9f0;--tm-shadow:0 12px 30px rgba(36,52,72,.055);
+}
+html,body,#root,.app-shell,.app-main{background:#f5f7fa!important;color:#344255!important}
+.sidebar{background:linear-gradient(180deg,#ffffff 0%,#fbfcfd 58%,#f6faf8 100%)!important;color:#344255!important;border-right:1px solid #e5ebf1!important;box-shadow:2px 0 12px rgba(36,52,72,.035)!important}
+.sidebar .brand-name,.sidebar .brand-title,.sidebar .nav-section-title,.sidebar .side-nav a,.sidebar .sidebar-link,.sidebar .sidebar-bottom{color:#344255!important}
+.sidebar .side-nav a{background:transparent!important}
+.sidebar .side-nav a:hover{background:#f4f7fa!important;color:#e95f43!important}
+.sidebar .side-nav a.active,.sidebar .side-nav a[aria-current="page"]{background:#fff0eb!important;color:#e95f43!important;border:1px solid #ffe0d5!important}
+.app-topbar{background:#ffffff!important;color:#344255!important;border-bottom:1px solid #e7edf2!important;box-shadow:0 3px 14px rgba(36,52,72,.035)!important}
+.app-topbar .mobile-brand,.app-topbar .mobile-brand a,.app-topbar .topbar-actions,.app-topbar .topbar-icon,.app-topbar .topbar-profile,.app-topbar .topbar-profile span{color:#344255!important}
+.app-topbar .topbar-search{background:#f7f9fb!important;border:1px solid #e4eaf0!important}
+.app-topbar .topbar-search span{color:#e96b4c!important}
+.app-topbar .topbar-search input{color:#344255!important;background:transparent!important}
+.app-topbar .topbar-search input::placeholder{color:#8996a6!important}
+.app-topbar .topbar-icon{background:#ffffff!important;border:1px solid #e4eaf0!important}
+.app-topbar .topbar-icon:hover{background:#fff0eb!important;color:#e95f43!important}
+.app-topbar .mini-avatar{background:#f2e2db!important;color:#a94e35!important;border:1px solid #ead5ca!important}
+.content-wrap{color:#344255!important}
+.page-heading h1,.content-wrap h1,.content-wrap h2,.content-wrap h3,.content-wrap h4{color:#344255!important}
+.page-heading p:not(.eyebrow),.content-wrap p,.content-wrap small,.content-wrap label,.content-wrap .muted{color:#718096!important}
+.stat-card,.panel-card,.dashboard-main-card,.dashboard-side-card,.empty-card,.profile-card,.journey-panel,.journey-card,.request-card,.traveller-card,.chat-panel,.conversation-list,.empty-state-card,.discover-empty,.journey-empty,.settings-card,.notification-card,.trip-card,.my-trip-card,.filter-bar,.setting-card,.notification,.request-list,.journey-summary-grid>article{background:#ffffff!important;color:#344255!important;border-color:#e3e9f0!important;box-shadow:0 12px 30px rgba(36,52,72,.055)!important}
+.journey-card-body,.explore-trip-body,.traveller-body{background:#ffffff!important;color:#344255!important}
+.journey-card-body h3,.journey-card-title-row h3,.stat-card strong,.journey-summary-grid>article strong{color:#344255!important}
+.journey-member{background:#edf3ec!important;color:#456253!important}
+.journey-duration{background:#f7f0e2!important;color:#526c5b!important}
+.journey-date-line,.journey-card-footer>span{color:#718096!important}
+.journey-filter-pills button{background:#ffffff!important;color:#344255!important;border-color:#e3e9f0!important}
+.journey-filter-pills button.active{background:#fff0eb!important;color:#e95f43!important;border-color:#ffe0d5!important}
+.journey-search-sort input,.journey-search-sort select,input,textarea,select,.filter-bar input,.filter-bar select{background:#ffffff!important;border-color:#e3e9f0!important;color:#344255!important}
+input::placeholder,textarea::placeholder{color:#8996a6!important}
+.itinerary-day-modern{background:#ffffff!important;border-color:#e3e9f0!important}
+.itinerary-day-heading-modern{background:#f3f7f5!important}
+.message:not(.mine) span{background:#f0f3f6!important;color:#344255!important}
+.conversation.active{background:#fff0eb!important}
+.my-journeys-banner{background:linear-gradient(90deg,rgba(245,247,250,.97) 0%,rgba(245,247,250,.84) 43%,rgba(245,247,250,.12) 100%),url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1700&q=90') center 48%/cover!important;border:1px solid #e3e9f0}
+.my-journeys-banner h1{color:#344255!important}
+.my-journeys-banner p:not(.eyebrow){color:#718096!important}
+.sidebar-journey{background:linear-gradient(135deg,#f8fbf8,#f3f7f5)!important;border:1px solid #e1e9e2!important;box-shadow:none!important}
+.sidebar-journey strong{color:#344255!important}
+.sidebar-journey small{color:#718096!important}
+.sidebar-journey a{display:flex!important;align-items:center!important;justify-content:center!important;min-height:38px!important;padding:0 12px!important;border-radius:11px!important;background:#ed6849!important;color:#ffffff!important;font-size:.76rem!important;font-weight:900!important;text-decoration:none!important}
+.sidebar-journey a:hover{background:#d95639!important;color:#ffffff!important}
+.sidebar-bottom .signout{display:flex!important;align-items:center!important;gap:9px!important;width:100%!important;min-height:48px!important;padding:0 16px!important;border:1px solid #f2d6ca!important;border-radius:14px!important;background:#fff0eb!important;color:#a94e35!important;font-size:.88rem!important;font-weight:900!important;opacity:1!important;visibility:visible!important;box-shadow:none!important;cursor:pointer!important}
+.sidebar-bottom .signout:hover,.sidebar-bottom .signout:focus-visible{background:#ed6849!important;color:#ffffff!important}
+.sidebar-bottom{display:flex!important;flex-direction:column!important;gap:12px!important}
+@media(max-width:900px){.sidebar-bottom{display:none!important}}

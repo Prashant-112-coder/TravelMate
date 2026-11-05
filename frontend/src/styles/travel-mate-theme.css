@@ -444,3 +444,44 @@ h1,h2,h3,.travel-brand-copy strong,.sidebar-brand{font-family:'Manrope','DM Sans
 @media(max-width:1050px){.content-wrap{width:calc(100% - 42px)}.dashboard-hero{padding:36px!important}}
 @media(max-width:820px){.content-wrap{width:calc(100% - 32px)}.dashboard-hero{min-height:280px;padding:30px 26px!important}.dashboard-hero-art{display:none}.explore-trip-image{height:190px!important}}
 @media(max-width:600px){.content-wrap{width:calc(100% - 24px);padding-top:24px}.dashboard-hero{min-height:300px;padding:27px 22px!important;border-radius:18px!important}.dashboard-hero h1{font-size:2.6rem!important}.stats-grid{gap:10px}.stat-card{padding:15px!important;min-height:112px!important}.stat-card strong{font-size:1.45rem!important}.panel-card{padding:18px!important}.page-heading h1{font-size:2.2rem!important}.explore-trip-image{height:175px!important}}
+
+
+
+/* Top navigation: match the forest-green Wayfare-inspired sidebar */
+.app-topbar{
+  background:#183a31!important;
+  color:#fffefa!important;
+  border:0!important;
+  box-shadow:0 5px 20px rgba(20,48,37,.12)!important;
+}
+.app-topbar .mobile-brand,
+.app-topbar .mobile-brand a,
+.app-topbar .topbar-actions,
+.app-topbar .topbar-icon,
+.app-topbar .topbar-profile,
+.app-topbar .topbar-profile span{color:#fffefa!important}
+.app-topbar .brand-mark{color:#f0b99e!important}
+.app-topbar .topbar-search{
+  background:rgba(255,254,250,.13)!important;
+  border:1px solid rgba(255,254,250,.22)!important;
+  border-radius:999px!important;
+}
+.app-topbar .topbar-search span{color:#f2c4aa!important}
+.app-topbar .topbar-search input{
+  color:#fffefa!important;
+  background:transparent!important;
+}
+.app-topbar .topbar-search input::placeholder{color:rgba(255,254,250,.72)!important}
+.app-topbar .topbar-icon{
+  background:rgba(255,254,250,.12)!important;
+  border:1px solid rgba(255,254,250,.18)!important;
+}
+.app-topbar .topbar-icon:hover{background:#d56b45!important}
+.app-topbar .mini-avatar{
+  background:#d56b45!important;
+  color:#fffefa!important;
+  border:2px solid rgba(255,254,250,.45)!important;
+}
+@media(max-width:820px){
+ .app-topbar{background:#183a31!important}
+}

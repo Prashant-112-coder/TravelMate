@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import os
-from datetime import date
+import re
+from datetime import date, timedelta
+from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any
 
@@ -12,15 +14,22 @@ from pydantic import BaseModel, Field
 
 ROOT = Path(__file__).resolve().parent
 MODEL_PATH = ROOT / "models" / "traveller_pair_random_forest.joblib"
+ITINERARY_DATASET_PATH = ROOT / "data" / "tourism_iternary_dataset.csv"
 ML_SERVICE_TOKEN = os.getenv("ML_SERVICE_TOKEN", "")
 
-app = FastAPI(title="Travel Mate Random Forest Matching API", version="1.0.0")
+app = FastAPI(title="Travel Mate ML and Dataset Itinerary API", version="1.1.0")
 _model = None
+_itinerary_frame: pd.DataFrame | None = None
 
 class RankRequest(BaseModel):
     source: dict[str, Any]
     candidates: list[dict[str, Any]] = Field(default_factory=list)
     top_n: int = Field(default=30, ge=1, le=100)
+
+class ItineraryRequest(BaseModel):
+    destination: str = Field(min_length=2, max_length=120)
+    duration: int = Field(ge=1, le=30)
+    interests: list[str] = Field(default_factory=list, max_length=20)
 
 def model():
     global _model
@@ -36,14 +45,122 @@ def norm(value: Any) -> str:
     return str(value).strip().casefold()
 
 def normalize_destination(value: Any) -> str:
-    """Normalize destination spelling, case, punctuation and a trailing country name."""
-    import re
     text = norm(value)
     text = re.sub(r"[^\w]+", " ", text, flags=re.UNICODE)
     text = re.sub(r"\s+", " ", text).strip()
-    # Treat common country-qualified entries (for example, 'Goa, India') as the city/place.
     text = re.sub(r"\s+india$", "", text).strip()
     return text
+
+def load_itinerary_dataset() -> pd.DataFrame:
+    global _itinerary_frame
+    if _itinerary_frame is None:
+        if not ITINERARY_DATASET_PATH.exists():
+            raise FileNotFoundError(
+                "Itinerary dataset missing. Place tourism_iternary_dataset.csv in python-service/data/."
+            )
+        frame = pd.read_csv(ITINERARY_DATASET_PATH)
+        required = {
+            "input__destination", "input__duration",
+            "input__interests__001", "input__interests__002",
+            "input__interests__003", "input__interests__004",
+            "input__interests__005", "output__optimized_itinerary__state",
+            "output__optimized_itinerary__days__day",
+            "output__optimized_itinerary__days__morning",
+            "output__optimized_itinerary__days__afternoon",
+            "output__optimized_itinerary__days__evening",
+        }
+        missing = required.difference(frame.columns)
+        if missing:
+            raise ValueError("Dataset is missing required columns: " + ", ".join(sorted(missing)))
+        # Each non-empty destination row starts an itinerary; subsequent day rows inherit its inputs.
+        frame["input__destination"] = frame["input__destination"].ffill()
+        frame["input__duration"] = frame["input__duration"].ffill()
+        for column in [f"input__interests__{index:03d}" for index in range(1, 6)] + ["output__optimized_itinerary__state"]:
+            frame[column] = frame[column].ffill()
+        _itinerary_frame = frame
+    return _itinerary_frame
+
+def _interest_values(row: pd.Series) -> set[str]:
+    return {
+        norm(row.get(f"input__interests__{index:03d}"))
+        for index in range(1, 6)
+        if norm(row.get(f"input__interests__{index:03d}"))
+    }
+
+def generate_dataset_itinerary(payload: ItineraryRequest) -> dict[str, Any]:
+    frame = load_itinerary_dataset()
+    requested = normalize_destination(payload.destination)
+    frame = frame.copy()
+    frame["_destination_key"] = frame["input__destination"].map(normalize_destination)
+    destinations = frame[["_destination_key", "input__destination"]].drop_duplicates()
+    exact = destinations[destinations["_destination_key"] == requested]
+    matched_key = None
+    if not exact.empty:
+        matched_key = exact.iloc[0]["_destination_key"]
+    else:
+        # Support a user entering a shorter common form, e.g. "Alleppey".
+        candidates = []
+        for _, item in destinations.iterrows():
+            key = item["_destination_key"]
+            similarity = SequenceMatcher(None, requested, key).ratio()
+            if requested in key or key in requested:
+                similarity = max(similarity, 0.88)
+            candidates.append((similarity, key))
+        if candidates:
+            score, key = max(candidates)
+            if score >= 0.72:
+                matched_key = key
+    if not matched_key:
+        suggestions = destinations["input__destination"].head(12).tolist()
+        raise HTTPException(status_code=404, detail={
+            "message": f"No dataset itinerary found for '{payload.destination}'.",
+            "suggestions": suggestions
+        })
+
+    matching = frame[frame["_destination_key"] == matched_key].copy()
+    # Dataset input fields repeat after forward fill; rank the single itinerary by interest overlap.
+    row = matching.iloc[0]
+    available_interests = _interest_values(row)
+    requested_interests = {norm(value) for value in payload.interests if norm(value)}
+    overlap = sorted(available_interests.intersection(requested_interests))
+    interest_score = round((len(overlap) / len(requested_interests)) * 100, 1) if requested_interests else 0.0
+    available_days = int(row["input__duration"])
+    if payload.duration > available_days:
+        raise HTTPException(status_code=422, detail={
+            "message": f"The dataset has a {available_days}-day itinerary for {row['input__destination']}, but {payload.duration} days were requested.",
+            "available_days": available_days,
+            "requested_days": payload.duration
+        })
+
+    matching = matching.sort_values("output__optimized_itinerary__days__day")
+    days = []
+    for _, source_day in matching.head(payload.duration).iterrows():
+        activities = []
+        for period, column in [
+            ("morning", "output__optimized_itinerary__days__morning"),
+            ("afternoon", "output__optimized_itinerary__days__afternoon"),
+            ("evening", "output__optimized_itinerary__days__evening"),
+        ]:
+            title = str(source_day.get(column) or "").strip()
+            if title and title.casefold() != "nan":
+                activities.append({"title": title, "period": period})
+        days.append({
+            "day_number": int(source_day["output__optimized_itinerary__days__day"]),
+            "title": f"Day {int(source_day['output__optimized_itinerary__days__day'])}",
+            "activities": activities
+        })
+    if not days or not any(day["activities"] for day in days):
+        raise HTTPException(status_code=422, detail="The selected dataset itinerary has no usable activities.")
+    return {
+        "source": "tourism_iternary_dataset.csv",
+        "destination": str(row["input__destination"]),
+        "state": str(row["output__optimized_itinerary__state"]),
+        "available_days": available_days,
+        "requested_days": payload.duration,
+        "matched_interests": overlap,
+        "interest_match_score": interest_score,
+        "days": days
+    }
 
 def items(value: Any) -> set[str]:
     if isinstance(value, list):
@@ -108,7 +225,23 @@ def eligible(a: dict, b: dict) -> bool:
 
 @app.get("/health")
 def health():
-    return {"ok": True, "service": "travel-mate-ml", "model_exists": MODEL_PATH.exists()}
+    return {
+        "ok": True,
+        "service": "travel-mate-ml",
+        "model_exists": MODEL_PATH.exists(),
+        "itinerary_dataset_exists": ITINERARY_DATASET_PATH.exists()
+    }
+
+@app.post("/generate-itinerary")
+def generate_itinerary(payload: ItineraryRequest):
+    try:
+        return generate_dataset_itinerary(payload)
+    except HTTPException:
+        raise
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"Itinerary generation unavailable: {exc}") from exc
 
 @app.post("/rank")
 def rank(payload: RankRequest, authorization: str | None = Header(default=None)):

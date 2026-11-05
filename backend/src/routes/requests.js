@@ -223,15 +223,22 @@ router.patch("/:id", async (req, res) => {
   if (status.data === "accepted") {
     const { data: conversation, error: conversationError } = await db
       .from("conversations")
-      .insert({ request_id: request.id })
+      .upsert({ request_id: request.id }, { onConflict: "request_id", ignoreDuplicates: true })
       .select("*")
-      .single();
+      .maybeSingle();
 
     if (conversationError && conversationError.code !== "23505") {
       return res.status(400).json({ error: conversationError.message });
     }
 
-    return res.json({ request: updated, conversation: conversation || null });
+    const { data: journeyId, error: journeyError } = await db
+      .rpc("create_journey_for_accepted_request", { p_request_id: request.id });
+
+    if (journeyError) {
+      return res.status(400).json({ error: "Request accepted, but journey creation failed: " + journeyError.message });
+    }
+
+    return res.json({ request: updated, conversation: conversation || null, journey_id: journeyId });
   }
 
   return res.json({ request: updated });

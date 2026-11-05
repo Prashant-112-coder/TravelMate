@@ -234,3 +234,33 @@ label{color:var(--ed-ink-soft)!important;font-weight:700!important}
 .app-topbar .topbar-profile{color:#242044!important}
 .app-topbar .mini-avatar{background:linear-gradient(145deg,#ff925d,#e65d3c)!important;border:2px solid rgba(255,255,255,.96)!important}
 @media(max-width:820px){.app-topbar{background-position:center!important}.sidebar{background-size:auto,auto 42%,auto!important}}
+
+
+/* Slightly richer colour balance: warm apricot, blush and soft periwinkle */
+.sidebar{
+ background:
+  linear-gradient(180deg,rgba(255,225,207,.91) 0%,rgba(250,211,190,.88) 48%,rgba(225,224,242,.84) 100%),
+  url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=85') center bottom/auto 58% no-repeat,
+  linear-gradient(145deg,#ffd9c4 0%,#f5c2aa 55%,#d9d9ed 100%)!important;
+ border-right:1px solid rgba(188,117,91,.2)!important;
+}
+.app-topbar{
+ background:
+  linear-gradient(90deg,rgba(255,224,205,.96) 0%,rgba(250,211,191,.93) 48%,rgba(228,222,239,.86) 100%),
+  url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=85') right 54%/cover no-repeat!important;
+ border-bottom:1px solid rgba(188,117,91,.18)!important;
+}
+.sidebar .workspace-label{color:#98634f!important}
+.sidebar .side-nav a i,.travel-brand-copy small{color:#8a6680!important}
+.sidebar .side-nav a.active,.sidebar .side-nav a[aria-current=page]{
+ background:rgba(255,250,245,.97)!important;
+ box-shadow:0 9px 24px rgba(151,91,69,.12)!important;
+}
+.app-topbar .topbar-search{
+ background:rgba(255,250,246,.94)!important;
+ border:1px solid rgba(255,255,255,.98)!important;
+}
+.app-topbar .topbar-icon{
+ background:rgba(255,249,243,.9)!important;
+ border:1px solid rgba(255,255,255,.98)!important;
+}

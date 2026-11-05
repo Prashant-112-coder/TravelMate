@@ -22,7 +22,21 @@ export default function Dashboard() {
       <Link className="stat-card stat-requests" to="/requests"><span className="stat-icon">▤</span><div><strong>{stats.requests}</strong><span>Requests</span><small>Needs your attention</small></div><b className="stat-arrow">→</b></Link>
       <Link className="stat-card stat-profile" to="/profile"><span className="stat-icon">◎</span><div><strong>{completion}%</strong><span>Profile complete</span><small>Make your profile shine</small></div><b className="stat-arrow">→</b></Link>
     </section>
-    <section className="dashboard-columns"><div className="panel-card"><div className="card-heading"><div><span className="section-kicker">YOUR SETUP</span><h2>Make your traveller profile stand out</h2></div><b>{completion}%</b></div><div className="progress-track large"><span style={{width:completion+"%"}}></span></div><div className="setup-list"><div className="setup-done"><span>✓</span><div><strong>Account created</strong><small>Your Travel Mate account is ready to go.</small></div></div><Link className="setup-current" to="/profile"><span>→</span><div><strong>{profile?.avatar_url?"Profile photo added":"Add your photo and travel style"}</strong><small>{profile?.avatar_url?"Keep adding preferences to improve matching.":"Show travellers what kind of journeys inspire you."}</small></div><b>Open</b></Link><Link className="setup-current" to="/my-trips/new"><span>3</span><div><strong>Put a destination on the map</strong><small>Add your dates and discover people travelling your way.</small></div><b>Open</b></Link></div></div><aside className="panel-card next-trip"><div className="next-trip-image"></div><div className="next-trip-content"><span className="section-kicker">NEXT JOURNEY</span><h3>Your next great story starts somewhere.</h3><p>Add a trip to find travellers with similar plans, dates and interests.</p><Link className="text-link" to="/my-trips">View my trips →</Link></div></aside></section>
-    <section className="dashboard-columns lower"><div className="panel-card activity-card"><div className="card-heading"><div><span className="section-kicker">EXPLORE</span><h2>Journeys worth discovering</h2></div><Link className="text-link" to="/explore">Explore all →</Link></div><div className="soft-empty"><span>⌖</span><div><strong>Find your kind of adventure</strong><p>Browse real plans shared by travellers and find a journey that feels right.</p></div></div></div><div className="panel-card safety-card"><span className="section-kicker">SAFETY FIRST</span><h2>Good journeys start with trust.</h2><p>You stay in control of your visibility, connections and travel experience.</p><Link className="text-link" to="/settings">Review settings →</Link></div></section>
+    <section className="dashboard-feature-grid">
+      <Link className="dashboard-feature-card" to="/my-trips">
+        <span className="dashboard-feature-icon">▦</span>
+        <span className="dashboard-feature-copy"><strong>Continue Planning</strong><small>Pick up where you left off and turn your travel ideas into a trip.</small></span>
+        <b>View all →</b>
+      </Link>
+      <Link className="dashboard-feature-card" to="/discover">
+        <span className="dashboard-feature-icon">♧</span>
+        <span className="dashboard-feature-copy"><strong>Discover Travel Mates</strong><small>Find solo travellers with similar travel interests.</small></span>
+        <b>Explore →</b>
+      </Link>
+    </section>
+    <section className="dashboard-bottom-grid">
+      <div className="dashboard-note-card"><span className="section-kicker">TRAVEL TOGETHER</span><h2>Your next adventure is better shared.</h2><p>Explore open trips, connect with compatible travellers, and plan your next journey together.</p><Link className="text-link" to="/explore">Explore open trips →</Link></div>
+      <div className="dashboard-note-card"><span className="section-kicker">YOUR PROFILE</span><h2>Make every connection count.</h2><p>Your profile is {completion}% complete. Add your travel style and interests to help improve your matches.</p><Link className="text-link" to="/profile">Improve my profile →</Link></div>
+    </section>
   </div>
 }

@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import os
 import re
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
+from zoneinfo import ZoneInfo
 from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any
@@ -226,7 +227,7 @@ def is_still_active(record: dict) -> bool:
     """A trip is active for matching through its end date, inclusive."""
     try:
         end = date.fromisoformat(str(record.get("end_date", ""))[:10])
-        return end >= date.today()
+        return end >= datetime.now(ZoneInfo("Asia/Kolkata")).date()
     except (TypeError, ValueError):
         return False
 

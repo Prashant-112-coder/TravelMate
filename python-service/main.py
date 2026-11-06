@@ -222,7 +222,19 @@ def pair_features(a: dict, b: dict) -> dict:
         "experience_gap": abs(experience.get(norm(a.get("travel_experience")), 1) - experience.get(norm(b.get("travel_experience")), 1)),
     }
 
+def starts_in_future(record: dict) -> bool:
+    """Only trips that have not started can enter active matching."""
+    try:
+        start = date.fromisoformat(str(record.get("start_date", ""))[:10])
+        return start >= date.today()
+    except (TypeError, ValueError):
+        return False
+
 def eligible(a: dict, b: dict) -> bool:
+    # Keep the trained model and its 14-feature contract unchanged.
+    # This is an eligibility guard, not a model feature or retraining step.
+    if not starts_in_future(a) or not starts_in_future(b):
+        return False
     f = pair_features(a, b)
     return bool(f["same_destination"] and f["date_overlap_iou"] > 0 and str(a.get("traveller_id", "")) != str(b.get("traveller_id", "")))
 

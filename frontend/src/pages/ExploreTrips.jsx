@@ -149,7 +149,7 @@ export default function ExploreTrips() {
                     {tripPeriod(trip) !== "past" ? (
                       <Link className="button" to={`/discover?trip=${encodeURIComponent(trip.id)}`}>Find match</Link>
                     ) : (
-                      <span className="button button-light" aria-label="Past or in-progress trips cannot be matched">Not matchable</span>
+                      <span className="button button-light" aria-label="Trips whose end date has passed cannot be matched">Not matchable</span>
                     )}
                   </div>
                 </div>

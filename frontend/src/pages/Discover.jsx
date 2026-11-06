@@ -3,6 +3,10 @@ import { Link, useSearchParams } from "react-router-dom";
 import { apiFetch } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 
+function getToday() {
+  return new Intl.DateTimeFormat("en-CA").format(new Date());
+}
+
 const factorLabels = [
   ["destination", "Destination"],
   ["dates", "Dates"],
@@ -28,9 +32,10 @@ export default function Discover() {
   useEffect(() => {
     Promise.all([apiFetch("/trips"), apiFetch("/requests")])
       .then(([tripResponse, requestResponse]) => {
-        const ownTrips = tripResponse.trips || [];
+        const today = getToday();
+        const ownTrips = (tripResponse.trips || []).filter((item) => item.status === "open" && item.start_date >= today);
         setTrips(ownTrips);
-        if (!trip && ownTrips[0]) setTrip(tripResponse.trips[0].id);
+        setTrip((current) => ownTrips.some((item) => item.id === current) ? current : (ownTrips[0]?.id || ""));
         const connections = {};
         (requestResponse.requests || []).forEach((item) => {
           if (
@@ -128,7 +133,7 @@ export default function Discover() {
         <section className="discover-empty">
           <div className="discover-illustration">✦</div>
           <h2>No compatible travellers yet</h2>
-          <p>Travel Mate currently requires an open trip with a compatible destination and overlapping dates. More people and trips will create more matches.</p>
+          <p>{trips.length === 0 ? "You need an open trip with a future start date before searching for travel mates." : "No other discoverable traveller has an open trip with the same destination and overlapping future dates yet."} More people and trips will create more matches.</p>
           <Link className="button button-light" to="/my-trips/new">Create another trip</Link>
         </section>
       ) : (

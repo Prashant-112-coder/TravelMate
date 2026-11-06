@@ -33,7 +33,8 @@ export default function Discover() {
     Promise.all([apiFetch("/trips"), apiFetch("/requests")])
       .then(([tripResponse, requestResponse]) => {
         const today = getToday();
-        const ownTrips = (tripResponse.trips || []).filter((item) => item.status === "open" && item.start_date >= today);
+        // Keep trips selectable while they are ongoing; expire only after end_date.
+        const ownTrips = (tripResponse.trips || []).filter((item) => item.status === "open" && item.end_date >= today);
         setTrips(ownTrips);
         setTrip((current) => ownTrips.some((item) => item.id === current) ? current : (ownTrips[0]?.id || ""));
         const connections = {};
@@ -113,7 +114,7 @@ export default function Discover() {
           Matching trip
           <select value={trip} onChange={(e) => setTrip(e.target.value)}>
             {trips.map((item) => (
-              <option key={item.id} value={item.id}>{item.title} · {item.destination}</option>
+              <option key={item.id} value={item.id}>{item.title} · {item.destination} · {item.start_date} to {item.end_date}</option>
             ))}
           </select>
         </label>
@@ -133,7 +134,7 @@ export default function Discover() {
         <section className="discover-empty">
           <div className="discover-illustration">✦</div>
           <h2>No compatible travellers yet</h2>
-          <p>{trips.length === 0 ? "You need an open trip with a future start date before searching for travel mates." : "No other discoverable traveller has an open trip with the same destination and overlapping future dates yet."} More people and trips will create more matches.</p>
+          <p>{trips.length === 0 ? "You need an open trip whose end date has not passed before searching for travel mates." : "No other discoverable traveller has an open trip with the same destination and overlapping future dates yet."} More people and trips will create more matches.</p>
           <Link className="button button-light" to="/my-trips/new">Create another trip</Link>
         </section>
       ) : (

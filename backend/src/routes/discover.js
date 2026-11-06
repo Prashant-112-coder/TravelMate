@@ -134,7 +134,7 @@ router.get("/", async (req, res) => {
       engine: matchingEngineName(),
       eligible_count: 0,
       results: [],
-      message: "This trip has already started or is not open for discovery. Past trips remain available in Explore Trips.",
+      message: "This trip has ended or is not open for discovery. Trips that are still in progress remain eligible for matching.",
     });
   }
 

@@ -125,10 +125,11 @@ router.get("/", async (req, res) => {
     return res.status(404).json({ error: "Your trip was not found." });
   }
 
-  // Only future-starting trips can participate in active traveller matching.
+  // Trips remain matchable until their END date has passed. A trip that has
+  // already started but is still in progress is still eligible for matching.
   // Past trips remain visible in Explore Trips; this guard affects matching only.
-  const today = new Date().toISOString().slice(0, 10);
-  if (ownResult.data.status !== "open" || !ownResult.data.start_date || ownResult.data.start_date < today) {
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date());
+  if (ownResult.data.status !== "open" || !ownResult.data.end_date || ownResult.data.end_date < today) {
     return res.json({
       engine: matchingEngineName(),
       eligible_count: 0,
@@ -141,7 +142,7 @@ router.get("/", async (req, res) => {
     .from("trips")
     .select("*")
     .eq("status", "open")
-    .gte("start_date", today)
+    .gte("end_date", today)
     .neq("user_id", req.user.id)
     .order("created_at", { ascending: false })
     .limit(100);

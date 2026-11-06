@@ -134,7 +134,7 @@ export default function Discover() {
         <section className="discover-empty">
           <div className="discover-illustration">✦</div>
           <h2>No compatible travellers yet</h2>
-          <p>{trips.length === 0 ? "You need an open trip whose end date has not passed before searching for travel mates." : "No other discoverable traveller has an open trip with the same destination and overlapping future dates yet."} More people and trips will create more matches.</p>
+          <p>{trips.length === 0 ? "You need an open trip whose end date has not passed before searching for travel mates." : "No other discoverable traveller has an open trip with the same destination and overlapping dates that have not ended yet."} More people and trips will create more matches.</p>
           <Link className="button button-light" to="/my-trips/new">Create another trip</Link>
         </section>
       ) : (

@@ -8,7 +8,7 @@ function getToday() {
 
 function tripPeriod(trip) {
   const today = getToday();
-  if (trip.end_date < today) return "past";
+  if (trip.status === "completed" || trip.end_date < today) return "past";
   if (trip.start_date < today) return "in-progress";
   return "upcoming";
 }
@@ -73,7 +73,7 @@ export default function ExploreTrips() {
         <div>
           <p className="eyebrow">EXPLORE TRIPS</p>
           <h1>Discover real travel plans.</h1>
-          <p>Browse open trips created by discoverable travellers.</p>
+          <p>Browse upcoming plans and past journeys shared by discoverable travellers.</p>
         </div>
         <Link className="button" to="/my-trips/new">+ Create trip</Link>
       </div>

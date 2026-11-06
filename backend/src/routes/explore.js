@@ -7,7 +7,7 @@ router.use(requireAuth);
 
 router.get("/trips",async(req,res)=>{
   const db=createUserClient(req.accessToken);
-  const {data:trips,error}=await db.from("trips").select("*").eq("status","open").neq("user_id",req.user.id).order("created_at",{ascending:false});
+  const {data:trips,error}=await db.from("trips").select("*").in("status",["open","completed"]).neq("user_id",req.user.id).order("created_at",{ascending:false});
   if(error)return res.status(400).json({error:error.message});
   const ids=[...new Set((trips||[]).map(t=>t.user_id))];
   if(!ids.length)return res.json({trips:[]});

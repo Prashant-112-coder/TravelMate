@@ -28,8 +28,9 @@ export default function Discover() {
   const [error, setError] = useState("");
   const [engine, setEngine] = useState("baseline");
   const [expanded, setExpanded] = useState({});
-  // Hide people with an existing pending/accepted connection, but handle the all-hidden case below.
-  const visibleResults = results.filter(({ profile }) => profile?.id && !activeConnections[profile.id]);
+  // Keep every compatible traveller visible, including existing connections.
+  // Their request action is disabled below to prevent duplicate requests.
+  const visibleResults = results.filter(({ profile }) => Boolean(profile?.id));
 
   useEffect(() => {
     Promise.all([apiFetch("/trips"), apiFetch("/requests")])
@@ -135,17 +136,11 @@ export default function Discover() {
       ) : visibleResults.length === 0 ? (
         <section className="discover-empty" role="status" aria-live="polite">
           <div className="discover-illustration">✦</div>
-          <h2>{results.length > 0 ? "You’re already connected with these travellers" : "No compatible travellers yet"}</h2>
-          <p>{results.length > 0
-            ? "We found compatible trips, but every traveller already has a pending request or accepted connection with you. Check Requests or Messages to continue the conversation."
-            : trips.length === 0
-              ? "You need an open trip whose end date has not passed before searching for travel mates."
-              : "No other discoverable traveller has an open trip to the same destination with at least one overlapping day. Trips remain eligible until their end date has passed."}</p>
-          {results.length > 0 ? (
-            <Link className="button button-light" to="/requests">View requests</Link>
-          ) : (
-            <Link className="button button-light" to="/my-trips/new">Create another trip</Link>
-          )}
+          <h2>No compatible travellers yet</h2>
+          <p>{trips.length === 0
+            ? "You need an open trip whose end date has not passed before searching for travel mates."
+            : "No other discoverable traveller has an open trip to the same destination with at least one overlapping day. Trips remain eligible until their end date has passed."}</p>
+          <Link className="button button-light" to="/my-trips/new">Create another trip</Link>
         </section>
       ) : (
         <div className="traveller-grid">
@@ -222,8 +217,8 @@ export default function Discover() {
                   >
                     View profile
                   </Link>
-                  <button className="button" disabled={sent[candidateTrip.id]} onClick={() => request(candidateTrip.id)}>
-                    {sent[candidateTrip.id] ? "Request sent" : "Send request"}
+                  <button className="button" disabled={sent[candidateTrip.id] || activeConnections[profile.id]} onClick={() => request(candidateTrip.id)}>
+                    {sent[candidateTrip.id] ? "Request sent" : activeConnections[profile.id] ? "Already connected" : "Send request"}
                   </button>
                 </div>
               </div>

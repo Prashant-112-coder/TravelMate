@@ -125,10 +125,23 @@ router.get("/", async (req, res) => {
     return res.status(404).json({ error: "Your trip was not found." });
   }
 
+  // Only future-starting trips can participate in active traveller matching.
+  // Past trips remain visible in Explore Trips; this guard affects matching only.
+  const today = new Date().toISOString().slice(0, 10);
+  if (ownResult.data.status !== "open" || !ownResult.data.start_date || ownResult.data.start_date < today) {
+    return res.json({
+      engine: matchingEngineName(),
+      eligible_count: 0,
+      results: [],
+      message: "This trip has already started or is not open for discovery. Past trips remain available in Explore Trips.",
+    });
+  }
+
   const { data: trips, error: tripsError } = await db
     .from("trips")
     .select("*")
     .eq("status", "open")
+    .gte("start_date", today)
     .neq("user_id", req.user.id)
     .order("created_at", { ascending: false })
     .limit(100);

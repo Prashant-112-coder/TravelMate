@@ -95,8 +95,10 @@ async function discoverWithML({ sourceTrip, sourceProfile, candidates, req, db }
       baseline_score: item.compatibility,
       metadata: { engine: "ml", source: "discover", predicted_label: item.predicted_label },
     }));
-    const eventResult = await db.from("matching_events").insert(events);
-    if (eventResult.error) console.warn("ML impression logging skipped:", eventResult.error.message);
+    // Analytics are best-effort: never make the user wait for matching_events writes.
+    void db.from("matching_events").insert(events).then(({ error }) => {
+      if (error) console.warn("ML impression logging skipped:", error.message);
+    }).catch((error) => console.warn("ML impression logging skipped:", error.message));
   }
 
   return {
@@ -210,8 +212,10 @@ router.get("/", async (req, res) => {
       baseline_score: item.compatibility,
       metadata: { engine: "baseline", source: "discover" },
     }));
-    const eventResult = await db.from("matching_events").insert(events);
-    if (eventResult.error) console.warn("Matching event logging skipped:", eventResult.error.message);
+    // Analytics are best-effort: never make the user wait for matching_events writes.
+    void db.from("matching_events").insert(events).then(({ error }) => {
+      if (error) console.warn("Matching event logging skipped:", error.message);
+    }).catch((error) => console.warn("Matching event logging skipped:", error.message));
   }
 
   res.json({

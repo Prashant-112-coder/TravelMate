@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { apiFetch } from "../lib/api";
 
 function getToday() {
-  return new Intl.DateTimeFormat("en-CA").format(new Date());
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date());
 }
 
 function tripPeriod(trip) {
@@ -146,7 +146,7 @@ export default function ExploreTrips() {
 
                   <div className="explore-actions">
                     {profile?.id && <Link className="button button-light" to={`/traveller/${profile.id}`}>View profile</Link>}
-                    {tripPeriod(trip) === "upcoming" ? (
+                    {tripPeriod(trip) !== "past" ? (
                       <Link className="button" to={`/discover?trip=${encodeURIComponent(trip.id)}`}>Find match</Link>
                     ) : (
                       <span className="button button-light" aria-label="Past or in-progress trips cannot be matched">Not matchable</span>

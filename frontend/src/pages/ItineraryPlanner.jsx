@@ -79,7 +79,7 @@ export default function ItineraryPlanner() {
         <div className="form-grid">
           <label>
             Destination
-            <input required minLength="2" maxLength="120" value={form.destination} onChange={(e) => update("destination", e.target.value)} placeholder="Try Goa, Mysuru, Jaipur or Manali" />
+            <input required minLength="2" maxLength="120" value={form.destination} onChange={(e) => update("destination", e.target.value)} placeholder="Try Goa, Varanasi, Jaipur or Manali" />
           </label>
           <label>
             Travel start date

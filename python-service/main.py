@@ -250,7 +250,9 @@ def health():
         "ok": True,
         "service": "travel-mate-ml",
         "model_exists": MODEL_PATH.exists(),
-        "itinerary_dataset_exists": ITINERARY_DATASET_PATH.exists()
+        "itinerary_dataset_exists": (ROOT / "data" / "india_tourism_dataset.json").exists() or ITINERARY_DATASET_PATH.exists(),
+        "tourism_dataset_exists": (ROOT / "data" / "india_tourism_dataset.json").exists(),
+        "attraction_dataset_exists": (ROOT / "data" / "top_indian_places.csv").exists()
     }
 
 @app.post("/generate-itinerary")

@@ -100,6 +100,7 @@ def build_attractions(destination: dict, rows: list[dict]) -> list[dict]:
                 return fallback
         matched.append({
             "name": str(row.get("name")).strip(),
+            "city": str(row.get("city") or destination.get("destination_name") or destination.get("state") or ""),
             "category": str(row.get("category") or "Attraction"),
             "duration_hours": max(0.5, min(number(row.get("duration"), 1.5), 8.0)),
             "rating": max(0.0, min(number(row.get("rating"), 0.0), 5.0)),
@@ -115,13 +116,13 @@ def build_attractions(destination: dict, rows: list[dict]) -> list[dict]:
     result = []
     for name in (destination.get("primary_attractions") or []) + (destination.get("hidden_gems") or []):
         result.append({
-            "name": str(name), "category": "Destination attraction",
+            "name": str(name), "city": str(destination.get("destination_name") or destination.get("state") or ""), "category": "Destination attraction",
             "duration_hours": 2.0, "rating": 0.0, "entry_fee": 0.0,
             "weekly_off": "", "best_time": "", "source": "destination_profile",
         })
     for activity in destination.get("activities_available") or []:
         result.append({
-            "name": str(activity), "category": "Experience",
+            "name": str(activity), "city": str(destination.get("destination_name") or destination.get("state") or ""), "category": "Experience",
             "duration_hours": 1.5, "rating": 0.0, "entry_fee": 0.0,
             "weekly_off": "", "best_time": "", "source": "destination_profile",
         })
@@ -195,8 +196,19 @@ def generate_smart_itinerary(
     ranked = sorted(unique.values(), key=lambda x: (-x["recommendation_score"], x["name"]))
     selected = ranked[:min(len(ranked), duration * 3)]
     day_bins = [[] for _ in range(duration)]
-    for index, item in enumerate(selected):
-        day_bins[index % duration].append(item)
+    # Keep attractions from the same city together where the source CSV provides City.
+    # No street-level route distance is inferred because the source CSV has no coordinates.
+    for item in selected:
+        city = key(item.get("city"))
+        compatible = [
+            index for index, day in enumerate(day_bins)
+            if len(day) < 3 and (not day or all(key(existing.get("city")) == city for existing in day))
+        ]
+        available = compatible or [index for index, day in enumerate(day_bins) if len(day) < 3]
+        if not available:
+            break
+        target_day = min(available, key=lambda index: (len(day_bins[index]), index))
+        day_bins[target_day].append(item)
 
     days, total_entry_fees = [], 0.0
     slot_times = [("09:00", "morning"), ("14:00", "afternoon"), ("17:00", "evening")]

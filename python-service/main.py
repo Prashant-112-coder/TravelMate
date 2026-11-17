@@ -12,6 +12,7 @@ import joblib
 import pandas as pd
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel, Field
+from itinerary_engine import generate_smart_itinerary
 
 ROOT = Path(__file__).resolve().parent
 MODEL_PATH = ROOT / "models" / "traveller_pair_random_forest.joblib"
@@ -31,6 +32,9 @@ class ItineraryRequest(BaseModel):
     destination: str = Field(min_length=2, max_length=120)
     duration: int = Field(ge=1, le=30)
     interests: list[str] = Field(default_factory=list, max_length=20)
+    budget: float = Field(default=15000, gt=0, le=10000000)
+    travelers: int = Field(default=1, ge=1, le=50)
+    travel_date: str | None = None
 
 def model():
     global _model
@@ -246,12 +250,25 @@ def health():
         "ok": True,
         "service": "travel-mate-ml",
         "model_exists": MODEL_PATH.exists(),
-        "itinerary_dataset_exists": ITINERARY_DATASET_PATH.exists()
+        "itinerary_dataset_exists": (ROOT / "data" / "india_tourism_dataset.json").exists() or ITINERARY_DATASET_PATH.exists(),
+        "tourism_dataset_exists": (ROOT / "data" / "india_tourism_dataset.json").exists(),
+        "attraction_dataset_exists": (ROOT / "data" / "top_indian_places.csv").exists()
     }
 
 @app.post("/generate-itinerary")
 def generate_itinerary(payload: ItineraryRequest):
     try:
+        if (ROOT / "data" / "india_tourism_dataset.json").exists():
+            return generate_smart_itinerary(
+                destination_name=payload.destination,
+                duration=payload.duration,
+                interests=payload.interests,
+                budget=payload.budget,
+                travelers=payload.travelers,
+                travel_date=payload.travel_date,
+            )
+        # Keep the existing itinerary CSV as a safe fallback until the new
+        # destination JSON is placed in python-service/data/.
         return generate_dataset_itinerary(payload)
     except HTTPException:
         raise

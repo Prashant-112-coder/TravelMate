@@ -55,9 +55,15 @@ export default function JourneyDetails() {
     setGenerationInfo(null);
     try {
       const interests = interestText.split(",").map(value => value.trim()).filter(Boolean).slice(0, 5);
+      const travellers = Math.max(1, data?.journey?.members?.length || 1);
+      const perTravellerBudget = Number(data?.journey?.budget_max || 15000);
       const result = await apiFetch("/journeys/" + id + "/generate-itinerary", {
         method: "POST",
-        body: JSON.stringify({ interests })
+        body: JSON.stringify({
+          interests,
+          budget: perTravellerBudget * travellers,
+          travelers: travellers
+        })
       });
       setGenerationInfo(result.generation || null);
       await load();
@@ -178,7 +184,15 @@ export default function JourneyDetails() {
               </label>
               <small>Your shared plan will be created from the destination and travel dates. Existing activities are kept safe.</small>
             </div>
-            {generationInfo && <p className="journey-generation-success">Your itinerary is ready: {generationInfo.days} days and {generationInfo.activities} activities for {generationInfo.destination}.</p>}
+            {generationInfo && (
+              <div className="journey-generation-success">
+                <strong>Your itinerary is ready</strong>
+                <p>{generationInfo.days} days · {generationInfo.activities} activities · {generationInfo.destination}</p>
+                {generationInfo.estimated_entry_fees_inr > 0 && <p>Estimated attraction entry fees: ₹{Number(generationInfo.estimated_entry_fees_inr).toLocaleString("en-IN")}</p>}
+                {generationInfo.budget_category && <p>Suggested travel range: {generationInfo.budget_category}</p>}
+                {generationInfo.season_context?.travel_season && <p>Season: {generationInfo.season_context.travel_season} · {generationInfo.season_context.note}</p>}
+              </div>
+            )}
 
             {!itinerary ? (
               <div className="itinerary-empty">

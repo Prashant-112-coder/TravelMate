@@ -100,3 +100,7 @@ npm run build
 - Only use the Supabase publishable key in browser configuration; never expose a service-role key to the frontend.
 - Apply the SQL migrations in order in the intended Supabase project.
 - Configure `CLIENT_ORIGIN` to the deployed frontend origin before production use.
+
+## Itinerary generation
+
+The authenticated itinerary planner is available at `/itinerary` in the web app and through `POST /api/itinerary/generate` in the API. See [docs/itinerary-generation.md](docs/itinerary-generation.md) for request fields, data provenance, scoring, and local test commands.

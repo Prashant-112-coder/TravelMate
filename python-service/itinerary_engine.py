@@ -45,7 +45,7 @@ def match_destination(query: str, records: list[dict]) -> dict:
     target = key(query)
     candidates = []
     for record in records:
-        for field in ("name", "destination", "state", "district"):
+        for field in ("destination_name", "name", "destination", "state", "district"):
             value = key(record.get(field))
             if not value:
                 continue
@@ -86,7 +86,7 @@ def load_attractions() -> list[dict]:
 def build_attractions(destination: dict, rows: list[dict]) -> list[dict]:
     state = key(destination.get("state"))
     district = key(destination.get("district"))
-    dest_name = key(destination.get("name") or destination.get("destination"))
+    dest_name = key(destination.get("destination_name") or destination.get("name") or destination.get("destination"))
     matched = []
     for row in rows:
         row_state, row_city = key(row.get("state")), key(row.get("city"))
@@ -170,8 +170,7 @@ def generate_smart_itinerary(
     if duration < 1 or duration > 30:
         raise HTTPException(status_code=422, detail="Trip duration must be between 1 and 30 days.")
     destination = match_destination(destination_name, load_destinations())
-    ideal = destination.get("ideal_duration_days") or {}
-    max_days = int(ideal.get("maximum") or ideal.get("ideal") or 30)
+    max_days = int(destination.get("maximum_days") or destination.get("ideal_days") or 30)
     if duration > max_days:
         raise HTTPException(status_code=422, detail=f"This destination profile recommends up to {max_days} days.")
     attraction_rows = load_attractions()
@@ -224,7 +223,7 @@ def generate_smart_itinerary(
             })
         days.append({
             "day_number": day_index, "title": f"Day {day_index}",
-            "theme": f"Explore {destination.get('name') or destination.get('state')}",
+            "theme": f"Explore {destination.get('destination_name') or destination.get('state')}",
             "activities": activities,
         })
 
@@ -234,7 +233,7 @@ def generate_smart_itinerary(
     budget_data = destination.get(budget_key) or {}
     return {
         "source": "SafeTrip-AI Indian Tourism Dataset" + (" + Top Indian Places to Visit" if attraction_rows else ""),
-        "destination": destination.get("name") or destination.get("state") or destination_name,
+        "destination": destination.get("destination_name") or destination.get("state") or destination_name,
         "state": destination.get("state"),
         "available_days": max_days,
         "requested_days": duration,
@@ -251,7 +250,7 @@ def generate_smart_itinerary(
             "district": destination.get("district"), "region": destination.get("region"),
             "altitude_m": destination.get("altitude_m"),
             "unique_experiences": destination.get("unique_experiences"),
-            "local_cuisine": destination.get("local_cuisine"),
+            "local_cuisine": destination.get("local_cuisine_must_try") or destination.get("food_scene"),
             "nearest_airport": destination.get("nearest_airport"),
             "nearest_railway_station": destination.get("nearest_railway_station"),
         },

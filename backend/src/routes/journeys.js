@@ -97,7 +97,9 @@ router.post("/:id/activities", async (req, res) => {
 router.post("/:id/generate-itinerary", async (req, res) => {
   const parsed = z.object({
     interests: z.array(z.string().trim().min(1).max(50)).max(5).default([]),
-    duration: z.coerce.number().int().min(1).max(30).optional()
+    duration: z.coerce.number().int().min(1).max(30).optional(),
+    budget: z.coerce.number().positive().max(10000000).default(15000),
+    travelers: z.coerce.number().int().min(1).max(50).default(1)
   }).safeParse(req.body || {});
   if (!parsed.success) {
     return res.status(400).json({ error: "Choose up to five valid travel interests." });
@@ -129,7 +131,10 @@ router.post("/:id/generate-itinerary", async (req, res) => {
       body: JSON.stringify({
         destination: journey.destination,
         duration,
-        interests: parsed.data.interests
+        interests: parsed.data.interests,
+        budget: parsed.data.budget,
+        travelers: parsed.data.travelers,
+        travel_date: journey.start_date || null
       }),
       signal: AbortSignal.timeout(15000)
     });
@@ -195,7 +200,7 @@ router.post("/:id/generate-itinerary", async (req, res) => {
     day_id: dayIdByNumber.get(day.day_number),
     period: activity.period,
     title: activity.title,
-    description: "Suggested from the Travel Mate tourism itinerary dataset.",
+    description: [activity.time, activity.description].filter(Boolean).join(" · ") || null,
     source: "dataset",
     sort_order: index + 1
   })));

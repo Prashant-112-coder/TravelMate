@@ -95,8 +95,10 @@ async function discoverWithML({ sourceTrip, sourceProfile, candidates, req, db }
       baseline_score: item.compatibility,
       metadata: { engine: "ml", source: "discover", predicted_label: item.predicted_label },
     }));
-    const eventResult = await db.from("matching_events").insert(events);
-    if (eventResult.error) console.warn("ML impression logging skipped:", eventResult.error.message);
+    // Analytics are best-effort: never make the user wait for matching_events writes.
+    void db.from("matching_events").insert(events).then(({ error }) => {
+      if (error) console.warn("ML impression logging skipped:", error.message);
+    }).catch((error) => console.warn("ML impression logging skipped:", error.message));
   }
 
   return {
@@ -125,10 +127,24 @@ router.get("/", async (req, res) => {
     return res.status(404).json({ error: "Your trip was not found." });
   }
 
+  // Trips remain matchable until their END date has passed. A trip that has
+  // already started but is still in progress is still eligible for matching.
+  // Past trips remain visible in Explore Trips; this guard affects matching only.
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date());
+  if (ownResult.data.status !== "open" || !ownResult.data.end_date || ownResult.data.end_date < today) {
+    return res.json({
+      engine: matchingEngineName(),
+      eligible_count: 0,
+      results: [],
+      message: "This trip has ended or is not open for discovery. Trips that are still in progress remain eligible for matching.",
+    });
+  }
+
   const { data: trips, error: tripsError } = await db
     .from("trips")
     .select("*")
     .eq("status", "open")
+    .gte("end_date", today)
     .neq("user_id", req.user.id)
     .order("created_at", { ascending: false })
     .limit(100);
@@ -196,8 +212,10 @@ router.get("/", async (req, res) => {
       baseline_score: item.compatibility,
       metadata: { engine: "baseline", source: "discover" },
     }));
-    const eventResult = await db.from("matching_events").insert(events);
-    if (eventResult.error) console.warn("Matching event logging skipped:", eventResult.error.message);
+    // Analytics are best-effort: never make the user wait for matching_events writes.
+    void db.from("matching_events").insert(events).then(({ error }) => {
+      if (error) console.warn("Matching event logging skipped:", error.message);
+    }).catch((error) => console.warn("Matching event logging skipped:", error.message));
   }
 
   res.json({

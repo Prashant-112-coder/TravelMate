@@ -2,6 +2,17 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../lib/api";
 
+function getToday() {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date());
+}
+
+function tripPeriod(trip) {
+  const today = getToday();
+  if (trip.status === "completed" || trip.end_date < today) return "past";
+  if (trip.start_date < today) return "in-progress";
+  return "upcoming";
+}
+
 function formatDateRange(start, end) {
   const formatter = new Intl.DateTimeFormat("en-IN", { day: "2-digit", month: "short", year: "numeric" });
   return `${formatter.format(new Date(start + "T00:00:00"))} – ${formatter.format(new Date(end + "T00:00:00"))}`;
@@ -62,7 +73,7 @@ export default function ExploreTrips() {
         <div>
           <p className="eyebrow">EXPLORE TRIPS</p>
           <h1>Discover real travel plans.</h1>
-          <p>Browse open trips created by discoverable travellers.</p>
+          <p>Browse upcoming plans and past journeys shared by discoverable travellers.</p>
         </div>
         <Link className="button" to="/my-trips/new">+ Create trip</Link>
       </div>
@@ -110,7 +121,7 @@ export default function ExploreTrips() {
             return (
               <article className="explore-trip-card" key={trip.id}>
                 <div className={`explore-trip-image demo-image demo-${index % 3}`}>
-                  <span>OPEN TRIP</span>
+                  <span>{tripPeriod(trip) === "past" ? "PAST TRIP" : tripPeriod(trip) === "in-progress" ? "IN PROGRESS" : "OPEN TRIP"}</span>
                 </div>
 
                 <div className="explore-trip-body">
@@ -135,7 +146,11 @@ export default function ExploreTrips() {
 
                   <div className="explore-actions">
                     {profile?.id && <Link className="button button-light" to={`/traveller/${profile.id}`}>View profile</Link>}
-                    <Link className="button" to="/discover">Find match</Link>
+                    {tripPeriod(trip) !== "past" ? (
+                      <Link className="button" to={`/discover?trip=${encodeURIComponent(trip.id)}`}>Find match</Link>
+                    ) : (
+                      <span className="button button-light" aria-label="Trips whose end date has passed cannot be matched">Not matchable</span>
+                    )}
                   </div>
                 </div>
               </article>

@@ -3,6 +3,10 @@ import { Link, useSearchParams } from "react-router-dom";
 import { apiFetch } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 
+function getToday() {
+  return new Intl.DateTimeFormat("en-CA").format(new Date());
+}
+
 const factorLabels = [
   ["destination", "Destination"],
   ["dates", "Dates"],
@@ -24,13 +28,18 @@ export default function Discover() {
   const [error, setError] = useState("");
   const [engine, setEngine] = useState("baseline");
   const [expanded, setExpanded] = useState({});
+  // Keep every compatible traveller visible, including existing connections.
+  // Their request action is disabled below to prevent duplicate requests.
+  const visibleResults = results.filter(({ profile }) => Boolean(profile?.id));
 
   useEffect(() => {
     Promise.all([apiFetch("/trips"), apiFetch("/requests")])
       .then(([tripResponse, requestResponse]) => {
-        const ownTrips = tripResponse.trips || [];
+        const today = getToday();
+        // Keep trips selectable while they are ongoing; expire only after end_date.
+        const ownTrips = (tripResponse.trips || []).filter((item) => item.status === "open" && item.end_date >= today);
         setTrips(ownTrips);
-        if (!trip && ownTrips[0]) setTrip(tripResponse.trips[0].id);
+        setTrip((current) => ownTrips.some((item) => item.id === current) ? current : (ownTrips[0]?.id || ""));
         const connections = {};
         (requestResponse.requests || []).forEach((item) => {
           if (
@@ -98,7 +107,7 @@ export default function Discover() {
         <div>
           <p className="eyebrow">DISCOVER</p>
           <h1>Find your travel people.</h1>
-          <p>{engine === "ml" ? "Your eligible trips are ranked by the trained Random Forest compatibility model." : "Real trips are compared using the explainable baseline compatibility model."}</p>
+          <p>Explore travellers whose plans and preferences align with yours.</p>
         </div>
         <Link className="button" to="/my-trips/new">Plan another trip</Link>
       </div>
@@ -108,12 +117,12 @@ export default function Discover() {
           Matching trip
           <select value={trip} onChange={(e) => setTrip(e.target.value)}>
             {trips.map((item) => (
-              <option key={item.id} value={item.id}>{item.title} · {item.destination}</option>
+              <option key={item.id} value={item.id}>{item.title} · {item.destination} · {item.start_date} to {item.end_date}</option>
             ))}
           </select>
         </label>
         <span className="matching-engine-badge">
-          {engine === "baseline" ? "Explainable matching" : "ML matching"}
+          Travel compatibility
         </span>
       </div>
 
@@ -124,18 +133,18 @@ export default function Discover() {
           <h2>Finding compatible travellers…</h2>
           <p>Checking destination, dates, budget and travel preferences.</p>
         </section>
-      ) : results.length === 0 ? (
-        <section className="discover-empty">
+      ) : visibleResults.length === 0 ? (
+        <section className="discover-empty" role="status" aria-live="polite">
           <div className="discover-illustration">✦</div>
           <h2>No compatible travellers yet</h2>
-          <p>Travel Mate currently requires an open trip with a compatible destination and overlapping dates. More people and trips will create more matches.</p>
+          <p>{trips.length === 0
+            ? "You need an open trip whose end date has not passed before searching for travel mates."
+            : "No other discoverable traveller has an open trip to the same destination with at least one overlapping day. Trips remain eligible until their end date has passed."}</p>
           <Link className="button button-light" to="/my-trips/new">Create another trip</Link>
         </section>
       ) : (
         <div className="traveller-grid">
-          {results
-            .filter(({ profile }) => !activeConnections[profile?.id])
-            .map(({ trip: candidateTrip, profile, compatibility, breakdown, missing, features, score_note, feature_limitations }) => (
+          {visibleResults.map(({ trip: candidateTrip, profile, compatibility, breakdown, missing, features, score_note, feature_limitations }) => (
             <article className="traveller-card" key={candidateTrip.id}>
               <div
                 className="traveller-cover"
@@ -177,8 +186,7 @@ export default function Discover() {
                           <div><span>Budget similarity</span><strong>{Math.round((features?.budget_ratio || 0) * 100)}%</strong></div>
                           <div><span>Same travel style</span><strong>{features?.same_travel_style ? "Yes" : "No"}</strong></div>
                           <div><span>Activity similarity</span><strong>{Math.round((features?.activities_jaccard || 0) * 100)}%</strong></div>
-                          {feature_limitations?.length > 0 && <small>{feature_limitations.join(" ")}</small>}
-                          {score_note && <small>{score_note}</small>}
+                          
                         </>
                       ) : (
                         <>
@@ -209,8 +217,8 @@ export default function Discover() {
                   >
                     View profile
                   </Link>
-                  <button className="button" disabled={sent[candidateTrip.id]} onClick={() => request(candidateTrip.id)}>
-                    {sent[candidateTrip.id] ? "Request sent" : "Send request"}
+                  <button className="button" disabled={sent[candidateTrip.id] || activeConnections[profile.id]} onClick={() => request(candidateTrip.id)}>
+                    {sent[candidateTrip.id] ? "Request sent" : activeConnections[profile.id] ? "Already connected" : "Send request"}
                   </button>
                 </div>
               </div>

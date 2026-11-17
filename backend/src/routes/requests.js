@@ -7,6 +7,10 @@ import { compareTrips } from "../services/matchingEngine.js";
 const router = Router();
 router.use(requireAuth);
 
+function todayInIndia() {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date());
+}
+
 const createSchema = z.object({
   trip_id: z.string().uuid(),
   source_trip_id: z.string().uuid().optional(),
@@ -77,6 +81,11 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "You cannot request your own trip." });
   }
 
+  // In-progress trips remain requestable through their end date (inclusive).
+  if (!candidateTrip.end_date || candidateTrip.end_date < todayInIndia()) {
+    return res.status(400).json({ error: "That trip has already ended and is no longer matchable." });
+  }
+
   const [forwardConnection, reverseConnection] = await Promise.all([
     db
       .from("match_requests")
@@ -119,6 +128,11 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "Your selected matching trip was not found." });
     }
     sourceTrip = sourceResult.data;
+
+    // The selected trip can be ongoing, but not expired.
+    if (sourceTrip.status !== "open" || !sourceTrip.end_date || sourceTrip.end_date < todayInIndia()) {
+      return res.status(400).json({ error: "Your selected trip has already ended or is no longer open for matching." });
+    }
 
     const match = compareTrips(sourceTrip, candidateTrip);
     if (!match.features.destination_similarity || !match.features.date_overlap) {
@@ -223,15 +237,22 @@ router.patch("/:id", async (req, res) => {
   if (status.data === "accepted") {
     const { data: conversation, error: conversationError } = await db
       .from("conversations")
-      .insert({ request_id: request.id })
+      .upsert({ request_id: request.id }, { onConflict: "request_id", ignoreDuplicates: true })
       .select("*")
-      .single();
+      .maybeSingle();
 
     if (conversationError && conversationError.code !== "23505") {
       return res.status(400).json({ error: conversationError.message });
     }
 
-    return res.json({ request: updated, conversation: conversation || null });
+    const { data: journeyId, error: journeyError } = await db
+      .rpc("create_journey_for_accepted_request", { p_request_id: request.id });
+
+    if (journeyError) {
+      return res.status(400).json({ error: "Request accepted, but journey creation failed: " + journeyError.message });
+    }
+
+    return res.json({ request: updated, conversation: conversation || null, journey_id: journeyId });
   }
 
   return res.json({ request: updated });

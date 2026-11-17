@@ -12,6 +12,7 @@ import messagesRouter from "./routes/messages.js";
 import notificationsRouter from "./routes/notifications.js";
 import exploreRouter from "./routes/explore.js";
 import matchingRouter from "./routes/matching.js";
+import journeysRouter from "./routes/journeys.js";
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use("/api/messages", messagesRouter);
 app.use("/api/notifications", notificationsRouter);
 app.use("/api/explore", exploreRouter);
 app.use("/api/matching", matchingRouter);
+app.use("/api/journeys", journeysRouter);
 app.use((_req, res) => res.status(404).json({ error: "Route not found" }));
 
 app.listen(env.PORT, () => console.log(`Travel Mate API listening on port ${env.PORT}`));

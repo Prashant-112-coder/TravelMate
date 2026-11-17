@@ -7,6 +7,7 @@ import Discover from "./pages/Discover";
 import ExploreTrips from "./pages/ExploreTrips";
 import MyTrips from "./pages/MyTrips";
 import CreateTrip from "./pages/CreateTrip";
+import ItineraryPlanner from "./pages/ItineraryPlanner";
 import Matches from "./pages/Matches";
 import Requests from "./pages/Requests";
 import Messages from "./pages/Messages";
@@ -47,6 +48,7 @@ export default function App() {
     <Route path="/discover" element={<ShellPage><Discover/></ShellPage>}/>
     <Route path="/my-trips" element={<ShellPage><MyTrips/></ShellPage>}/>
     <Route path="/my-trips/new" element={<ShellPage><CreateTrip/></ShellPage>}/>
+    <Route path="/itinerary" element={<ShellPage><ItineraryPlanner/></ShellPage>}/>
     <Route path="/my-trips/edit/:id" element={<ShellPage><CreateTrip/></ShellPage>}/>
     <Route path="/matches" element={<ShellPage><Matches/></ShellPage>}/>
     <Route path="/requests" element={<ShellPage><Requests/></ShellPage>}/>

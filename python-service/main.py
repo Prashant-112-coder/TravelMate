@@ -258,14 +258,18 @@ def health():
 @app.post("/generate-itinerary")
 def generate_itinerary(payload: ItineraryRequest):
     try:
-        return generate_smart_itinerary(
-            destination_name=payload.destination,
-            duration=payload.duration,
-            interests=payload.interests,
-            budget=payload.budget,
-            travelers=payload.travelers,
-            travel_date=payload.travel_date,
-        )
+        if (ROOT / "data" / "india_tourism_dataset.json").exists():
+            return generate_smart_itinerary(
+                destination_name=payload.destination,
+                duration=payload.duration,
+                interests=payload.interests,
+                budget=payload.budget,
+                travelers=payload.travelers,
+                travel_date=payload.travel_date,
+            )
+        # Keep the existing itinerary CSV as a safe fallback until the new
+        # destination JSON is placed in python-service/data/.
+        return generate_dataset_itinerary(payload)
     except HTTPException:
         raise
     except FileNotFoundError as exc:

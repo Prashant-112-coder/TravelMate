@@ -12,6 +12,7 @@ import joblib
 import pandas as pd
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel, Field
+from itinerary_engine import generate_smart_itinerary
 
 ROOT = Path(__file__).resolve().parent
 MODEL_PATH = ROOT / "models" / "traveller_pair_random_forest.joblib"
@@ -31,6 +32,9 @@ class ItineraryRequest(BaseModel):
     destination: str = Field(min_length=2, max_length=120)
     duration: int = Field(ge=1, le=30)
     interests: list[str] = Field(default_factory=list, max_length=20)
+    budget: float = Field(default=15000, gt=0, le=10000000)
+    travelers: int = Field(default=1, ge=1, le=50)
+    travel_date: str | None = None
 
 def model():
     global _model
@@ -252,7 +256,14 @@ def health():
 @app.post("/generate-itinerary")
 def generate_itinerary(payload: ItineraryRequest):
     try:
-        return generate_dataset_itinerary(payload)
+        return generate_smart_itinerary(
+            destination_name=payload.destination,
+            duration=payload.duration,
+            interests=payload.interests,
+            budget=payload.budget,
+            travelers=payload.travelers,
+            travel_date=payload.travel_date,
+        )
     except HTTPException:
         raise
     except FileNotFoundError as exc:

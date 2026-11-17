@@ -222,6 +222,10 @@ router.post("/:id/generate-itinerary", async (req, res) => {
       matched_interests: generated.matched_interests,
       days: generated.days.length,
       activities: activityRows.length,
+      estimated_entry_fees_inr: generated.estimated_entry_fees_inr ?? 0,
+      budget_category: generated.budget_category ?? null,
+      destination_daily_budget_range_inr: generated.destination_daily_budget_range_inr ?? null,
+      season_context: generated.season_context ?? null,
       source: generated.source
     }
   });

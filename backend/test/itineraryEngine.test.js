@@ -21,8 +21,8 @@ test("generates a day-wise itinerary for a supported destination", () => {
 });
 
 test("supports common destination aliases", () => {
-  const result = generateItinerary({ ...request, destination: "Mysuru" });
-  assert.match(result.destination.toLowerCase(), /mysore|mysuru/);
+  const result = generateItinerary({ ...request, destination: "Kashi" });
+  assert.match(result.destination.toLowerCase(), /varanasi/);
 });
 
 test("returns an actionable not-found error for unsupported destinations", () => {

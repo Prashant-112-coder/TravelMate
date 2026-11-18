@@ -145,7 +145,7 @@ export default function Discover() {
                     : undefined
                 }
               >
-                <span className="compatibility">{compatibility}% match</span>
+                <span className="compatibility">Matched</span>
               </div>
 
               <div className="traveller-body">

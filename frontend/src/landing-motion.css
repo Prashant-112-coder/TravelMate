@@ -1,0 +1,46 @@
+/* Motion and polish layer for the Travel Mate landing experience */
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+.landing { overflow: clip; }
+.landing-nav { position: relative; z-index: 5; }
+.landing-brand { display: inline-flex; align-items: center; gap: 8px; }
+.brand-mark { color: var(--accent); font-size: 1.2rem; }
+.landing-links a, .nav-login, .secondary-cta { transition: color .25s ease, opacity .25s ease; }
+.nav-cta, .primary-cta { transition: transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s ease, background .28s ease; }
+.nav-cta:hover, .primary-cta:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(201,83,56,.22); }
+.hero-stage { perspective: 1000px; }
+.hero-image { box-shadow: 0 28px 70px rgba(31,42,53,.13); }
+.hero-image-main { transform: translateZ(0); animation: hero-arrive 1.1s cubic-bezier(.2,.75,.25,1) both; }
+.hero-image-card, .destination-float, .feature-chip { animation: float-soft 6s ease-in-out infinite; }
+.destination-float { animation-delay: -2.4s; }
+.hero-card-avatar { flex: 0 0 auto; }
+.landing-proof { line-height: 1.7; }
+.steps-grid article { transition: transform .35s ease, background .35s ease; }
+.steps-grid article:hover { transform: translateY(-6px); }
+.step-icon { transition: transform .35s ease, background .35s ease; }
+.steps-grid article:hover .step-icon { transform: rotate(-7deg) scale(1.07); background: #fff0eb; }
+.feature-photo { transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+.feature-visual:hover .feature-photo { transform: scale(1.025); }
+.motion-reveal { animation: reveal-up .85s cubic-bezier(.2,.7,.2,1) both; }
+.motion-delay { animation-delay: .14s; }
+.motion-delay-1 { animation-delay: .08s; }
+.motion-delay-2 { animation-delay: .16s; }
+.motion-delay-3 { animation-delay: .24s; }
+.landing-section, .feature-section, .landing-cta { scroll-margin-top: 90px; }
+.landing-cta { transition: transform .35s ease, background .35s ease; }
+.landing-cta:hover { background: #f0e8df; }
+.landing-footer { gap: 18px; }
+.landing-footer span:last-child { margin-left: auto; }
+@keyframes reveal-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes hero-arrive { from { opacity: 0; transform: translateY(18px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes float-soft { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+@media (max-width: 760px) {
+  .landing-footer span:last-child { margin-left: 0; }
+  .landing-footer { gap: 8px; }
+  .hero-image-card { right: 8px; min-width: 0; max-width: calc(100% - 30px); }
+  .hero-image-card > b { display: none; }
+  .destination-float { max-width: 230px; }
+}
